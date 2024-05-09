@@ -1,0 +1,12 @@
+#######################
+Entrega 8/05/2024
+#######################
+
+Tarea #1: Asimilar cómo importar los problemas (TSP, VRP, SBRP, BSS) de soluciones anteriores
+-No se encontraron en la biblioteca los problemas SBRP y BSS, por lo que las instancias de problemas anteriores obtenidas fueron del problema CVRP, derivado de VRP (Nanda).
+-Estas instancias obtenidas en formato txt se llevan a una estructura JSON o diccionario para que la biblioteca pueda procesarlas, esto se encuentra en el archivo llamado "import_data".
+-Ya que no se encontraron los problemas mencionados en el punto anterior (SBRP, BSS), como ORTools tiene en cuenta que las paradas ya se encuentran ubicadas, estas se obtendrán con los resultados del problema BSS (Omar), igualmente para SBRP (Luis Miguel).
+
+Tarea #2: Experimentar y estudiar los módulos routing y pywrapcp
+-Se logra experimentar con el módulo pywrapcp, adicionalmente también con el módulo routing_enums_pb2, ambos de ortools.constraint_solver.
+-Se tienen algunos ejemplos en las carpetas llamadas "examples" de cada problema (TSP, VRP, CVRP), teniendo en cuenta algunos derivados como ventanas de tiempo, la capacidad de los vehículos, recogidas y entregas, límites de tiempo, ...
