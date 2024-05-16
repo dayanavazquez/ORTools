@@ -45,13 +45,13 @@ def extract_vrp_data(folder_path):
 
                 vrp_data[filename] = {
                     "distance_matrix": distance_matrix,
-                    "num_vehicles": random.randint(1, 10),
+                    "num_vehicles": 1,
                     "depot": 0
                 }
 
     return vrp_data
 
 
-path = "../instances/vrp_instances"
+path = "../instances/cvrp_instances(TSPLib)"
 vrp_data = extract_vrp_data(path)
 print(vrp_data)
