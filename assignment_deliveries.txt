@@ -10,3 +10,16 @@ Tarea #1: Asimilar cómo importar los problemas (TSP, VRP, SBRP, BSS) de solucio
 Tarea #2: Experimentar y estudiar los módulos routing y pywrapcp
 -Se logra experimentar con el módulo pywrapcp, adicionalmente también con el módulo routing_enums_pb2, ambos de ortools.constraint_solver.
 -Se tienen algunos ejemplos en las carpetas llamadas "examples" de cada problema (TSP, VRP, CVRP), teniendo en cuenta algunos derivados como ventanas de tiempo, la capacidad de los vehículos, recogidas y entregas, límites de tiempo, ...
+
+#######################
+Entrega 15/05/2024
+#######################
+
+Tarea #1: Investigar como ofrecer los 4 algoritmos (Haversine, Chebyshev, Manhattan, Euclidean) para el cálculo de la distancia. (Comprobar si ORTools las implementa)
+-ORTools solo implementa Manhattan y Euclidean, por lo que se creo una carpeta llamada "distances" donde se implementan todas las distancias en el archivo "distance_options".
+
+Tarea #2: Investigar si ORTools puede resolver cada uno de los problemas (TSP, VRP, SBRP, BSS) con los módulos anteriormente estudiados
+-Segun la investigacion ORTools solo resuelve los problemas TSP, VRP y sus variantes con los modulos "routing" y "contraint_solver".
+
+Tarea #3: Resolver ejemplos de problemas que se puedan según los resultados del punto anterior
+-Se lograron resolver los problemas TSP, CVRP y VRP con instancias reales de TSPLib y de trabajos previos(Nanda).

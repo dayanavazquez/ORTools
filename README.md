@@ -19,3 +19,12 @@ Experiment with OR-Tools to solve transport problems. OR-Tools, an optimization 
 
 4. This data that is imported is found in the "instances" folder separated by folders
  according to the problems.
+
+
+5. The "variants" folder within "examples" contains the algorithms to solve the variants
+ of the problem in question.
+
+
+6. The "solutions" folders contain the solutions according to the instances evaluated
+ in the problem. 
+ Example: ("solutions_bhcvrp" -> contains the results of the instances within "bhcvrp_instances")
