@@ -1,6 +1,7 @@
 from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
-from load_data.import_data import process_files
+from load_data.instance_type import process_files
+from load_data.instance_type import InstanceType
 import os
 
 
@@ -41,7 +42,7 @@ def save_solution(instance, data, manager, routing, solution):
 def execute():
     """Solve the cvrp problem."""
     # Instantiate the data problem.
-    instances_data = process_files('md')
+    instances_data = process_files(InstanceType.MDCVRP)
     for instance, data in instances_data.items():
         # Create the routing index manager.
         manager = pywrapcp.RoutingIndexManager(

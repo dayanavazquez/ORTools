@@ -1,8 +1,9 @@
 from functools import partial
 from ortools.constraint_solver import pywrapcp
 from ortools.constraint_solver import routing_enums_pb2
-from load_data.import_data import process_files
+from load_data.instance_type import process_files
 from distances.distance_type import calculate_distance
+from load_data.instance_type import InstanceType
 import os
 
 
@@ -206,7 +207,7 @@ def save_solution_to_file(data, manager, routing, assignment, instance):  # pyli
 
 def execute():
     # Instantiate the data problem.
-    instances_data = process_files('tw')
+    instances_data = process_files(InstanceType.CVRPTW)
     for instance, data in instances_data.items():
         # Create the routing index manager
         manager = pywrapcp.RoutingIndexManager(data['num_locations'],

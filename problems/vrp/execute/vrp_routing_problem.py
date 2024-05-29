@@ -2,14 +2,14 @@ import weakref
 import os
 from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
-from load_data.import_data import process_files
-from distances.distance_type import distance_callback
+from load_data.instance_type import process_files
+from load_data.instance_type import InstanceType
 
 
 def save_solution(routing_manager, routing_model, instance):
     """Saves solution to a text file."""
     # Create the solutions_vrp_01 directory if it doesn't exist
-    solutions_dir = os.path.join("../solutions")
+    solutions_dir = os.path.join("../solutions/solutions_vrp")
     os.makedirs(solutions_dir, exist_ok=True)
     file_name = os.path.join(solutions_dir, f"solution_{instance}")
     with open(file_name, "w") as file:
@@ -59,7 +59,7 @@ class SolutionCallback:
 def execute():
     """Entry point of the program."""
     # Instantiate the data problem.
-    instances_data = process_files('bh')
+    instances_data = process_files(InstanceType.BHCVRP)
     for instance, data in instances_data.items():
         # Create the routing index manager.
         routing_manager = pywrapcp.RoutingIndexManager(

@@ -1,6 +1,6 @@
 from enum import Enum
 import os
-from import_data import read_file_tsp, read_file_bh, read_file_tw, read_file_md
+from load_data.import_data import read_file_tsp, read_file_bh, read_file_tw, read_file_md
 
 
 class InstanceType(Enum):
@@ -14,19 +14,19 @@ def process_files(instance_type: InstanceType):
     problem_data = {
         InstanceType.TSP: {
             'read_function': read_file_tsp,
-            'path': ['../../../instances/tsp_instances']
+            'path': ['./instances/tsp_instances']
         },
         InstanceType.BHCVRP: {
             'read_function': read_file_bh,
-            'path': ['../../../instances/bhcvrp_instances']
+            'path': ['./instances/bhcvrp_instances']
         },
         InstanceType.MDCVRP: {
             'read_function': read_file_md,
-            'path': ['../../../instances/mdcvrp_instances(Nanda)/C-mdvrp']
+            'path': ['./instances/mdcvrp_instances(Nanda)/C-mdvrp']
         },
         InstanceType.CVRPTW: {
             'read_function': read_file_tw,
-            'path': ['../../../instances/cvrptw_instances']
+            'path': ['./instances/cvrptw_instances']
         }
     }
     total_data = {}

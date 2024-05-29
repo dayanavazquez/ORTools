@@ -1,6 +1,7 @@
 from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
-from load_data.import_data import process_files
+from load_data.instance_type import process_files
+from load_data.instance_type import InstanceType
 
 
 def print_solution(data, manager, routing, solution, instance):
@@ -29,7 +30,7 @@ def print_solution(data, manager, routing, solution, instance):
 def execute():
     """Entry point of the program."""
     # Instantiate the data problem.
-    instances_data = process_files('bh')
+    instances_data = process_files(InstanceType.BHCVRP)
     for instance, data in instances_data.items():
         manager = pywrapcp.RoutingIndexManager(
             len(data["distance_matrix"]), data["num_vehicles"], data["depot"]
