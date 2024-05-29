@@ -1,13 +1,13 @@
 # ORTools
 Experiment with OR-Tools to solve transport problems. OR-Tools, an optimization library by Google, offers algorithms for combinatorial optimization. "OR" signifies "Operations Research," focusing on analytical methods for optimal decisions in complex scenarios.
 
-1. The vrp, cvrp and tsp folders contain the 3 problems:
+1. The "vrp", "cvrp" and "tsp" folders inside problems contain the 3 problems:
    VRP (Vehicle Routing Problem)
    CVRP (Capacitated Vehicle Routing Problem)
    TSP (Traveling Salesman Problem)
 
 
-2. The examples folder within these folders contains several examples of the problems
+2. The "variants" folder within these folders contains several examples of the problems
  such as time windows, pickup and delivery, ...
  using the modules pywrapcp, routing_enums_pb2 of constraint_solver.
 
@@ -21,10 +21,12 @@ Experiment with OR-Tools to solve transport problems. OR-Tools, an optimization 
  according to the problems.
 
 
-5. The "variants" folder within "examples" contains the algorithms to solve the variants
- of the problem in question.
+5. The "execute" folder contains the algorithms to solve the problem in question.
 
 
 6. The "solutions" folders contain the solutions according to the instances evaluated
  in the problem. 
  Example: ("solutions_bhcvrp" -> contains the results of the instances within "bhcvrp_instances")
+
+
+7. The "run.py" file contains the code to run the program.
