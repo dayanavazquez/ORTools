@@ -77,7 +77,3 @@ def execute():
         # Print solution on console.
         if solution:
             save_solution(manager, routing, solution, instance)
-
-
-if __name__ == "__main__":
-    execute()

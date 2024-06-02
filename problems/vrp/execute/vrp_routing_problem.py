@@ -109,7 +109,3 @@ def execute():
 
         # Solve the problem.
         routing_model.SolveWithParameters(search_parameters)
-
-
-if __name__ == "__main__":
-    execute()

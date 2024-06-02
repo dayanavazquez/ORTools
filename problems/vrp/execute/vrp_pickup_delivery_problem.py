@@ -1,36 +1,40 @@
 from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
-from load_data.instance_type import process_files
-from load_data.instance_type import InstanceType
+from load_data.instance_type import InstanceType, process_files
+import os
 
 
-def print_solution(data, manager, routing, solution, instance):
-    """Prints solution on console."""
-    print(f"Instance: {instance}")
-    print(f"Objective: {solution.ObjectiveValue()}")
-    total_distance = 0
-    for vehicle_id in range(data["num_vehicles"]):
-        index = routing.Start(vehicle_id)
-        plan_output = f"Route for vehicle {vehicle_id}:\n"
-        route_distance = 0
-        while not routing.IsEnd(index):
-            plan_output += f" {manager.IndexToNode(index)} -> "
-            previous_index = index
-            index = solution.Value(routing.NextVar(index))
-            route_distance += routing.GetArcCostForVehicle(
-                previous_index, index, vehicle_id
-            )
-        plan_output += f"{manager.IndexToNode(index)}\n"
-        plan_output += f"Distance of the route: {route_distance}m\n"
-        total_distance += route_distance
-    print(f"Total Distance of all routes: {total_distance}m")
-    # [END solution_printer]
+def save_solution_to_file(data, manager, routing, solution, instance):
+    """Saves solution to a file."""
+    output_dir = 'solutions_vrppd'
+    os.makedirs(output_dir, exist_ok=True)
+    filename = os.path.join(output_dir, f'{instance}')
+    with open(filename, 'w') as f:
+        f.write(f"Instance: {instance}\n\n")
+        f.write(f"Objective: {solution.ObjectiveValue()}\n\n")
+        total_distance = 0
+        for vehicle_id in range(data["num_vehicles"]):
+            index = routing.Start(vehicle_id)
+            plan_output = f"Route for vehicle {vehicle_id}:\n"
+            route_distance = 0
+            while not routing.IsEnd(index):
+                plan_output += f" {manager.IndexToNode(index)} -> "
+                previous_index = index
+                index = solution.Value(routing.NextVar(index))
+                route_distance += routing.GetArcCostForVehicle(
+                    previous_index, index, vehicle_id
+                )
+            plan_output += f"{manager.IndexToNode(index)}\n"
+            plan_output += f"Distance of the route: {route_distance}m\n\n"
+            f.write(plan_output)
+            total_distance += route_distance
+        f.write(f"Total Distance of all routes: {total_distance}m")
 
 
 def execute():
     """Entry point of the program."""
     # Instantiate the data problem.
-    instances_data = process_files(InstanceType.BHCVRP)
+    instances_data = process_files(InstanceType.VRPPD)
     for instance, data in instances_data.items():
         manager = pywrapcp.RoutingIndexManager(
             len(data["distance_matrix"]), data["num_vehicles"], data["depot"]
@@ -78,8 +82,4 @@ def execute():
         solution = routing.SolveWithParameters(search_parameters)
         # Print solution on console.
         if solution:
-            print_solution(data, manager, routing, solution, instance)
-
-
-if __name__ == "__main__":
-    execute()
+            save_solution_to_file(data, manager, routing, solution, instance)

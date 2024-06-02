@@ -22,12 +22,12 @@ def process_files(instance_type: InstanceType):
         },
         InstanceType.MDCVRP: {
             'read_function': read_file_md,
-            'path': ['./instances/mdcvrp_instances(Nanda)/C-mdvrp']
+            'path': ['./instances/mdcvrp_instances(Nanda)']
         },
         InstanceType.CVRPTW: {
             'read_function': read_file_tw,
             'path': ['./instances/cvrptw_instances']
-        }
+        },
     }
     total_data = {}
     read_function = problem_data[instance_type]['read_function']

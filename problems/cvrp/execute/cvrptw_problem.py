@@ -247,7 +247,3 @@ def execute():
             save_solution_to_file(data, manager, routing, solution, instance)
         else:
             print("No solution found !")
-
-
-if __name__ == '__main__':
-    execute()

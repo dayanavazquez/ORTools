@@ -7,7 +7,7 @@ import os
 
 def save_solution(instance, data, manager, routing, solution):
     """Saves solution to a text file."""
-    solutions_dir = os.path.join("../solutions/solutions_bhcvrp")
+    solutions_dir = os.path.join("../solutions/solutions_x")
     os.makedirs(solutions_dir, exist_ok=True)
     file_name = os.path.join(solutions_dir, f"solution_{instance}")
     with open(file_name, 'w') as file:
@@ -42,7 +42,7 @@ def save_solution(instance, data, manager, routing, solution):
 def execute():
     """Solve the cvrp problem."""
     # Instantiate the data problem.
-    instances_data = process_files(InstanceType.MDCVRP)
+    instances_data = process_files(InstanceType.BHCVRP)
     for instance, data in instances_data.items():
         # Create the routing index manager.
         manager = pywrapcp.RoutingIndexManager(
@@ -94,7 +94,5 @@ def execute():
         # Save solution on console.
         if solution:
             save_solution(instance, data, manager, routing, solution)
-
-
-if __name__ == "__main__":
-    execute()
+        else:
+            print("no")

@@ -156,12 +156,26 @@ def read_file_tw(file_path):
                 demands.append(int(parts[3]))
                 time_windows.append((int(parts[4]), int(parts[5])))
                 service_times.append(int(parts[6]))
+        num_locations = len(locations)
+        all_ids = list(range(num_locations))
+        all_ids.remove(0)
+        random.shuffle(all_ids)
+        pickups = all_ids[:num_locations // 2]
+        deliveries = all_ids[num_locations // 2:]
+        pickups_deliveries = [list(pair) for pair in zip(pickups, deliveries)]
+        distance_matrix = [[0] * num_locations for _ in range(num_locations)]
+        for i in range(num_locations):
+            for j in range(num_locations):
+                if i != j:
+                    distance_matrix[i][j] = calculate_distance(locations[i], locations[j])
     return {
         "num_vehicles": num_vehicles,
         "vehicle_capacity": vehicle_capacities,
         "demands": demands,
+        "distance_matrix": distance_matrix,
+        "pickups_deliveries": pickups_deliveries,
         "locations": locations,
-        "num_locations": len(locations),
+        "num_locations": num_locations,
         "service_time": service_times,
         "time_windows": time_windows,
         "vehicle_max_distance": 10_000,

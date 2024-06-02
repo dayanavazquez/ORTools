@@ -8,7 +8,7 @@ import os
 
 def save_solution_to_file(data, manager, routing, solution, instance):
     """Saves solution to a file."""
-    output_dir = '../solutions/solutions_vrpmd'
+    output_dir = '../solutions/solutions_mdvrp'
     os.makedirs(output_dir, exist_ok=True)
     filename = os.path.join(output_dir, f'{instance}')
     with open(filename, 'w') as f:
@@ -77,7 +77,3 @@ def execute():
         # Print solution on console.
         if solution:
             save_solution_to_file(data, manager, routing, solution, instance)
-
-
-if __name__ == "__main__":
-    execute()
