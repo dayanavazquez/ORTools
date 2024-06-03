@@ -8,29 +8,38 @@ import os
 
 def save_solution_to_file(data, manager, routing, solution, instance):
     """Saves solution to a file."""
-    output_dir = '../solutions/solutions_mdvrp'
-    os.makedirs(output_dir, exist_ok=True)
+    output_dir = 'solutions_mdvrp'
+    try:
+        os.makedirs(output_dir, exist_ok=True)
+        print(f"Directory {output_dir} created successfully or already exists.")
+    except OSError as error:
+        print(f"Error creating directory {output_dir}: {error}")
+        return
     filename = os.path.join(output_dir, f'{instance}')
-    with open(filename, 'w') as f:
-        f.write(f"Instance: {instance}\n\n")
-        f.write(f"Objective: {solution.ObjectiveValue()}\n\n")
-        max_route_distance = 0
-        for vehicle_id in range(data["num_vehicles"]):
-            index = routing.Start(vehicle_id)
-            plan_output = f"Route for vehicle {vehicle_id}:\n"
-            route_distance = 0
-            while not routing.IsEnd(index):
-                plan_output += f" {manager.IndexToNode(index)} -> "
-                previous_index = index
-                index = solution.Value(routing.NextVar(index))
-                route_distance += routing.GetArcCostForVehicle(
-                    previous_index, index, vehicle_id
-                )
-            plan_output += f"{manager.IndexToNode(index)}\n"
-            plan_output += f"Distance of the route: {route_distance}m\n\n"
-            f.write(plan_output)
-            max_route_distance = max(route_distance, max_route_distance)
-        f.write(f"Maximum of the route distances: {max_route_distance}m\n")
+    try:
+        with open(filename, 'w') as f:
+            f.write(f"Instance: {instance}\n\n")
+            f.write(f"Objective: {solution.ObjectiveValue()}\n\n")
+            max_route_distance = 0
+            for vehicle_id in range(data["num_vehicles"]):
+                index = routing.Start(vehicle_id)
+                plan_output = f"Route for vehicle {vehicle_id}:\n"
+                route_distance = 0
+                while not routing.IsEnd(index):
+                    plan_output += f" {manager.IndexToNode(index)} -> "
+                    previous_index = index
+                    index = solution.Value(routing.NextVar(index))
+                    route_distance += routing.GetArcCostForVehicle(
+                        previous_index, index, vehicle_id
+                    )
+                plan_output += f"{manager.IndexToNode(index)}\n"
+                plan_output += f"Distance of the route: {route_distance}m\n\n"
+                f.write(plan_output)
+                max_route_distance = max(route_distance, max_route_distance)
+            f.write(f"Maximum of the route distances: {max_route_distance}m\n")
+        print(f"Solution saved successfully in {filename}")
+    except OSError as error:
+        print(f"Error writing to file {filename}: {error}")
 
 
 def execute():

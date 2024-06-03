@@ -1,6 +1,38 @@
 import math
 import random
+import json
 
+
+#######################
+# DATA BSS
+#######################
+
+
+def read_file_bss(file):
+    with open(file, 'r') as file:
+        json_data = json.load(file)
+        locations = []
+        for depot in json_data["depots"]:
+            depot_coords = (depot["coordinate_x"], depot["coordinate_y"])
+            locations.append(depot_coords)
+        for bus_stop in json_data["bus_stops"]:
+            bus_stop_coords = (bus_stop["coordinate_x"], bus_stop["coordinate_y"])
+            locations.append(bus_stop_coords)
+
+    size = len(locations)
+    distance_matrix = [[0] * size for _ in range(size)]
+    for i in range(size):
+        for j in range(size):
+            if i != j:
+                distance_matrix[i][j] = calculate_distance(locations[i], locations[j])
+    return {
+        "locations": locations,
+        "distance_matrix": distance_matrix,
+        "num_vehicles": 6,
+        "vehicle_capacities": [7, 7, 3, 5, 4, 6],
+        "demands": [0, 2, 2, 2, 3, 3, 3, 3, 3],
+        "depot": 0
+    }
 
 #######################
 # DATA TSP
@@ -171,6 +203,7 @@ def read_file_tw(file_path):
     return {
         "num_vehicles": num_vehicles,
         "vehicle_capacity": vehicle_capacities,
+        "vehicle_capacities": [vehicle_capacities] * num_vehicles,
         "demands": demands,
         "distance_matrix": distance_matrix,
         "pickups_deliveries": pickups_deliveries,

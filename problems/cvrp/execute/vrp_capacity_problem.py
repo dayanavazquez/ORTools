@@ -5,44 +5,54 @@ from load_data.instance_type import InstanceType
 import os
 
 
-def save_solution(instance, data, manager, routing, solution):
+def save_solution(data, manager, routing, solution, instance):
     """Saves solution to a text file."""
-    solutions_dir = os.path.join("../solutions/solutions_x")
-    os.makedirs(solutions_dir, exist_ok=True)
+    solutions_dir = os.path.join("solutions_x")
+    try:
+        os.makedirs(solutions_dir, exist_ok=True)
+        print(f"Directory {solutions_dir} created successfully or already exists.")
+    except OSError as error:
+        print(f"Error creating directory {solutions_dir}: {error}")
+        return
+
     file_name = os.path.join(solutions_dir, f"solution_{instance}")
-    with open(file_name, 'w') as file:
-        file.write(f"Instance: {instance}\n\n")
-        file.write(f"Objective: {solution.ObjectiveValue()}\n\n")
-        total_distance = 0
-        total_load = 0
-        for vehicle_id in range(data["num_vehicles"]):
-            index = routing.Start(vehicle_id)
-            plan_output = f"Route for vehicle {vehicle_id}:\n"
-            route_distance = 0
-            route_load = 0
-            while not routing.IsEnd(index):
-                node_index = manager.IndexToNode(index)
-                route_load += data["demands"][node_index]
-                plan_output += f" {node_index} Load({route_load}) -> "
-                previous_index = index
-                index = solution.Value(routing.NextVar(index))
-                route_distance += routing.GetArcCostForVehicle(
-                    previous_index, index, vehicle_id
-                )
-            plan_output += f" {manager.IndexToNode(index)} Load({route_load})\n"
-            plan_output += f"Distance of the route: {route_distance}m\n"
-            plan_output += f"Load of the route: {route_load}\n\n"
-            file.write(plan_output)
-            total_distance += route_distance
-            total_load += route_load
-        file.write(f"Total distance of all routes: {total_distance}m\n")
-        file.write(f"Total load of all routes: {total_load}\n")
+    try:
+        with open(file_name, 'w') as file:
+            file.write(f"Instance: {instance}\n\n")
+            file.write(f"Objective: {solution.ObjectiveValue()}\n\n")
+            total_distance = 0
+            total_load = 0
+            for vehicle_id in range(data["num_vehicles"]):
+                index = routing.Start(vehicle_id)
+                plan_output = f"Route for vehicle {vehicle_id}:\n"
+                route_distance = 0
+                route_load = 0
+                while not routing.IsEnd(index):
+                    node_index = manager.IndexToNode(index)
+                    route_load += data["demands"][node_index]
+                    plan_output += f" {node_index} Load({route_load}) -> "
+                    previous_index = index
+                    index = solution.Value(routing.NextVar(index))
+                    route_distance += routing.GetArcCostForVehicle(
+                        previous_index, index, vehicle_id
+                    )
+                plan_output += f" {manager.IndexToNode(index)} Load({route_load})\n"
+                plan_output += f"Distance of the route: {route_distance}m\n"
+                plan_output += f"Load of the route: {route_load}\n\n"
+                file.write(plan_output)
+                total_distance += route_distance
+                total_load += route_load
+            file.write(f"Total distance of all routes: {total_distance}m\n")
+            file.write(f"Total load of all routes: {total_load}\n")
+        print(f"Solution saved successfully in {file_name}")
+    except OSError as error:
+        print(f"Error writing to file {file_name}: {error}")
 
 
 def execute():
     """Solve the cvrp problem."""
     # Instantiate the data problem.
-    instances_data = process_files(InstanceType.BHCVRP)
+    instances_data = process_files(InstanceType.CVRPTW)
     for instance, data in instances_data.items():
         # Create the routing index manager.
         manager = pywrapcp.RoutingIndexManager(
@@ -93,6 +103,6 @@ def execute():
 
         # Save solution on console.
         if solution:
-            save_solution(instance, data, manager, routing, solution)
+            save_solution(data, manager, routing, solution, instance)
         else:
             print("no")

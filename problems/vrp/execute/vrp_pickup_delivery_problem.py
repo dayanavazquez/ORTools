@@ -7,34 +7,43 @@ import os
 def save_solution_to_file(data, manager, routing, solution, instance):
     """Saves solution to a file."""
     output_dir = 'solutions_vrppd'
-    os.makedirs(output_dir, exist_ok=True)
+    try:
+        os.makedirs(output_dir, exist_ok=True)
+        print(f"Directory {output_dir} created successfully or already exists.")
+    except OSError as error:
+        print(f"Error creating directory {output_dir}: {error}")
+        return
     filename = os.path.join(output_dir, f'{instance}')
-    with open(filename, 'w') as f:
-        f.write(f"Instance: {instance}\n\n")
-        f.write(f"Objective: {solution.ObjectiveValue()}\n\n")
-        total_distance = 0
-        for vehicle_id in range(data["num_vehicles"]):
-            index = routing.Start(vehicle_id)
-            plan_output = f"Route for vehicle {vehicle_id}:\n"
-            route_distance = 0
-            while not routing.IsEnd(index):
-                plan_output += f" {manager.IndexToNode(index)} -> "
-                previous_index = index
-                index = solution.Value(routing.NextVar(index))
-                route_distance += routing.GetArcCostForVehicle(
-                    previous_index, index, vehicle_id
-                )
-            plan_output += f"{manager.IndexToNode(index)}\n"
-            plan_output += f"Distance of the route: {route_distance}m\n\n"
-            f.write(plan_output)
-            total_distance += route_distance
-        f.write(f"Total Distance of all routes: {total_distance}m")
+    try:
+        with open(filename, 'w') as f:
+            f.write(f"Instance: {instance}\n\n")
+            f.write(f"Objective: {solution.ObjectiveValue()}\n\n")
+            total_distance = 0
+            for vehicle_id in range(data["num_vehicles"]):
+                index = routing.Start(vehicle_id)
+                plan_output = f"Route for vehicle {vehicle_id}:\n"
+                route_distance = 0
+                while not routing.IsEnd(index):
+                    plan_output += f" {manager.IndexToNode(index)} -> "
+                    previous_index = index
+                    index = solution.Value(routing.NextVar(index))
+                    route_distance += routing.GetArcCostForVehicle(
+                        previous_index, index, vehicle_id
+                    )
+                plan_output += f"{manager.IndexToNode(index)}\n"
+                plan_output += f"Distance of the route: {route_distance}m\n\n"
+                f.write(plan_output)
+                total_distance += route_distance
+            f.write(f"Total Distance of all routes: {total_distance}m")
+        print(f"Solution saved successfully in {filename}")
+    except OSError as error:
+        print(f"Error writing to file {filename}: {error}")
 
 
 def execute():
     """Entry point of the program."""
     # Instantiate the data problem.
-    instances_data = process_files(InstanceType.VRPPD)
+    instances_data = process_files(InstanceType.MDCVRP)
     for instance, data in instances_data.items():
         manager = pywrapcp.RoutingIndexManager(
             len(data["distance_matrix"]), data["num_vehicles"], data["depot"]

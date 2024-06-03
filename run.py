@@ -5,4 +5,4 @@ from problems.problem_type import ProblemType, execute_problem
 ############
 
 
-execute_problem(ProblemType.CVRP)
+execute_problem(ProblemType.VRPPD)

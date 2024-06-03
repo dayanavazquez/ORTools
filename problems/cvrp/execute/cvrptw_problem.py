@@ -148,61 +148,70 @@ def add_time_window_constraints(routing, manager, data, time_evaluator):
 
 def save_solution_to_file(data, manager, routing, assignment, instance):  # pylint:disable=too-many-locals
     """Prints assignment on console"""
-    output_dir = '../solutions/solutions_cvrptw'
-    os.makedirs(output_dir, exist_ok=True)
+    output_dir = 'solutions_cvrptw'
+    try:
+        os.makedirs(output_dir, exist_ok=True)
+        print(f"Directory {output_dir} created successfully or already exists.")
+    except OSError as error:
+        print(f"Error creating directory {output_dir}: {error}")
+        return
     filename = os.path.join(output_dir, f'{instance}')
-    with open(filename, 'w') as f:
-        f.write(f'Instance: {instance}\n\n')
-        f.write(f'Objective: {assignment.ObjectiveValue()}\n\n')
-        total_distance = 0
-        total_load = 0
-        total_time = 0
-        capacity_dimension = routing.GetDimensionOrDie('Capacity')
-        time_dimension = routing.GetDimensionOrDie('Time')
-        dropped = []
-        for order in range(6, routing.nodes()):
-            index = manager.NodeToIndex(order)
-            if assignment.Value(routing.NextVar(index)) == index:
-                dropped.append(order)
-        f.write(f'dropped orders: {dropped}\n\n')
-        for reload in range(1, 6):
-            index = manager.NodeToIndex(reload)
-            if assignment.Value(routing.NextVar(index)) == index:
-                dropped.append(reload)
-        f.write(f'dropped reload stations: {dropped}\n\n')
+    try:
+        with open(filename, 'w') as f:
+            f.write(f'Instance: {instance}\n\n')
+            f.write(f'Objective: {assignment.ObjectiveValue()}\n\n')
+            total_distance = 0
+            total_load = 0
+            total_time = 0
+            capacity_dimension = routing.GetDimensionOrDie('Capacity')
+            time_dimension = routing.GetDimensionOrDie('Time')
+            dropped = []
+            for order in range(6, routing.nodes()):
+                index = manager.NodeToIndex(order)
+                if assignment.Value(routing.NextVar(index)) == index:
+                    dropped.append(order)
+            f.write(f'dropped orders: {dropped}\n\n')
+            for reload in range(1, 6):
+                index = manager.NodeToIndex(reload)
+                if assignment.Value(routing.NextVar(index)) == index:
+                    dropped.append(reload)
+            f.write(f'dropped reload stations: {dropped}\n\n')
 
-        for vehicle_id in range(data['num_vehicles']):
-            index = routing.Start(vehicle_id)
-            plan_output = f'Route for vehicle {vehicle_id}:\n'
-            distance = 0
-            while not routing.IsEnd(index):
+            for vehicle_id in range(data['num_vehicles']):
+                index = routing.Start(vehicle_id)
+                plan_output = f'Route for vehicle {vehicle_id}:\n'
+                distance = 0
+                while not routing.IsEnd(index):
+                    load_var = capacity_dimension.CumulVar(index)
+                    time_var = time_dimension.CumulVar(index)
+                    plan_output += (
+                        f' {manager.IndexToNode(index)} '
+                        f'Load({assignment.Min(load_var)}) '
+                        f'Time({assignment.Min(time_var)},{assignment.Max(time_var)}) ->'
+                    )
+                    previous_index = index
+                    index = assignment.Value(routing.NextVar(index))
+                    distance += routing.GetArcCostForVehicle(previous_index, index,
+                                                             vehicle_id)
                 load_var = capacity_dimension.CumulVar(index)
                 time_var = time_dimension.CumulVar(index)
                 plan_output += (
                     f' {manager.IndexToNode(index)} '
                     f'Load({assignment.Min(load_var)}) '
-                    f'Time({assignment.Min(time_var)},{assignment.Max(time_var)}) ->'
-                )
-                previous_index = index
-                index = assignment.Value(routing.NextVar(index))
-                distance += routing.GetArcCostForVehicle(previous_index, index,
-                                                         vehicle_id)
-            load_var = capacity_dimension.CumulVar(index)
-            time_var = time_dimension.CumulVar(index)
-            plan_output += (
-                f' {manager.IndexToNode(index)} '
-                f'Load({assignment.Min(load_var)}) '
-                f'Time({assignment.Min(time_var)},{assignment.Max(time_var)})\n')
-            plan_output += f'Distance of the route: {distance}m\n'
-            plan_output += f'Load of the route: {assignment.Min(load_var)}\n'
-            plan_output += f'Time of the route: {assignment.Min(time_var)}min\n\n'
-            f.write(plan_output)
-            total_distance += distance
-            total_load += assignment.Min(load_var)
-            total_time += assignment.Min(time_var)
-        f.write(f'Total Distance of all routes: {total_distance}m')
-        f.write(f'Total Load of all routes: {total_load}')
-        f.write(f'Total Time of all routes: {total_time}min')
+                    f'Time({assignment.Min(time_var)},{assignment.Max(time_var)})\n')
+                plan_output += f'Distance of the route: {distance}m\n'
+                plan_output += f'Load of the route: {assignment.Min(load_var)}\n'
+                plan_output += f'Time of the route: {assignment.Min(time_var)}min\n\n'
+                f.write(plan_output)
+                total_distance += distance
+                total_load += assignment.Min(load_var)
+                total_time += assignment.Min(time_var)
+            f.write(f'Total Distance of all routes: {total_distance}m')
+            f.write(f'Total Load of all routes: {total_load}')
+            f.write(f'Total Time of all routes: {total_time}min')
+        print(f"Solution saved successfully in {filename}")
+    except OSError as error:
+        print(f"Error writing to file {filename}: {error}")
 
 
 def execute():

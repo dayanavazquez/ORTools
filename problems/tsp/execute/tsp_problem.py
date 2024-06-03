@@ -1,9 +1,8 @@
 import os
 from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
-from load_data.instance_type import process_files
+from load_data.instance_type import process_files, InstanceType
 from distances.distance_type import calculate_distance, DistanceType
-from load_data.instance_type import InstanceType
 
 
 # [START distance_callback]
@@ -26,22 +25,31 @@ def compute_euclidean_distance_matrix(locations):
 def save_solution(manager, routing, solution, instance):
     """Saves solution to a text file."""
     solutions_dir = os.path.join("../solutions")
-    os.makedirs(solutions_dir, exist_ok=True)
+    try:
+        os.makedirs(solutions_dir, exist_ok=True)
+        print(f"Directory {solutions_dir} created successfully or already exists.")
+    except OSError as error:
+        print(f"Error creating directory {solutions_dir}: {error}")
+        return
     file_name = os.path.join(solutions_dir, f"solution_{instance}")
-    with open(file_name, 'w') as f:
-        f.write(f"Instance: {instance}\n\n")
-        f.write(f"Objective: {solution.ObjectiveValue()}\n\n")
-        index = routing.Start(0)
-        plan_output = "Route:\n"
-        route_distance = 0
-        while not routing.IsEnd(index):
-            plan_output += f" {manager.IndexToNode(index)} ->"
-            previous_index = index
-            index = solution.Value(routing.NextVar(index))
-            route_distance += routing.GetArcCostForVehicle(previous_index, index, 0)
-        plan_output += f" {manager.IndexToNode(index)}\n"
-        f.write(plan_output)
-        f.write(f"Objective: {route_distance}m\n")
+    try:
+        with open(file_name, 'w') as f:
+            f.write(f"Instance: {instance}\n\n")
+            f.write(f"Objective: {solution.ObjectiveValue()}\n\n")
+            index = routing.Start(0)
+            plan_output = "Route:\n"
+            route_distance = 0
+            while not routing.IsEnd(index):
+                plan_output += f" {manager.IndexToNode(index)} ->"
+                previous_index = index
+                index = solution.Value(routing.NextVar(index))
+                route_distance += routing.GetArcCostForVehicle(previous_index, index, 0)
+            plan_output += f" {manager.IndexToNode(index)}\n"
+            f.write(plan_output)
+            f.write(f"Objective: {route_distance}m\n")
+        print(f"Solution saved successfully in {file_name}")
+    except OSError as error:
+        print(f"Error writing to file {file_name}: {error}")
 
 
 def execute():

@@ -9,29 +9,38 @@ from load_data.instance_type import InstanceType
 def save_solution(routing_manager, routing_model, instance):
     """Saves solution to a text file."""
     # Create the solutions_vrp_01 directory if it doesn't exist
-    solutions_dir = os.path.join("../solutions/solutions_vrp")
-    os.makedirs(solutions_dir, exist_ok=True)
+    solutions_dir = os.path.join("solutions_vrp")
+    try:
+        os.makedirs(solutions_dir, exist_ok=True)
+        print(f"Directory {solutions_dir} created successfully or already exists.")
+    except OSError as error:
+        print(f"Error creating directory {solutions_dir}: {error}")
+        return
     file_name = os.path.join(solutions_dir, f"solution_{instance}")
-    with open(file_name, "w") as file:
-        file.write(f"Instance: {instance}\n\n")
-        file.write(f"Solution objective: {routing_model.CostVar().Value()}\n\n")
-        total_distance = 0
-        for vehicle_id in range(routing_manager.GetNumberOfVehicles()):
-            index = routing_model.Start(vehicle_id)
-            plan_output = f"Route for vehicle {vehicle_id}:\n"
-            route_distance = 0
-            while not routing_model.IsEnd(index):
-                plan_output += f" {routing_manager.IndexToNode(index)} ->"
-                previous_index = index
-                index = routing_model.NextVar(index).Value()
-                route_distance += routing_model.GetArcCostForVehicle(
-                    previous_index, index, vehicle_id
-                )
-            plan_output += f" {routing_manager.IndexToNode(index)}\n"
-            plan_output += f"Distance of the route: {route_distance}m\n\n"
-            file.write(plan_output)
-            total_distance += route_distance
-        file.write(f"Total Distance of all routes: {total_distance}m\n")
+    try:
+        with open(file_name, "w") as file:
+            file.write(f"Instance: {instance}\n\n")
+            file.write(f"Solution objective: {routing_model.CostVar().Value()}\n\n")
+            total_distance = 0
+            for vehicle_id in range(routing_manager.GetNumberOfVehicles()):
+                index = routing_model.Start(vehicle_id)
+                plan_output = f"Route for vehicle {vehicle_id}:\n"
+                route_distance = 0
+                while not routing_model.IsEnd(index):
+                    plan_output += f" {routing_manager.IndexToNode(index)} ->"
+                    previous_index = index
+                    index = routing_model.NextVar(index).Value()
+                    route_distance += routing_model.GetArcCostForVehicle(
+                        previous_index, index, vehicle_id
+                    )
+                plan_output += f" {routing_manager.IndexToNode(index)}\n"
+                plan_output += f"Distance of the route: {route_distance}m\n\n"
+                file.write(plan_output)
+                total_distance += route_distance
+            file.write(f"Total Distance of all routes: {total_distance}m\n")
+        print(f"Solution saved successfully in {file_name}")
+    except OSError as error:
+        print(f"Error writing to file {file_name}: {error}")
 
 
 class SolutionCallback:
