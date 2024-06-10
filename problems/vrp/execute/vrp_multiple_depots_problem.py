@@ -6,9 +6,9 @@ from load_data.instance_type import InstanceType
 import os
 
 
-def save_solution_to_file(data, manager, routing, solution, instance):
+def save_solution_to_file(data, manager, routing, solution, instance, heuristic, metaheuristic):
     """Saves solution to a file."""
-    output_dir = 'solutions_mdvrp'
+    output_dir = os.path.join(f"problems/vrp/solutions/solutions_mdvrp/solutions_{heuristic}_{metaheuristic}")
     try:
         os.makedirs(output_dir, exist_ok=True)
         print(f"Directory {output_dir} created successfully or already exists.")
@@ -20,6 +20,8 @@ def save_solution_to_file(data, manager, routing, solution, instance):
         with open(filename, 'w') as f:
             f.write(f"Instance: {instance}\n\n")
             f.write(f"Objective: {solution.ObjectiveValue()}\n\n")
+            f.write(f"Heuristic: {heuristic}\n\n")
+            f.write(f"Metaheuristic: {metaheuristic}\n\n")
             max_route_distance = 0
             for vehicle_id in range(data["num_vehicles"]):
                 index = routing.Start(vehicle_id)
@@ -76,13 +78,18 @@ def execute():
         )
         distance_dimension = routing.GetDimensionOrDie(dimension_name)
         distance_dimension.SetGlobalSpanCostCoefficient(100)
-        # Setting first solution heuristic.
         search_parameters = pywrapcp.DefaultRoutingSearchParameters()
         search_parameters.first_solution_strategy = (
-            routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC
+            routing_enums_pb2.FirstSolutionStrategy.PARALLEL_CHEAPEST_INSERTION
         )
+        search_parameters.local_search_metaheuristic = (
+            routing_enums_pb2.LocalSearchMetaheuristic.AUTOMATIC
+        )
+        search_parameters.time_limit.FromSeconds(15)
         # Solve the problem.
         solution = routing.SolveWithParameters(search_parameters)
         # Print solution on console.
         if solution:
-            save_solution_to_file(data, manager, routing, solution, instance)
+            save_solution_to_file(data, manager, routing, solution, instance, search_parameters.first_solution_strategy, search_parameters.local_search_metaheuristic)
+        else:
+            print("No solution found !")

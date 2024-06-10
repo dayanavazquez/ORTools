@@ -5,9 +5,9 @@ from load_data.instance_type import InstanceType
 import os
 
 
-def save_solution(data, manager, routing, solution, instance):
+def save_solution(data, manager, routing, solution, instance, heuristic, metaheuristic):
     """Saves solution to a text file."""
-    solutions_dir = os.path.join("solutions_x")
+    solutions_dir = os.path.join(f"problems/cvrp/solutions/solutions_cvrp/solutions_{heuristic}_{metaheuristic}")
     try:
         os.makedirs(solutions_dir, exist_ok=True)
         print(f"Directory {solutions_dir} created successfully or already exists.")
@@ -20,6 +20,8 @@ def save_solution(data, manager, routing, solution, instance):
         with open(file_name, 'w') as file:
             file.write(f"Instance: {instance}\n\n")
             file.write(f"Objective: {solution.ObjectiveValue()}\n\n")
+            file.write(f"Heuristic: {heuristic}\n\n")
+            file.write(f"Metaheuristic: {metaheuristic}\n\n")
             total_distance = 0
             total_load = 0
             for vehicle_id in range(data["num_vehicles"]):
@@ -52,7 +54,7 @@ def save_solution(data, manager, routing, solution, instance):
 def execute():
     """Solve the cvrp problem."""
     # Instantiate the data problem.
-    instances_data = process_files(InstanceType.CVRPTW)
+    instances_data = process_files(InstanceType.MDCVRP)
     for instance, data in instances_data.items():
         # Create the routing index manager.
         manager = pywrapcp.RoutingIndexManager(
@@ -89,20 +91,44 @@ def execute():
             "Capacity",
         )
         # Setting first solution heuristic.
-        search_parameters = pywrapcp.DefaultRoutingSearchParameters()
-        search_parameters.first_solution_strategy = (
-            routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC
-        )
-        search_parameters.local_search_metaheuristic = (
-            routing_enums_pb2.LocalSearchMetaheuristic.GUIDED_LOCAL_SEARCH
-        )
-        search_parameters.time_limit.FromSeconds(1)
+        first_solution_strategies = [
+            routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC,
+            routing_enums_pb2.FirstSolutionStrategy.PATH_MOST_CONSTRAINED_ARC,
+            routing_enums_pb2.FirstSolutionStrategy.EVALUATOR_STRATEGY,
+            routing_enums_pb2.FirstSolutionStrategy.SAVINGS,
+            routing_enums_pb2.FirstSolutionStrategy.SWEEP,
+            routing_enums_pb2.FirstSolutionStrategy.CHRISTOFIDES,
+            routing_enums_pb2.FirstSolutionStrategy.ALL_UNPERFORMED,
+            routing_enums_pb2.FirstSolutionStrategy.BEST_INSERTION,
+            routing_enums_pb2.FirstSolutionStrategy.PARALLEL_CHEAPEST_INSERTION,
+            routing_enums_pb2.FirstSolutionStrategy.SEQUENTIAL_CHEAPEST_INSERTION,
+            routing_enums_pb2.FirstSolutionStrategy.LOCAL_CHEAPEST_INSERTION,
+            routing_enums_pb2.FirstSolutionStrategy.LOCAL_CHEAPEST_COST_INSERTION,
+            routing_enums_pb2.FirstSolutionStrategy.GLOBAL_CHEAPEST_ARC,
+            routing_enums_pb2.FirstSolutionStrategy.LOCAL_CHEAPEST_ARC,
+            routing_enums_pb2.FirstSolutionStrategy.FIRST_UNBOUND_MIN_VALUE,
+            routing_enums_pb2.FirstSolutionStrategy.AUTOMATIC
+        ]
 
-        # Solve the problem.
-        solution = routing.SolveWithParameters(search_parameters)
+        local_search_metaheuristics = [
+            routing_enums_pb2.LocalSearchMetaheuristic.GREEDY_DESCENT,
+            routing_enums_pb2.LocalSearchMetaheuristic.GUIDED_LOCAL_SEARCH,
+            routing_enums_pb2.LocalSearchMetaheuristic.SIMULATED_ANNEALING,
+            routing_enums_pb2.LocalSearchMetaheuristic.TABU_SEARCH,
+            routing_enums_pb2.LocalSearchMetaheuristic.GENERIC_TABU_SEARCH,
+            routing_enums_pb2.LocalSearchMetaheuristic.AUTOMATIC
+        ]
 
-        # Save solution on console.
-        if solution:
-            save_solution(data, manager, routing, solution, instance)
-        else:
-            print("no")
+        for first_solution_strategy in first_solution_strategies:
+            for local_search_metaheuristic in local_search_metaheuristics:
+                search_parameters = pywrapcp.DefaultRoutingSearchParameters()
+                search_parameters.first_solution_strategy = first_solution_strategy
+                search_parameters.local_search_metaheuristic = local_search_metaheuristic
+                search_parameters.time_limit.FromSeconds(15)
+                solution = routing.SolveWithParameters(search_parameters)
+
+                # Save solution on console.
+                if solution:
+                    save_solution(data, manager, routing, solution, instance, search_parameters.first_solution_strategy, search_parameters.local_search_metaheuristic)
+                else:
+                    print("No solution found !")

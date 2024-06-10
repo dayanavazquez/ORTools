@@ -6,10 +6,10 @@ from load_data.instance_type import process_files
 from load_data.instance_type import InstanceType
 
 
-def save_solution(routing_manager, routing_model, instance):
+def save_solution(routing_manager, routing_model, instance, heuristic, metaheuristic):
     """Saves solution to a text file."""
     # Create the solutions_vrp_01 directory if it doesn't exist
-    solutions_dir = os.path.join("solutions_vrp")
+    solutions_dir = os.path.join(f"problems/vrp/solutions/solutions_vrp/solutions_{heuristic}_{metaheuristic}")
     try:
         os.makedirs(solutions_dir, exist_ok=True)
         print(f"Directory {solutions_dir} created successfully or already exists.")
@@ -20,7 +20,7 @@ def save_solution(routing_manager, routing_model, instance):
     try:
         with open(file_name, "w") as file:
             file.write(f"Instance: {instance}\n\n")
-            file.write(f"Solution objective: {routing_model.CostVar().Value()}\n\n")
+            file.write(f"Objective: {routing_model.CostVar().Value()}\n\n")
             total_distance = 0
             for vehicle_id in range(routing_manager.GetNumberOfVehicles()):
                 index = routing_model.Start(vehicle_id)
@@ -46,7 +46,8 @@ def save_solution(routing_manager, routing_model, instance):
 class SolutionCallback:
     """Create a solution callback."""
 
-    def __init__(self, manager, model, limit, instance):
+    def __init__(self, manager, model, limit, instance, search_parameters):
+
         # We need a weak ref on the routing model to avoid a cycle.
         self._routing_manager_ref = weakref.ref(manager)
         self._routing_model_ref = weakref.ref(model)
@@ -54,6 +55,7 @@ class SolutionCallback:
         self._counter_limit = limit
         self.objectives = []
         self.instance = instance
+        self.search_parameters = search_parameters
 
     def __call__(self):
         objective = int(self._routing_model_ref().CostVar().Value())
@@ -61,14 +63,14 @@ class SolutionCallback:
             self.objectives.append(objective)
             self._counter += 1
         if self._counter >= self._counter_limit:
-            save_solution(self._routing_manager_ref(), self._routing_model_ref(), self.instance)
+            save_solution(self._routing_manager_ref(), self._routing_model_ref(), self.instance, self.search_parameters.first_solution_strategy, self.search_parameters.local_search_metaheuristic)
             self._routing_model_ref().solver().FinishCurrentSearch()
 
 
 def execute():
     """Entry point of the program."""
     # Instantiate the data problem.
-    instances_data = process_files(InstanceType.BHCVRP)
+    instances_data = process_files(InstanceType.MDCVRP)
     for instance, data in instances_data.items():
         # Create the routing index manager.
         routing_manager = pywrapcp.RoutingIndexManager(
@@ -102,19 +104,19 @@ def execute():
         distance_dimension = routing_model.GetDimensionOrDie(dimension_name)
         distance_dimension.SetGlobalSpanCostCoefficient(100)
 
-        # Attach a solution callback.
-        solution_callback = SolutionCallback(routing_manager, routing_model, 15, instance)
-        routing_model.AddAtSolutionCallback(solution_callback)
-
         # Setting first solution heuristic.
         search_parameters = pywrapcp.DefaultRoutingSearchParameters()
         search_parameters.first_solution_strategy = (
             routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC
         )
         search_parameters.local_search_metaheuristic = (
-            routing_enums_pb2.LocalSearchMetaheuristic.GUIDED_LOCAL_SEARCH
+            routing_enums_pb2.LocalSearchMetaheuristic.SIMULATED_ANNEALING
         )
-        search_parameters.time_limit.FromSeconds(5)
+        search_parameters.time_limit.FromSeconds(15)
+
+        # Attach a solution callback.
+        solution_callback = SolutionCallback(routing_manager, routing_model, 15, instance, search_parameters)
+        routing_model.AddAtSolutionCallback(solution_callback)
 
         # Solve the problem.
         routing_model.SolveWithParameters(search_parameters)

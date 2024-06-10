@@ -23,7 +23,7 @@ def process_files(instance_type: InstanceType):
         },
         InstanceType.MDCVRP: {
             'read_function': read_file_md,
-            'path': ['./instances/mdcvrp_instances(Nanda)']
+            'path': ['./instances/mdcvrp_instances(Nanda)/C-mdvrp']
         },
         InstanceType.CVRPTW: {
             'read_function': read_file_tw,
