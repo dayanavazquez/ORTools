@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import patch
 from ortools.constraint_solver import pywrapcp
 from load_data.instance_type import process_files, InstanceType
-from problems.tsp.execute.tsp_problem import compute_euclidean_distance_matrix, save_solution, execute
+from problems.tsp import compute_euclidean_distance_matrix, save_solution
 
 
 @pytest.fixture
@@ -31,5 +31,5 @@ def test_save_solution(mock_open, mock_makedirs, data):
     routing = pywrapcp.RoutingModel(manager)
     solution = routing.SolveWithParameters(pywrapcp.DefaultRoutingSearchParameters())
     save_solution(manager, routing, solution, "att48.txt")
-    mock_makedirs.assert_called_once_with("../solutions", exist_ok=True)
-    mock_open.assert_called_with('../solutions/solution_att48.txt', 'w')
+    mock_makedirs.assert_called_once_with("../solutions_tsp", exist_ok=True)
+    mock_open.assert_called_with('../solutions_tsp/solution_att48.txt', 'w')

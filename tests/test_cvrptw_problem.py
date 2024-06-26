@@ -2,7 +2,7 @@ import pytest
 from functools import partial
 from ortools.constraint_solver import pywrapcp
 from load_data.instance_type import InstanceType, process_files
-from problems.cvrp.execute.cvrptw_problem import (
+from problems.cvrptw import (
     create_distance_evaluator,
     add_distance_dimension,
     create_demand_evaluator,

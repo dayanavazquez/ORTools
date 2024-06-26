@@ -1,16 +1,11 @@
 from enum import Enum
-from problems.cvrp.execute import cvrptw_problem
-from problems.cvrp.execute import vrp_capacity_problem
-from problems.tsp.execute import tsp_problem
-from problems.vrp.execute import vrp_multiple_depots_problem
-from problems.vrp.execute import vrp_routing_problem
-from problems.vrp.execute import vrp_pickup_delivery_problem
+from problems.execute import cvrp, dvrp, mdvrp, vrppd, cvrptw, tsp
 
 
 class ProblemType(Enum):
     CVRP = 'cvrp'
     CVRPTW = 'cvrptw'
-    VRP = 'vrp'
+    DVRP = 'dvrp'
     TSP = 'tsp'
     MDVRP = 'mdvrp'
     VRPPD = 'vrppd'
@@ -18,15 +13,15 @@ class ProblemType(Enum):
 
 def execute_problem(problem_type: ProblemType):
     if problem_type == ProblemType.CVRP:
-        return vrp_capacity_problem.execute()
-    if problem_type == ProblemType.VRP:
-        vrp_routing_problem.execute()
+        return cvrp.execute()
+    if problem_type == ProblemType.DVRP:
+        return dvrp.execute()
     if problem_type == ProblemType.TSP:
-        tsp_problem.execute()
+        return tsp.execute()
     if problem_type == ProblemType.CVRPTW:
-        return cvrptw_problem.execute()
+        return cvrptw.execute()
     if problem_type == ProblemType.MDVRP:
-        return vrp_multiple_depots_problem.execute()
+        return mdvrp.execute()
     if problem_type == ProblemType.VRPPD:
-        return vrp_pickup_delivery_problem.execute()
+        return vrppd.execute()
     return "The problem type is not supported"
