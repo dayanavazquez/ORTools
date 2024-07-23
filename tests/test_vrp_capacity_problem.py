@@ -5,7 +5,7 @@ from load_data.instance_type import process_files, InstanceType
 
 @pytest.fixture
 def instances_data():
-    return process_files(InstanceType.CVRPTW)
+    return process_files(InstanceType.VRPTW)
 
 
 def test_process_files(instances_data):
@@ -22,7 +22,7 @@ def test_create_routing_index_manager(instances_data):
 
 
 def test_distance_callback():
-    for instance, data in process_files(InstanceType.CVRPTW).items():
+    for instance, data in process_files(InstanceType.VRPTW).items():
         manager = pywrapcp.RoutingIndexManager(
             len(data["distance_matrix"]), data["num_vehicles"], data["depot"]
         )

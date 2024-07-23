@@ -1,5 +1,6 @@
 from math import radians, sin, cos, sqrt, asin, hypot
 from enum import Enum
+import math
 
 
 class DistanceType(Enum):
@@ -11,7 +12,7 @@ class DistanceType(Enum):
 
 def calculate_distance(point_1, point_2, distance_type=None):
     if distance_type == DistanceType.EUCLIDEAN:
-        return hypot((point_1[0] - point_2[0]), (point_1[1] - point_2[1]))
+        return float(math.sqrt((point_2[0] - point_1[0]) ** 2 + (point_2[1] - point_1[1]) ** 2) + 0.5)
     if distance_type == DistanceType.MANHATTAN or not distance_type:
         return abs(point_1[0] - point_2[0]) + abs(point_1[1] - point_2[1])
     if distance_type == DistanceType.HAVERSINE:

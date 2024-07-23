@@ -1,15 +1,16 @@
 import weakref
 import os
+import time
 from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
 from load_data.instance_type import process_files
 from load_data.instance_type import InstanceType
 
 
-def save_solution(routing_manager, routing_model, instance, heuristic, metaheuristic):
+def save_solution(routing_manager, routing_model, instance, heuristic, metaheuristic, elapsed_time):
     """Saves solution to a text file."""
     # Create the solutions_vrp_01 directory if it doesn't exist
-    solutions_dir = os.path.join(f"problems/dvrp/solutions_dvrp/solutions_{heuristic}_{metaheuristic}")
+    solutions_dir = os.path.join(f"problems/dvrp/solutions_dvrp/solutions_{heuristic}_&_{metaheuristic}")
     try:
         os.makedirs(solutions_dir, exist_ok=True)
         print(f"Directory {solutions_dir} created successfully or already exists.")
@@ -21,6 +22,9 @@ def save_solution(routing_manager, routing_model, instance, heuristic, metaheuri
         with open(file_name, "w") as file:
             file.write(f"Instance: {instance}\n\n")
             file.write(f"Objective: {routing_model.CostVar().Value()}\n\n")
+            file.write(f"Execution Time: {elapsed_time}\n\n")
+            file.write(f"Heuristic: {heuristic}\n\n")
+            file.write(f"Metaheuristic: {metaheuristic}\n\n")
             total_distance = 0
             for vehicle_id in range(routing_manager.GetNumberOfVehicles()):
                 index = routing_model.Start(vehicle_id)
@@ -46,7 +50,8 @@ def save_solution(routing_manager, routing_model, instance, heuristic, metaheuri
 class SolutionCallback:
     """Create a solution callback."""
 
-    def __init__(self, manager, model, limit, instance, search_parameters):
+    def __init__(self, manager, model, limit, instance, search_parameters, first_solution_strategy,
+                 local_search_metaheuristic, elapsed_time):
 
         # We need a weak ref on the routing model to avoid a cycle.
         self._routing_manager_ref = weakref.ref(manager)
@@ -56,6 +61,9 @@ class SolutionCallback:
         self.objectives = []
         self.instance = instance
         self.search_parameters = search_parameters
+        self.first_solution_strategy = first_solution_strategy
+        self.local_search_metaheuristic = local_search_metaheuristic
+        self.elapsed_time = elapsed_time
 
     def __call__(self):
         objective = int(self._routing_model_ref().CostVar().Value())
@@ -63,7 +71,8 @@ class SolutionCallback:
             self.objectives.append(objective)
             self._counter += 1
         if self._counter >= self._counter_limit:
-            save_solution(self._routing_manager_ref(), self._routing_model_ref(), self.instance, self.search_parameters.first_solution_strategy, self.search_parameters.local_search_metaheuristic)
+            save_solution(self._routing_manager_ref(), self._routing_model_ref(), self.instance,
+                          self.first_solution_strategy, self.local_search_metaheuristic, self.elapsed_time)
             self._routing_model_ref().solver().FinishCurrentSearch()
 
 
@@ -103,20 +112,51 @@ def execute():
         )
         distance_dimension = routing_model.GetDimensionOrDie(dimension_name)
         distance_dimension.SetGlobalSpanCostCoefficient(100)
+        first_solution_strategies = [
+            "PATH_CHEAPEST_ARC",
+            "PATH_MOST_CONSTRAINED_ARC",
+            "EVALUATOR_STRATEGY",
+            "SAVINGS",
+            "SWEEP",
+            "CHRISTOFIDES",
+            "ALL_UNPERFORMED",
+            "BEST_INSERTION",
+            "PARALLEL_CHEAPEST_INSERTION",
+            "SEQUENTIAL_CHEAPEST_INSERTION",
+            "LOCAL_CHEAPEST_INSERTION",
+            "LOCAL_CHEAPEST_COST_INSERTION",
+            "GLOBAL_CHEAPEST_ARC",
+            "LOCAL_CHEAPEST_ARC",
+            "FIRST_UNBOUND_MIN_VALUE",
+        ]
 
-        # Setting first solution heuristic.
-        search_parameters = pywrapcp.DefaultRoutingSearchParameters()
-        search_parameters.first_solution_strategy = (
-            routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC
-        )
-        search_parameters.local_search_metaheuristic = (
-            routing_enums_pb2.LocalSearchMetaheuristic.SIMULATED_ANNEALING
-        )
-        search_parameters.time_limit.FromSeconds(15)
+        local_search_metaheuristics = [
+            "GREEDY_DESCENT",
+            "GUIDED_LOCAL_SEARCH",
+            "SIMULATED_ANNEALING",
+            "TABU_SEARCH",
+            "GENERIC_TABU_SEARCH",
+        ]
 
-        # Attach a solution callback.
-        solution_callback = SolutionCallback(routing_manager, routing_model, 15, instance, search_parameters)
-        routing_model.AddAtSolutionCallback(solution_callback)
-
-        # Solve the problem.
-        routing_model.SolveWithParameters(search_parameters)
+        for first_solution_strategy in first_solution_strategies:
+            for local_search_metaheuristic in local_search_metaheuristics:
+                search_parameters = pywrapcp.DefaultRoutingSearchParameters()
+                search_parameters.first_solution_strategy = getattr(
+                    routing_enums_pb2.FirstSolutionStrategy, first_solution_strategy
+                )
+                search_parameters.local_search_metaheuristic = getattr(
+                    routing_enums_pb2.LocalSearchMetaheuristic, local_search_metaheuristic
+                )
+                search_parameters.time_limit.FromSeconds(20)
+                # Measure the time taken to solve the problem
+                start_time = time.time()
+                # Attach a solution callback.
+                solution_callback = SolutionCallback(routing_manager, routing_model, 15, instance, search_parameters,
+                                                     first_solution_strategy, local_search_metaheuristic,
+                                                     elapsed_time=0)
+                routing_model.AddAtSolutionCallback(solution_callback)
+                # Solve the problem.
+                routing_model.SolveWithParameters(search_parameters)
+                end_time = time.time()
+                # Update the elapsed time in the solution callback
+                solution_callback.elapsed_time = end_time - start_time

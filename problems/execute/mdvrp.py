@@ -4,11 +4,12 @@ from ortools.constraint_solver import pywrapcp
 from load_data.instance_type import process_files
 from load_data.instance_type import InstanceType
 import os
+import time
 
 
-def save_solution_to_file(data, manager, routing, solution, instance, heuristic, metaheuristic):
+def save_solution_to_file(data, manager, routing, solution, instance, heuristic, metaheuristic, elapsed_time):
     """Saves solution to a file."""
-    output_dir = os.path.join(f"problems/mdvrp/solutions_mdvrp/solutions_{heuristic}_{metaheuristic}")
+    output_dir = os.path.join(f"problems/mdvrp/solutions_mdvrp/solutions_{heuristic}_&_{metaheuristic}")
     try:
         os.makedirs(output_dir, exist_ok=True)
         print(f"Directory {output_dir} created successfully or already exists.")
@@ -20,6 +21,7 @@ def save_solution_to_file(data, manager, routing, solution, instance, heuristic,
         with open(filename, 'w') as f:
             f.write(f"Instance: {instance}\n\n")
             f.write(f"Objective: {solution.ObjectiveValue()}\n\n")
+            f.write(f"Execution Time: {elapsed_time}\n\n")
             f.write(f"Heuristic: {heuristic}\n\n")
             f.write(f"Metaheuristic: {metaheuristic}\n\n")
             max_route_distance = 0
@@ -67,29 +69,68 @@ def execute():
         transit_callback_index = routing.RegisterTransitCallback(distance_callback)
         # Define cost of each arc.
         routing.SetArcCostEvaluatorOfAllVehicles(transit_callback_index)
+        def demand_callback(from_index):
+            """Returns the demand of the node."""
+            # Convert from routing variable Index to demands NodeIndex.
+            from_node = manager.IndexToNode(from_index)
+            return data["demands"][from_node]
+
+        demand_callback_index = routing.RegisterUnaryTransitCallback(demand_callback)
         # Add Distance constraint.
-        dimension_name = "Distance"
-        routing.AddDimension(
-            transit_callback_index,
+        dimension_name = "Capacity"
+        routing.AddDimensionWithVehicleCapacity(
+            demand_callback_index,
             0,  # no slack
-            2000,  # vehicle maximum travel distance
+            data['vehicle_capacities'],  # vehicle maximum travel distance
             True,  # start cumul to zero
             dimension_name,
         )
         distance_dimension = routing.GetDimensionOrDie(dimension_name)
         distance_dimension.SetGlobalSpanCostCoefficient(100)
-        search_parameters = pywrapcp.DefaultRoutingSearchParameters()
-        search_parameters.first_solution_strategy = (
-            routing_enums_pb2.FirstSolutionStrategy.PARALLEL_CHEAPEST_INSERTION
-        )
-        search_parameters.local_search_metaheuristic = (
-            routing_enums_pb2.LocalSearchMetaheuristic.AUTOMATIC
-        )
-        search_parameters.time_limit.FromSeconds(15)
-        # Solve the problem.
-        solution = routing.SolveWithParameters(search_parameters)
-        # Print solution on console.
-        if solution:
-            save_solution_to_file(data, manager, routing, solution, instance, search_parameters.first_solution_strategy, search_parameters.local_search_metaheuristic)
-        else:
-            print("No solution found !")
+        first_solution_strategies = [
+            "PATH_CHEAPEST_ARC",
+            "PATH_MOST_CONSTRAINED_ARC",
+            "EVALUATOR_STRATEGY",
+            "SAVINGS",
+            "SWEEP",
+            "CHRISTOFIDES",
+            "ALL_UNPERFORMED",
+            "BEST_INSERTION",
+            "PARALLEL_CHEAPEST_INSERTION",
+            "SEQUENTIAL_CHEAPEST_INSERTION",
+            "LOCAL_CHEAPEST_INSERTION",
+            "LOCAL_CHEAPEST_COST_INSERTION",
+            "GLOBAL_CHEAPEST_ARC",
+            "LOCAL_CHEAPEST_ARC",
+            "FIRST_UNBOUND_MIN_VALUE",
+        ]
+
+        local_search_metaheuristics = [
+            "GREEDY_DESCENT",
+            "GUIDED_LOCAL_SEARCH",
+            "SIMULATED_ANNEALING",
+            "TABU_SEARCH",
+            "GENERIC_TABU_SEARCH",
+        ]
+
+        for first_solution_strategy in first_solution_strategies:
+            for local_search_metaheuristic in local_search_metaheuristics:
+                search_parameters = pywrapcp.DefaultRoutingSearchParameters()
+                search_parameters.first_solution_strategy = getattr(
+                    routing_enums_pb2.FirstSolutionStrategy, first_solution_strategy
+                )
+                search_parameters.local_search_metaheuristic = getattr(
+                    routing_enums_pb2.LocalSearchMetaheuristic, local_search_metaheuristic
+                )
+                search_parameters.time_limit.FromSeconds(20)
+                start_time = time.time()
+                solution = routing.SolveWithParameters(search_parameters)
+                end_time = time.time()  # End timing
+                elapsed_time = end_time - start_time  # Calculate elapsed time
+
+                # Save solution on console.
+                if solution:
+                    save_solution_to_file(data, manager, routing, solution, instance, first_solution_strategy,
+                                          local_search_metaheuristic, elapsed_time)
+                else:
+                    print("No solution found !")

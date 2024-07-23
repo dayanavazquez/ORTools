@@ -1,6 +1,6 @@
-import math
 import random
 import json
+import math
 
 
 #######################
@@ -18,16 +18,10 @@ def read_file_bss(file):
         for bus_stop in json_data["bus_stops"]:
             bus_stop_coords = (bus_stop["coordinate_x"], bus_stop["coordinate_y"])
             locations.append(bus_stop_coords)
-
-    size = len(locations)
-    distance_matrix = [[0] * size for _ in range(size)]
-    for i in range(size):
-        for j in range(size):
-            if i != j:
-                distance_matrix[i][j] = calculate_distance(locations[i], locations[j])
+    result = get_distance_matrix(locations)
     return {
         "locations": locations,
-        "distance_matrix": distance_matrix,
+        "distance_matrix": result['distance_matrix'],
         "num_vehicles": 6,
         "vehicle_capacities": [7, 7, 3, 5, 4, 6],
         "demands": [0, 2, 2, 2, 3, 3, 3, 3, 3],
@@ -98,30 +92,55 @@ def read_file_md(file):
                 depot_index = int(data[0]) - 1
                 starts.append(depot_index)
                 ends.append(depot_index)
-    all_ids = list(range(num_locations))
-    all_ids.remove(0)
-    random.shuffle(all_ids)
-    pickups = all_ids[:num_locations // 2]
-    deliveries = all_ids[num_locations // 2:]
-    pickups_deliveries = [list(pair) for pair in zip(pickups, deliveries)]
-    distance_matrix = []
-    for i, coord1 in enumerate(locations):
-        row = []
-        for j, coord2 in enumerate(locations):
-            if i == j:
-                row.append(0)
-            else:
-                distance = calculate_distance(coord1, coord2)
-                row.append(distance)
-        distance_matrix.append(row)
+    result = create_pd(num_locations, locations)
     return {
-        "distance_matrix": distance_matrix,
+        "distance_matrix": result['distance_matrix'],
         "num_vehicles": num_vehicles,
         "vehicle_capacities": capacities,
         "demands": demands,
         "starts": starts,
         "ends": ends,
-        "pickups_deliveries": pickups_deliveries,
+        "pickups_deliveries": result['pickups_deliveries'],
+        "depot": 0
+    }
+
+
+#######################
+# DATA HFVRP
+#######################
+
+
+def read_file_hf(file):
+    locations = []
+    demands = []
+    num_locations = 0
+    with open(file, 'r') as f:
+        lines = f.readlines()
+        num_vehicles = int(lines[0].split()[0])
+        capacities = list(map(int, lines[1].strip().split()))
+        temp_lines = []
+        for line in lines[1:]:
+            if len(line.strip()) > 0:
+                temp_lines.append(line)
+        for line in temp_lines:
+            data = line.split()
+            if len(data) >= 3:
+                x_coord = float(data[1])
+                y_coord = float(data[2])
+                locations.append((x_coord, y_coord))
+                if len(data) == 4 and data[3]:
+                    demand = int(float(data[3]))
+                else:
+                    demand = 0
+                demands.append(demand)
+                num_locations += 1
+    result = create_pd(num_locations, locations)
+    return {
+        "distance_matrix": result['distance_matrix'],
+        "num_vehicles": num_vehicles,
+        "vehicle_capacities": capacities,
+        "demands": demands,
+        "pickups_deliveries": result['pickups_deliveries'],
         "depot": 0
     }
 
@@ -150,28 +169,14 @@ def read_file_bh(file):
                 demand = float(data[3]) if data[3] else 0
                 demands.append(demand)
                 num_locations += 1
-    distance_matrix = []
-    all_ids = list(range(num_locations))
-    all_ids.remove(0)
-    random.shuffle(all_ids)
-    pickups = all_ids[:num_locations // 2]
-    deliveries = all_ids[num_locations // 2:]
-    pickups_deliveries = [list(pair) for pair in zip(pickups, deliveries)]
-    for i, coord1 in enumerate(locations):
-        row = []
-        for j, coord2 in enumerate(locations):
-            if i == j:
-                row.append(0)
-            else:
-                distance = calculate_distance(coord1, coord2)
-                row.append(distance)
-        distance_matrix.append(row)
-    return {"distance_matrix": distance_matrix, "num_vehicles": num_vehicles, "vehicle_capacities": capacities,
-            "demands": demands, "depot": 0, "pickups_deliveries": pickups_deliveries}
+    result = create_pd(num_locations, locations)
+    return {"distance_matrix": result['distance_matrix'], "num_vehicles": num_vehicles,
+            "vehicle_capacities": capacities,
+            "demands": demands, "depot": 0, "pickups_deliveries": result['pickups_deliveries']}
 
 
 #######################
-# DATA CVRPTW
+# DATA VRPTW
 #######################
 
 def read_file_tw(file_path):
@@ -189,27 +194,15 @@ def read_file_tw(file_path):
                 demands.append(int(parts[3]))
                 time_windows.append((int(parts[4]), int(parts[5])))
                 service_times.append(int(parts[6]))
-        num_locations = len(locations)
-        all_ids = list(range(num_locations))
-        all_ids.remove(0)
-        random.shuffle(all_ids)
-        pickups = all_ids[:num_locations // 2]
-        deliveries = all_ids[num_locations // 2:]
-        pickups_deliveries = [list(pair) for pair in zip(pickups, deliveries)]
-        distance_matrix = [[0] * num_locations for _ in range(num_locations)]
-        for i in range(num_locations):
-            for j in range(num_locations):
-                if i != j:
-                    distance_matrix[i][j] = calculate_distance(locations[i], locations[j])
+        result = get_distance_matrix(locations)
     return {
         "num_vehicles": num_vehicles,
         "vehicle_capacity": vehicle_capacities,
         "vehicle_capacities": [vehicle_capacities] * num_vehicles,
         "demands": demands,
-        "distance_matrix": distance_matrix,
-        "pickups_deliveries": pickups_deliveries,
+        "distance_matrix": result['distance_matrix'],
         "locations": locations,
-        "num_locations": num_locations,
+        "num_locations": result['num_locations'],
         "service_time": service_times,
         "time_windows": time_windows,
         "vehicle_max_distance": 10_000,
@@ -223,3 +216,33 @@ def calculate_distance(coord1, coord2):
     x1, y1 = coord1
     x2, y2 = coord2
     return int(math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2) + 0.5)
+
+
+def create_pd(num_locations, locations):
+    all_ids = list(range(num_locations))
+    all_ids.remove(0)
+    random.shuffle(all_ids)
+    pickups = all_ids[:num_locations // 2]
+    deliveries = all_ids[num_locations // 2:]
+    pickups_deliveries = [list(pair) for pair in zip(pickups, deliveries)]
+    distance_matrix = []
+    for i, coord1 in enumerate(locations):
+        row = []
+        for j, coord2 in enumerate(locations):
+            if i == j:
+                row.append(0)
+            else:
+                distance = calculate_distance(coord1, coord2)
+                row.append(distance)
+        distance_matrix.append(row)
+    return {'pickups_deliveries': pickups_deliveries, 'distance_matrix': distance_matrix}
+
+
+def get_distance_matrix(locations):
+    num_locations = len(locations)
+    distance_matrix = [[0] * num_locations for _ in range(num_locations)]
+    for i in range(num_locations):
+        for j in range(num_locations):
+            if i != j:
+                distance_matrix[i][j] = calculate_distance(locations[i], locations[j])
+    return {'num_locations': num_locations, 'distance_matrix': distance_matrix}

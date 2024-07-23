@@ -1,4 +1,5 @@
 import os
+import time
 from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
 from load_data.instance_type import process_files, InstanceType
@@ -22,9 +23,9 @@ def compute_euclidean_distance_matrix(locations):
     return distances
 
 
-def save_solution(manager, routing, solution, instance, heuristic, metaheuristic):
+def save_solution(manager, routing, solution, instance, heuristic, metaheuristic, elapsed_time, i):
     """Saves solution to a text file."""
-    solutions_dir = os.path.join(f"problems/tsp/solutions_{heuristic}_{metaheuristic}")
+    solutions_dir = os.path.join(f"problems/tsp/solutions_tsp_{i}/solutions_{heuristic}_&_{metaheuristic}")
     try:
         os.makedirs(solutions_dir, exist_ok=True)
         print(f"Directory {solutions_dir} created successfully or already exists.")
@@ -35,9 +36,10 @@ def save_solution(manager, routing, solution, instance, heuristic, metaheuristic
     try:
         with open(file_name, 'w') as f:
             f.write(f"Instance: {instance}\n\n")
+            f.write(f"Objective: {solution.ObjectiveValue()}\n\n")
+            f.write(f"Execution Time: {elapsed_time}\n\n")
             f.write(f"Heuristic: {heuristic}\n\n")
             f.write(f"Metaheuristic: {metaheuristic}\n\n")
-            f.write(f"Objective: {solution.ObjectiveValue()}\n\n")
             index = routing.Start(0)
             plan_output = "Route:\n"
             route_distance = 0
@@ -54,7 +56,7 @@ def save_solution(manager, routing, solution, instance, heuristic, metaheuristic
         print(f"Error writing to file {file_name}: {error}")
 
 
-def execute():
+def execute(i):
     """Entry point of the program."""
     # Instantiate the data problem.
     instances_data = process_files(InstanceType.TSP)
@@ -79,43 +81,49 @@ def execute():
         routing.SetArcCostEvaluatorOfAllVehicles(transit_callback_index)
         # Setting first solution heuristic.
         first_solution_strategies = [
-            routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC,
-            routing_enums_pb2.FirstSolutionStrategy.PATH_MOST_CONSTRAINED_ARC,
-            routing_enums_pb2.FirstSolutionStrategy.EVALUATOR_STRATEGY,
-            routing_enums_pb2.FirstSolutionStrategy.SAVINGS,
-            routing_enums_pb2.FirstSolutionStrategy.SWEEP,
-            routing_enums_pb2.FirstSolutionStrategy.CHRISTOFIDES,
-            routing_enums_pb2.FirstSolutionStrategy.ALL_UNPERFORMED,
-            routing_enums_pb2.FirstSolutionStrategy.BEST_INSERTION,
-            routing_enums_pb2.FirstSolutionStrategy.PARALLEL_CHEAPEST_INSERTION,
-            routing_enums_pb2.FirstSolutionStrategy.SEQUENTIAL_CHEAPEST_INSERTION,
-            routing_enums_pb2.FirstSolutionStrategy.LOCAL_CHEAPEST_INSERTION,
-            routing_enums_pb2.FirstSolutionStrategy.LOCAL_CHEAPEST_COST_INSERTION,
-            routing_enums_pb2.FirstSolutionStrategy.GLOBAL_CHEAPEST_ARC,
-            routing_enums_pb2.FirstSolutionStrategy.LOCAL_CHEAPEST_ARC,
-            routing_enums_pb2.FirstSolutionStrategy.FIRST_UNBOUND_MIN_VALUE,
-            routing_enums_pb2.FirstSolutionStrategy.AUTOMATIC
+            "PATH_CHEAPEST_ARC",
+            "PATH_MOST_CONSTRAINED_ARC",
+            "EVALUATOR_STRATEGY",
+            "SAVINGS",
+            "SWEEP",
+            "CHRISTOFIDES",
+            "ALL_UNPERFORMED",
+            "BEST_INSERTION",
+            "PARALLEL_CHEAPEST_INSERTION",
+            "SEQUENTIAL_CHEAPEST_INSERTION",
+            "LOCAL_CHEAPEST_INSERTION",
+            "LOCAL_CHEAPEST_COST_INSERTION",
+            "GLOBAL_CHEAPEST_ARC",
+            "LOCAL_CHEAPEST_ARC",
+            "FIRST_UNBOUND_MIN_VALUE",
         ]
 
         local_search_metaheuristics = [
-            routing_enums_pb2.LocalSearchMetaheuristic.GREEDY_DESCENT,
-            routing_enums_pb2.LocalSearchMetaheuristic.GUIDED_LOCAL_SEARCH,
-            routing_enums_pb2.LocalSearchMetaheuristic.SIMULATED_ANNEALING,
-            routing_enums_pb2.LocalSearchMetaheuristic.TABU_SEARCH,
-            routing_enums_pb2.LocalSearchMetaheuristic.GENERIC_TABU_SEARCH,
-            routing_enums_pb2.LocalSearchMetaheuristic.AUTOMATIC
+            "GREEDY_DESCENT",
+            "GUIDED_LOCAL_SEARCH",
+            "SIMULATED_ANNEALING",
+            "TABU_SEARCH",
+            "GENERIC_TABU_SEARCH",
         ]
 
         for first_solution_strategy in first_solution_strategies:
             for local_search_metaheuristic in local_search_metaheuristics:
                 search_parameters = pywrapcp.DefaultRoutingSearchParameters()
-                search_parameters.first_solution_strategy = first_solution_strategy
-                search_parameters.local_search_metaheuristic = local_search_metaheuristic
-                search_parameters.time_limit.FromSeconds(15)
+                search_parameters.first_solution_strategy = getattr(
+                    routing_enums_pb2.FirstSolutionStrategy, first_solution_strategy
+                )
+                search_parameters.local_search_metaheuristic = getattr(
+                    routing_enums_pb2.LocalSearchMetaheuristic, local_search_metaheuristic
+                )
+                search_parameters.time_limit.FromSeconds(20)
+                start_time = time.time()
                 solution = routing.SolveWithParameters(search_parameters)
+                end_time = time.time()  # End timing
+                elapsed_time = end_time - start_time  # Calculate elapsed time
 
                 # Print solution on console.
                 if solution:
-                    save_solution(manager, routing, solution, instance, search_parameters.first_solution_strategy, search_parameters.local_search_metaheuristic)
+                    save_solution(manager, routing, solution, instance, first_solution_strategy,
+                                  local_search_metaheuristic, elapsed_time, i)
                 else:
                     print("No solution found !")

@@ -1,14 +1,15 @@
 from enum import Enum
 import os
-from load_data.import_data import read_file_tsp, read_file_bh, read_file_tw, read_file_md, read_file_bss
+from load_data.import_data import read_file_tsp, read_file_bh, read_file_tw, read_file_md, read_file_bss, read_file_hf
 
 
 class InstanceType(Enum):
     TSP = 'tsp'
     BHCVRP = 'bhcvrp'
     MDCVRP = 'mdcvrp'
-    CVRPTW = 'cvrptw'
+    VRPTW = 'vrptw'
     BSS = 'bss'
+    HFVRP = 'hfvrp'
 
 
 def process_files(instance_type: InstanceType):
@@ -25,13 +26,17 @@ def process_files(instance_type: InstanceType):
             'read_function': read_file_md,
             'path': ['./instances/mdcvrp_instances(Nanda)/C-mdvrp']
         },
-        InstanceType.CVRPTW: {
+        InstanceType.VRPTW: {
             'read_function': read_file_tw,
-            'path': ['./instances/cvrptw_instances']
+            'path': ['./instances/vrptw_instances']
         },
         InstanceType.BSS: {
             'read_function': read_file_bss,
             'path': ['./instances/bss_instances']
+        },
+        InstanceType.HFVRP: {
+            'read_function': read_file_hf,
+            'path': ['./instances/hfvrp_instances']
         },
     }
     total_data = {}
