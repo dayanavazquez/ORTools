@@ -1,14 +1,44 @@
 import random
 import json
-import math
+from distances.distance_type import calculate_distance
+import os
+from distances.distance_type import DistanceType
 
+
+#######################
+# ONE INSTANCE
+#######################
+
+
+def process_string_instance(instance_string, distance_type: DistanceType = None, vehicle_max_time=None,
+                            vehicle_speed=None, vehicle_maximum_travel_distance=None):
+    if 'bhcvrp_instances' in instance_string:
+        data = read_file_bh(instance_string, distance_type, vehicle_max_time, vehicle_speed,
+                            vehicle_maximum_travel_distance)
+    elif 'hfvrp_instances' in instance_string:
+        data = read_file_hf(instance_string, distance_type, vehicle_max_time, vehicle_speed,
+                            vehicle_maximum_travel_distance)
+    elif 'bss_instances' in instance_string:
+        data = read_file_bss(instance_string, distance_type, vehicle_max_time, vehicle_speed,
+                             vehicle_maximum_travel_distance)
+    elif 'mdcvrp_instances' in instance_string:
+        data = read_file_md(instance_string, distance_type, vehicle_max_time, vehicle_speed,
+                            vehicle_maximum_travel_distance)
+    elif 'tsp_instances' in instance_string:
+        data = read_file_tsp(instance_string, distance_type, vehicle_max_time, vehicle_speed,
+                             vehicle_maximum_travel_distance)
+    else:
+        data = read_file_tw(instance_string, distance_type, vehicle_max_time, vehicle_speed,
+                            vehicle_maximum_travel_distance)
+    return {os.path.basename(instance_string): data}
 
 #######################
 # DATA BSS
 #######################
 
 
-def read_file_bss(file):
+def read_file_bss(file, distance_type: DistanceType = None, vehicle_max_time=None, vehicle_speed=None,
+                  vehicle_maximum_travel_distance=None):
     with open(file, 'r') as file:
         json_data = json.load(file)
         locations = []
@@ -18,7 +48,7 @@ def read_file_bss(file):
         for bus_stop in json_data["bus_stops"]:
             bus_stop_coords = (bus_stop["coordinate_x"], bus_stop["coordinate_y"])
             locations.append(bus_stop_coords)
-    result = get_distance_matrix(locations)
+    result = get_distance_matrix(locations, distance_type)
     return {
         "locations": locations,
         "distance_matrix": result['distance_matrix'],
@@ -33,7 +63,8 @@ def read_file_bss(file):
 # DATA TSP
 #######################
 
-def read_file_tsp(file):
+def read_file_tsp(file, distance_type: DistanceType = None, vehicle_max_time=None, vehicle_speed=None,
+                  vehicle_maximum_travel_distance=None):
     with open(file, "r") as f:
         lines = f.readlines()
         node_coord_section_index = lines.index("NODE_COORD_SECTION\n")
@@ -56,7 +87,8 @@ def read_file_tsp(file):
 # DATA CVRPMD
 #######################
 
-def read_file_md(file):
+def read_file_md(file, distance_type: DistanceType = None, vehicle_max_time=None, vehicle_speed=None,
+                 vehicle_maximum_travel_distance=None):
     locations = []
     demands = []
     num_locations = 0
@@ -92,7 +124,7 @@ def read_file_md(file):
                 depot_index = int(data[0]) - 1
                 starts.append(depot_index)
                 ends.append(depot_index)
-    result = create_pd(num_locations, locations)
+    result = create_pd(num_locations, locations, distance_type)
     return {
         "distance_matrix": result['distance_matrix'],
         "num_vehicles": num_vehicles,
@@ -110,7 +142,8 @@ def read_file_md(file):
 #######################
 
 
-def read_file_hf(file):
+def read_file_hf(file, distance_type: DistanceType = None, vehicle_max_time=None, vehicle_speed=None,
+                 vehicle_maximum_travel_distance=None):
     locations = []
     demands = []
     num_locations = 0
@@ -134,7 +167,7 @@ def read_file_hf(file):
                     demand = 0
                 demands.append(demand)
                 num_locations += 1
-    result = create_pd(num_locations, locations)
+    result = create_pd(num_locations, locations, distance_type)
     return {
         "distance_matrix": result['distance_matrix'],
         "num_vehicles": num_vehicles,
@@ -149,7 +182,8 @@ def read_file_hf(file):
 # DATA BHCVRP
 #######################
 
-def read_file_bh(file):
+def read_file_bh(file, distance_type: DistanceType = None, vehicle_max_time=None, vehicle_speed=None,
+                 vehicle_maximum_travel_distance=None):
     locations = []
     demands = []
     num_locations = 0
@@ -169,7 +203,7 @@ def read_file_bh(file):
                 demand = float(data[3]) if data[3] else 0
                 demands.append(demand)
                 num_locations += 1
-    result = create_pd(num_locations, locations)
+    result = create_pd(num_locations, locations, distance_type)
     return {"distance_matrix": result['distance_matrix'], "num_vehicles": num_vehicles,
             "vehicle_capacities": capacities,
             "demands": demands, "depot": 0, "pickups_deliveries": result['pickups_deliveries']}
@@ -179,7 +213,8 @@ def read_file_bh(file):
 # DATA VRPTW
 #######################
 
-def read_file_tw(file_path):
+def read_file_tw(file_path, distance_type: DistanceType = None, vehicle_max_time=None, vehicle_speed=None,
+                 vehicle_maximum_travel_distance=None):
     with open(file_path, 'r') as file:
         lines = file.readlines()
         num_vehicles, vehicle_capacities = map(int, lines[0].split())
@@ -194,7 +229,7 @@ def read_file_tw(file_path):
                 demands.append(int(parts[3]))
                 time_windows.append((int(parts[4]), int(parts[5])))
                 service_times.append(int(parts[6]))
-        result = get_distance_matrix(locations)
+        result = get_distance_matrix(locations, distance_type)
     return {
         "num_vehicles": num_vehicles,
         "vehicle_capacity": vehicle_capacities,
@@ -205,20 +240,14 @@ def read_file_tw(file_path):
         "num_locations": result['num_locations'],
         "service_time": service_times,
         "time_windows": time_windows,
-        "vehicle_max_distance": 10_000,
-        "vehicle_max_time": 1_500,
-        "vehicle_speed": 5 * 60 / 3.6,
+        "vehicle_max_distance": vehicle_maximum_travel_distance if vehicle_maximum_travel_distance else 500,
+        "vehicle_max_time": vehicle_max_time if vehicle_max_time else 60,
+        "vehicle_speed": vehicle_speed if vehicle_speed else 5 * 60 / 3.6,
         "depot": 0
     }
 
 
-def calculate_distance(coord1, coord2):
-    x1, y1 = coord1
-    x2, y2 = coord2
-    return int(math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2) + 0.5)
-
-
-def create_pd(num_locations, locations):
+def create_pd(num_locations, locations, distance_type):
     all_ids = list(range(num_locations))
     all_ids.remove(0)
     random.shuffle(all_ids)
@@ -232,17 +261,17 @@ def create_pd(num_locations, locations):
             if i == j:
                 row.append(0)
             else:
-                distance = calculate_distance(coord1, coord2)
+                distance = calculate_distance(coord1, coord2, distance_type)
                 row.append(distance)
         distance_matrix.append(row)
     return {'pickups_deliveries': pickups_deliveries, 'distance_matrix': distance_matrix}
 
 
-def get_distance_matrix(locations):
+def get_distance_matrix(locations, distance_type):
     num_locations = len(locations)
     distance_matrix = [[0] * num_locations for _ in range(num_locations)]
     for i in range(num_locations):
         for j in range(num_locations):
             if i != j:
-                distance_matrix[i][j] = calculate_distance(locations[i], locations[j])
+                distance_matrix[i][j] = calculate_distance(locations[i], locations[j], distance_type)
     return {'num_locations': num_locations, 'distance_matrix': distance_matrix}

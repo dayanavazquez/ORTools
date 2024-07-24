@@ -2,12 +2,14 @@ import os
 import time
 from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
-from load_data.instance_type import process_files, InstanceType
+from load_data.instance_type import process_files
 from distances.distance_type import calculate_distance, DistanceType
+from problems.strategy_type import HeuristicType, MetaheuristicType
+from utils.get_strategies import get_strategies
 
 
 # [START distance_callback]
-def compute_euclidean_distance_matrix(locations):
+def compute_euclidean_distance_matrix(locations, distance_type):
     """Creates callback to return distance between points."""
     distances = {}
     for from_counter, from_node in enumerate(locations):
@@ -18,14 +20,19 @@ def compute_euclidean_distance_matrix(locations):
             else:
                 # Euclidean distance
                 distances[from_counter][to_counter] = int(
-                    calculate_distance(from_node, to_node, DistanceType.EUCLIDEAN)
+                    calculate_distance(from_node, to_node, distance_type)
                 )
     return distances
 
 
 def save_solution(manager, routing, solution, instance, heuristic, metaheuristic, elapsed_time, i):
     """Saves solution to a text file."""
-    solutions_dir = os.path.join(f"problems/tsp/solutions_tsp_{i}/solutions_{heuristic}_&_{metaheuristic}")
+    if heuristic and not metaheuristic:
+        solutions_dir = os.path.join(f"problems/tsp/solutions_tsp_{i}/solutions_{heuristic}")
+    elif metaheuristic and not heuristic:
+        solutions_dir = os.path.join(f"problems/tsp/solutions_tsp_{i}/solutions_{metaheuristic}")
+    else:
+        solutions_dir = os.path.join(f"problems/tsp/solutions_tsp_{i}/solutions_{heuristic}_&_{metaheuristic}")
     try:
         os.makedirs(solutions_dir, exist_ok=True)
         print(f"Directory {solutions_dir} created successfully or already exists.")
@@ -56,10 +63,11 @@ def save_solution(manager, routing, solution, instance, heuristic, metaheuristic
         print(f"Error writing to file {file_name}: {error}")
 
 
-def execute(i):
+def execute(i, instance_type, time_limit, distance_type: DistanceType = None, heuristic: HeuristicType = None,
+            metaheuristic: MetaheuristicType = None):
     """Entry point of the program."""
     # Instantiate the data problem.
-    instances_data = process_files(InstanceType.TSP)
+    instances_data = process_files(instance_type)
     for instance, data in instances_data.items():
         # Create the routing index manager.
         manager = pywrapcp.RoutingIndexManager(
@@ -67,7 +75,7 @@ def execute(i):
         )
         # Create Routing Model.
         routing = pywrapcp.RoutingModel(manager)
-        distance_matrix = compute_euclidean_distance_matrix(data["locations"])
+        distance_matrix = compute_euclidean_distance_matrix(data["locations"], distance_type)
 
         def distance_callback(from_index, to_index):
             """Returns the distance between the two nodes."""
@@ -80,50 +88,48 @@ def execute(i):
         # Define cost of each arc.
         routing.SetArcCostEvaluatorOfAllVehicles(transit_callback_index)
         # Setting first solution heuristic.
-        first_solution_strategies = [
-            "PATH_CHEAPEST_ARC",
-            "PATH_MOST_CONSTRAINED_ARC",
-            "EVALUATOR_STRATEGY",
-            "SAVINGS",
-            "SWEEP",
-            "CHRISTOFIDES",
-            "ALL_UNPERFORMED",
-            "BEST_INSERTION",
-            "PARALLEL_CHEAPEST_INSERTION",
-            "SEQUENTIAL_CHEAPEST_INSERTION",
-            "LOCAL_CHEAPEST_INSERTION",
-            "LOCAL_CHEAPEST_COST_INSERTION",
-            "GLOBAL_CHEAPEST_ARC",
-            "LOCAL_CHEAPEST_ARC",
-            "FIRST_UNBOUND_MIN_VALUE",
-        ]
 
-        local_search_metaheuristics = [
-            "GREEDY_DESCENT",
-            "GUIDED_LOCAL_SEARCH",
-            "SIMULATED_ANNEALING",
-            "TABU_SEARCH",
-            "GENERIC_TABU_SEARCH",
-        ]
+        first_solution_strategies, local_search_metaheuristics = get_strategies(heuristic, metaheuristic)
+        if not first_solution_strategies and local_search_metaheuristics:
+            search_parameters = pywrapcp.DefaultRoutingSearchParameters()
+            search_parameters.local_search_metaheuristic = getattr(
+                routing_enums_pb2.LocalSearchMetaheuristic, local_search_metaheuristics[0]
+            )
+            get_solutions(i, search_parameters, routing, time_limit, data, manager, instance,
+                          local_search_metaheuristics[0])
+        elif not local_search_metaheuristics and first_solution_strategies:
+            search_parameters = pywrapcp.DefaultRoutingSearchParameters()
+            search_parameters.first_solution_strategy = getattr(
+                routing_enums_pb2.FirstSolutionStrategy, first_solution_strategies[0]
+            )
+            get_solutions(i, search_parameters, routing, time_limit, data, manager, instance,
+                          first_solution_strategies[0])
+        else:
+            for first_solution_strategy in first_solution_strategies:
+                for local_search_metaheuristic in local_search_metaheuristics:
+                    search_parameters = pywrapcp.DefaultRoutingSearchParameters()
+                    search_parameters.first_solution_strategy = getattr(
+                        routing_enums_pb2.FirstSolutionStrategy, first_solution_strategy
+                    )
+                    search_parameters.local_search_metaheuristic = getattr(
+                        routing_enums_pb2.LocalSearchMetaheuristic, local_search_metaheuristic
+                    )
+                    get_solutions(i, search_parameters, routing, time_limit, data, manager, instance,
+                                  first_solution_strategy, local_search_metaheuristic)
 
-        for first_solution_strategy in first_solution_strategies:
-            for local_search_metaheuristic in local_search_metaheuristics:
-                search_parameters = pywrapcp.DefaultRoutingSearchParameters()
-                search_parameters.first_solution_strategy = getattr(
-                    routing_enums_pb2.FirstSolutionStrategy, first_solution_strategy
-                )
-                search_parameters.local_search_metaheuristic = getattr(
-                    routing_enums_pb2.LocalSearchMetaheuristic, local_search_metaheuristic
-                )
-                search_parameters.time_limit.FromSeconds(20)
-                start_time = time.time()
-                solution = routing.SolveWithParameters(search_parameters)
-                end_time = time.time()  # End timing
-                elapsed_time = end_time - start_time  # Calculate elapsed time
 
-                # Print solution on console.
-                if solution:
-                    save_solution(manager, routing, solution, instance, first_solution_strategy,
-                                  local_search_metaheuristic, elapsed_time, i)
-                else:
-                    print("No solution found !")
+def get_solutions(i, search_parameters, routing, time_limit, data, manager, instance, first_solution_strategy=None,
+                  local_search_metaheuristic=None):
+    search_parameters.time_limit.FromSeconds(time_limit)
+    start_time = time.time()
+    solution = routing.SolveWithParameters(search_parameters)
+    end_time = time.time()  # End timing
+    elapsed_time = end_time - start_time  # Calculate elapsed time
+
+    # Save solution on console.
+    if solution:
+        save_solution(data, manager, routing, solution, instance, first_solution_strategy,
+                      local_search_metaheuristic,
+                      elapsed_time, i)
+    else:
+        print("No solution found !")

@@ -1,6 +1,8 @@
 from enum import Enum
 import os
-from load_data.import_data import read_file_tsp, read_file_bh, read_file_tw, read_file_md, read_file_bss, read_file_hf
+
+from distances.distance_type import DistanceType
+from load_data.import_data import read_file_tsp, read_file_bh, read_file_tw, read_file_md, read_file_bss, read_file_hf, process_string_instance
 
 
 class InstanceType(Enum):
@@ -12,7 +14,9 @@ class InstanceType(Enum):
     HFVRP = 'hfvrp'
 
 
-def process_files(instance_type: InstanceType):
+def process_files(instance_type, distance_type: DistanceType = None, vehicle_max_time=None, vehicle_speed=None, vehicle_maximum_travel_distance=None):
+    if isinstance(instance_type, str) and (instance_type.endswith('.txt') or instance_type.endswith('.json')):
+        return process_string_instance(instance_type, distance_type, vehicle_max_time, vehicle_speed, vehicle_maximum_travel_distance)
     problem_data = {
         InstanceType.TSP: {
             'read_function': read_file_tsp,
@@ -24,7 +28,7 @@ def process_files(instance_type: InstanceType):
         },
         InstanceType.MDCVRP: {
             'read_function': read_file_md,
-            'path': ['./instances/mdcvrp_instances(Nanda)/C-mdvrp']
+            'path': ['./instances/mdcvrp_instances/C-mdvrp']
         },
         InstanceType.VRPTW: {
             'read_function': read_file_tw,
@@ -47,11 +51,11 @@ def process_files(instance_type: InstanceType):
             if instance_type == InstanceType.BSS:
                 if file.endswith('.json'):
                     route = os.path.join(directory, file)
-                    data = read_function(route)
+                    data = read_function(route, distance_type, vehicle_max_time, vehicle_speed, vehicle_maximum_travel_distance)
                     total_data[file] = data
             else:
                 if file.endswith('.txt'):
                     route = os.path.join(directory, file)
-                    data = read_function(route)
+                    data = read_function(route, distance_type, vehicle_max_time, vehicle_speed, vehicle_maximum_travel_distance)
                     total_data[file] = data
         return total_data
