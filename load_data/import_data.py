@@ -240,8 +240,8 @@ def read_file_tw(file_path, distance_type: DistanceType = None, vehicle_max_time
         "num_locations": result['num_locations'],
         "service_time": service_times,
         "time_windows": time_windows,
-        "vehicle_max_distance": vehicle_maximum_travel_distance if vehicle_maximum_travel_distance else 500,
-        "vehicle_max_time": vehicle_max_time if vehicle_max_time else 60,
+        "vehicle_max_distance": vehicle_maximum_travel_distance if vehicle_maximum_travel_distance else 1000,
+        "vehicle_max_time": vehicle_max_time if vehicle_max_time else 1_500,
         "vehicle_speed": vehicle_speed if vehicle_speed else 5 * 60 / 3.6,
         "depot": 0
     }

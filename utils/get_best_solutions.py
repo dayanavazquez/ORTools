@@ -13,21 +13,26 @@ def extract_info_from_txt(file_path):
         instance_match = re.search(r'Instance:\s*(\S+)', content)
         objective_match = re.search(r'Objective:\s*(\d+)', content)
         time_match = re.search(r'Execution Time:\s*([\d\.]+)', content)
-        load_matches = re.findall(r'Load of the route:\s*(\d+)', content)
+        load_matches = re.findall(r'Distance of the route:\s*(\d+)', content)
         cost_matches = re.findall(r'Total Distance of all routes:\s*(\d+)', content)
         if load_matches:
-            routes_count = sum(1 for load in load_matches if int(load) != 0)
-        if instance_match and objective_match:
+            for load in load_matches:
+                if load != '0':
+                    routes_count += 1
+                    if not cost_matches:
+                        cost += int(load)
+        if instance_match:
             instance = instance_match.group(1)
+        if objective_match:
             objective = int(objective_match.group(1))
-            if time_match:
-                execution_time = float(time_match.group(1))
-            if cost_matches:
-                cost = int(cost_matches.group(1))
-            if objective != 0:
-                if cost != objective and cost != 0:
-                    objective = cost
-                return instance, objective, execution_time, routes_count
+        if time_match:
+            execution_time = float(time_match.group(1))
+        if cost_matches:
+            cost = int(cost_matches[0])
+        if objective != 0:
+            if cost != objective and cost != 0:
+                objective = cost
+        return instance, objective, execution_time, routes_count
     return None, None, None, None
 
 
@@ -89,8 +94,8 @@ def write_best_solutions(output_file, best_results):
 
 
 def main():
-    base_folder = '../problems/solutions/solutions_tsp'
-    output_file = '../problems/solutions/euclidean/solutions_tsp/best_solutions_tsp_euclidean.txt'
+    base_folder = '../problems/vrptw'
+    output_file = '../problems/vrptw/best_solutions_vrppd.txt'
 
     results = process_solutions_folder(base_folder)
     best_results = filter_best_solutions(results)

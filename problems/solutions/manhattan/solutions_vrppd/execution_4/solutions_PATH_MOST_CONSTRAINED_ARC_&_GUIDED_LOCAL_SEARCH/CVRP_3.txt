@@ -1,0 +1,31 @@
+Instance: CVRP_3.txt
+
+Objective: 23680
+
+Execution Time: 6.032193422317505
+
+Heuristic: PATH_MOST_CONSTRAINED_ARC
+
+Metaheuristic: GUIDED_LOCAL_SEARCH
+
+Route for vehicle 0:
+ 0 ->  14 ->  6 ->  32 ->  22 ->  8 ->  26 ->  43 ->  13 ->  41 ->  44 -> 0
+Distance of the route: 218m
+
+Route for vehicle 1:
+ 0 ->  15 ->  42 ->  40 ->  18 ->  5 ->  30 ->  34 ->  50 -> 0
+Distance of the route: 204m
+
+Route for vehicle 2:
+ 0 ->  12 ->  19 ->  25 ->  24 ->  23 ->  3 ->  36 ->  28 -> 0
+Distance of the route: 226m
+
+Route for vehicle 3:
+ 0 ->  47 ->  46 ->  21 ->  35 ->  20 ->  29 ->  38 ->  33 ->  45 ->  37 ->  17 ->  4 -> 0
+Distance of the route: 220m
+
+Route for vehicle 4:
+ 0 ->  2 ->  49 ->  10 ->  39 ->  9 ->  16 ->  11 ->  1 ->  31 ->  7 ->  48 ->  27 -> 0
+Distance of the route: 212m
+
+Total Distance of all routes: 1080m

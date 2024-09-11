@@ -1,0 +1,31 @@
+Instance: CVRP_2.txt
+
+Objective: 15280
+
+Execution Time: 0
+
+Heuristic: LOCAL_CHEAPEST_COST_INSERTION
+
+Metaheuristic: SIMULATED_ANNEALING
+
+Route for vehicle 0:
+ 0 -> 32 -> 2 -> 29 -> 20 -> 35 -> 36 -> 3 -> 8 -> 48 -> 0
+Distance of the route: 138m
+
+Route for vehicle 1:
+ 0 -> 47 -> 18 -> 4 -> 42 -> 19 -> 41 -> 40 -> 13 -> 25 -> 14 -> 0
+Distance of the route: 146m
+
+Route for vehicle 2:
+ 0 -> 46 -> 38 -> 9 -> 50 -> 34 -> 30 -> 39 -> 33 -> 45 -> 15 -> 44 -> 37 -> 17 -> 0
+Distance of the route: 144m
+
+Route for vehicle 3:
+ 0 -> 27 -> 1 -> 22 -> 28 -> 31 -> 26 -> 7 -> 43 -> 24 -> 23 -> 6 -> 0
+Distance of the route: 146m
+
+Route for vehicle 4:
+ 0 -> 11 -> 21 -> 16 -> 10 -> 49 -> 5 -> 12 -> 0
+Distance of the route: 106m
+
+Total Distance of all routes: 680m

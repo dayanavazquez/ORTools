@@ -46,8 +46,8 @@ def save_solution(data, manager, routing, solution, instance, heuristic, metaheu
                 plan_output += f"{manager.IndexToNode(index)}\n"
                 plan_output += f"Distance of the route: {route_distance}m\n\n"
                 f.write(plan_output)
-                max_route_distance = max(route_distance, max_route_distance)
-            f.write(f"Maximum of the route distances: {max_route_distance}m\n")
+                max_route_distance += route_distance
+            f.write(f"Total Distance of all routes: {max_route_distance}m\n")
         print(f"Solution saved successfully in {filename}")
     except OSError as error:
         print(f"Error writing to file {filename}: {error}")
@@ -78,17 +78,10 @@ def execute(i, instance_type, time_limit, vehicle_maximum_travel_distance, dista
         # Define cost of each arc.
         routing.SetArcCostEvaluatorOfAllVehicles(transit_callback_index)
 
-        def demand_callback(from_index):
-            """Returns the demand of the node."""
-            # Convert from routing variable Index to demands NodeIndex.
-            from_node = manager.IndexToNode(from_index)
-            return data["demands"][from_node]
-
-        demand_callback_index = routing.RegisterUnaryTransitCallback(demand_callback)
         # Add Distance constraint.
-        dimension_name = "Capacity"
-        routing.AddDimensionWithVehicleCapacity(
-            demand_callback_index,
+        dimension_name = "Distance"
+        routing.AddDimension(
+            transit_callback_index,
             0,  # no slack
             vehicle_maximum_travel_distance,  # vehicle maximum travel distance
             True,  # start cumul to zero

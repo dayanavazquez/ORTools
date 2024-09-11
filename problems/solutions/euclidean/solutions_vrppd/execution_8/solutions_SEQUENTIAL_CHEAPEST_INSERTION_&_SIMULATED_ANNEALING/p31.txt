@@ -1,19 +1,19 @@
 Instance: p31.txt
 
-Objective: 39962
+Objective: 37722
 
-Execution Time: 0.05477142333984375
+Execution Time: 0.0378270149230957
 
 Heuristic: SEQUENTIAL_CHEAPEST_INSERTION
 
 Metaheuristic: SIMULATED_ANNEALING
 
 Route for vehicle 0:
- 0 ->  5 ->  3 ->  11 ->  6 -> 0
-Distance of the route: 392m
-
-Route for vehicle 1:
- 0 ->  10 ->  9 ->  7 ->  8 ->  2 ->  4 ->  1 -> 0
+ 0 ->  1 ->  4 ->  2 ->  11 ->  7 ->  3 ->  5 -> 0
 Distance of the route: 370m
 
-Total Distance of all routes: 762m
+Route for vehicle 1:
+ 0 ->  10 ->  6 ->  9 ->  8 -> 0
+Distance of the route: 352m
+
+Total Distance of all routes: 722m

@@ -128,7 +128,7 @@ def get_solutions(i, search_parameters, routing, time_limit, data, manager, inst
 
     # Save solution on console.
     if solution:
-        save_solution(data, manager, routing, solution, instance, first_solution_strategy,
+        save_solution(manager, routing, solution, instance, first_solution_strategy,
                       local_search_metaheuristic,
                       elapsed_time, i)
     else:

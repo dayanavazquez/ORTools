@@ -1,19 +1,19 @@
 Instance: p31.txt
 
-Objective: 39962
+Objective: 37722
 
-Execution Time: 0.053409576416015625
+Execution Time: 0.045983076095581055
 
 Heuristic: PATH_MOST_CONSTRAINED_ARC
 
 Metaheuristic: GREEDY_DESCENT
 
 Route for vehicle 0:
- 0 ->  5 ->  3 ->  11 ->  6 -> 0
-Distance of the route: 392m
-
-Route for vehicle 1:
- 0 ->  10 ->  9 ->  7 ->  8 ->  2 ->  4 ->  1 -> 0
+ 0 ->  1 ->  4 ->  2 ->  11 ->  7 ->  3 ->  5 -> 0
 Distance of the route: 370m
 
-Total Distance of all routes: 762m
+Route for vehicle 1:
+ 0 ->  10 ->  6 ->  9 ->  8 -> 0
+Distance of the route: 352m
+
+Total Distance of all routes: 722m

@@ -1,23 +1,23 @@
 Instance: CVRP_100.txt
 
-Objective: 12659
+Objective: 13378
 
-Execution Time: 0.04760432243347168
+Execution Time: 0.07726359367370605
 
 Heuristic: SAVINGS
 
 Metaheuristic: GREEDY_DESCENT
 
 Route for vehicle 0:
- 0 ->  12 ->  4 ->  15 ->  10 ->  5 ->  11 ->  1 ->  6 -> 0
-Distance of the route: 121m
+ 0 ->  5 ->  1 ->  7 ->  13 -> 0
+Distance of the route: 128m
 
 Route for vehicle 1:
- 0 ->  13 ->  3 -> 0
-Distance of the route: 123m
+ 0 ->  8 ->  3 ->  15 ->  4 -> 0
+Distance of the route: 130m
 
 Route for vehicle 2:
- 0 ->  14 ->  7 ->  8 ->  2 ->  9 -> 0
-Distance of the route: 115m
+ 0 ->  14 ->  6 ->  12 ->  10 ->  9 ->  2 ->  11 -> 0
+Distance of the route: 120m
 
-Total Distance of all routes: 359m
+Total Distance of all routes: 378m

@@ -1,23 +1,23 @@
 Instance: CVRP_100.txt
 
-Objective: 12741
+Objective: 12822
 
-Execution Time: 0.09239602088928223
+Execution Time: 0.0839836597442627
 
 Heuristic: SEQUENTIAL_CHEAPEST_INSERTION
 
 Metaheuristic: GREEDY_DESCENT
 
 Route for vehicle 0:
- 0 ->  4 ->  13 ->  14 ->  9 -> 0
-Distance of the route: 114m
+ 0 ->  8 ->  2 ->  9 ->  10 -> 0
+Distance of the route: 100m
 
 Route for vehicle 1:
- 0 ->  12 ->  7 ->  8 ->  3 ->  1 ->  6 -> 0
-Distance of the route: 124m
+ 0 ->  5 ->  11 ->  3 ->  1 ->  6 -> 0
+Distance of the route: 97m
 
 Route for vehicle 2:
- 0 ->  2 ->  10 ->  15 ->  5 ->  11 -> 0
-Distance of the route: 103m
+ 0 ->  7 ->  14 ->  13 ->  4 ->  15 ->  12 -> 0
+Distance of the route: 125m
 
-Total Distance of all routes: 341m
+Total Distance of all routes: 322m

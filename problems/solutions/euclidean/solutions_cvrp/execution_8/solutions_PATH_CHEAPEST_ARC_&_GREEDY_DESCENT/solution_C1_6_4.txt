@@ -1,17 +1,17 @@
 Instance: C1_6_4.txt
 
-Objective: 14644
+Objective: 14643
 
-Execution Time: 19.43310260772705
+Execution Time: 19.859861850738525
 
 Heuristic: PATH_CHEAPEST_ARC
 
 Metaheuristic: GREEDY_DESCENT
 
 Route for vehicle 0:
- 0 Load(0) ->  0 Load(0)
-Distance of the route: 0m
-Load of the route: 0
+ 0 Load(0) ->  270 Load(20) ->  151 Load(40) ->  478 Load(50) ->  73 Load(70) ->  433 Load(110) ->  578 Load(120) ->  41 Load(130) ->  216 Load(150) ->  486 Load(160) ->  292 Load(180) ->  29 Load(190) ->  589 Load(200) ->  0 Load(200)
+Distance of the route: 430m
+Load of the route: 200
 
 Route for vehicle 1:
  0 Load(0) ->  0 Load(0)
@@ -544,9 +544,9 @@ Distance of the route: 341m
 Load of the route: 200
 
 Route for vehicle 107:
- 0 Load(0) ->  589 Load(10) ->  292 Load(30) ->  486 Load(40) ->  216 Load(60) ->  433 Load(100) ->  578 Load(110) ->  41 Load(120) ->  29 Load(130) ->  73 Load(150) ->  478 Load(160) ->  151 Load(180) ->  270 Load(200) ->  0 Load(200)
-Distance of the route: 431m
-Load of the route: 200
+ 0 Load(0) ->  0 Load(0)
+Distance of the route: 0m
+Load of the route: 0
 
 Route for vehicle 108:
  0 Load(0) ->  196 Load(20) ->  366 Load(30) ->  305 Load(40) ->  243 Load(70) ->  573 Load(80) ->  371 Load(110) ->  444 Load(130) ->  339 Load(150) ->  553 Load(170) ->  544 Load(190) ->  536 Load(200) ->  0 Load(200)
@@ -758,5 +758,5 @@ Route for vehicle 149:
 Distance of the route: 88m
 Load of the route: 200
 
-Total distance of all routes: 14644m
+Total distance of all routes: 14643m
 Total load of all routes: 11020

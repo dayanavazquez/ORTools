@@ -1,4 +1,4 @@
-from problems.problem_type import ProblemType, execute_problem
+from problems.problem_type import ProblemType, execute
 from distances.distance_type import DistanceType
 from load_data.instance_type import InstanceType
 from problems.strategy_type import HeuristicType, MetaheuristicType
@@ -12,20 +12,19 @@ from problems.strategy_type import HeuristicType, MetaheuristicType
 # 3. distance_type => elegir el tipo de distancia que se desea utilizar de las 4 disponibles (si no se elige por defecto se usa Manhattan)
 # 4. executions => cantidad de ejecuciones (si no se elige, se pone 1 por defecto)
 # 5. time_limit => tiempo máximo en segundos en que se va a demorar el algoritmo en devolver la solución
-# 6. vehicle_maximum_travel_distance => distancia máxima que puede recorrer un vehículo (si no se elige se pone 500 por defecto) (restricción válida para todos los problemas menos TSP y CVRP)
-# 7. vehicle_max_time => máximo tiempo en que un vehículo debe completar su ruta (solo para VRPTW, se pone 60 por defecto)
+# 6. vehicle_maximum_travel_distance => distancia máxima que puede recorrer un vehículo (si no se elige se pone 500 por defecto, excepto a VRPTW que se pone 1000) (restricción válida para todos los problemas menos TSP y CVRP)
+# 7. vehicle_max_time => máximo tiempo en que un vehículo debe completar su ruta (solo para VRPTW, se pone 1500 por defecto)
 # 8. vehicle_speed => velocidad del vehículo (solo para VRPTW, se pone 83.33 km/h por defecto)
 # 9. heuristic => heurística específica que se desea utilizar
 # 10. metaheuristic => metaheurística específica que se desea utilizar
 # (si no se elige una heurística ni una metaheurística entonces se ejecutan todas por defecto)
 
-
-execute_problem(
-    problem_type=ProblemType.VRPPD,
-    instance="./instances/mdcvrp_instances/C-mdvrp/p31.txt",
-    executions=1,
-    distance_type=DistanceType.EUCLIDEAN,
-    time_limit=20,
+execute(
+    problem_type=ProblemType.CVRP,
+    instance="./instances/hfvrp_instances/CVRP_1.txt",
+    distance_type=DistanceType.MANHATTAN,
+    time_limit=60,
+    executions=10,
     vehicle_maximum_travel_distance=None,
     vehicle_max_time=None,
     vehicle_speed=None,

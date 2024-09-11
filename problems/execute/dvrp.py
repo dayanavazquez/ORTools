@@ -84,7 +84,8 @@ class SolutionCallback:
             self._routing_model_ref().solver().FinishCurrentSearch()
 
 
-def execute(i, instance_type, time_limit, vehicle_maximum_travel_distance, distance_type: DistanceType = None, heuristic: HeuristicType = None,
+def execute(i, instance_type, time_limit, vehicle_maximum_travel_distance, distance_type: DistanceType = None,
+            heuristic: HeuristicType = None,
             metaheuristic: MetaheuristicType = None):
     """Entry point of the program."""
     # Instantiate the data problem.
@@ -139,17 +140,15 @@ def execute(i, instance_type, time_limit, vehicle_maximum_travel_distance, dista
             get_solutions(i, search_parameters, routing_model, time_limit, routing_manager, instance,
                           first_solution_strategies[0])
         else:
-            for first_solution_strategy in first_solution_strategies:
-                for local_search_metaheuristic in local_search_metaheuristics:
-                    search_parameters = pywrapcp.DefaultRoutingSearchParameters()
-                    search_parameters.first_solution_strategy = getattr(
-                        routing_enums_pb2.FirstSolutionStrategy, first_solution_strategy
-                    )
-                    search_parameters.local_search_metaheuristic = getattr(
-                        routing_enums_pb2.LocalSearchMetaheuristic, local_search_metaheuristic
-                    )
-                    get_solutions(i, search_parameters, routing_model, time_limit, routing_manager, instance,
-                                  first_solution_strategy, local_search_metaheuristic)
+            search_parameters = pywrapcp.DefaultRoutingSearchParameters()
+            search_parameters.first_solution_strategy = getattr(
+                routing_enums_pb2.FirstSolutionStrategy, first_solution_strategies[0]
+            )
+            search_parameters.local_search_metaheuristic = getattr(
+                routing_enums_pb2.LocalSearchMetaheuristic, local_search_metaheuristics[0]
+            )
+            get_solutions(i, search_parameters, routing_model, time_limit, routing_manager, instance,
+                          first_solution_strategies[0], local_search_metaheuristics[0])
 
 
 def get_solutions(i, search_parameters, routing_model, time_limit, routing_manager, instance,

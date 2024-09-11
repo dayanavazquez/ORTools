@@ -1,16 +1,16 @@
 Instance: p2.txt
 
-Objective: 71205
+Objective: 67614
 
-Execution Time: 20.000437021255493
+Execution Time: 20.00047278404236
 
 Heuristic: PATH_CHEAPEST_ARC
 
 Metaheuristic: GREEDY_DESCENT
 
 Route for vehicle 0:
- 0 -> 0
-Distance of the route: 0m
+ 0 ->  21 ->  25 -> 0
+Distance of the route: 45m
 
 Route for vehicle 1:
  0 -> 0
@@ -21,7 +21,7 @@ Route for vehicle 2:
 Distance of the route: 0m
 
 Route for vehicle 3:
- 0 ->  50 ->  18 ->  39 ->  40 ->  12 ->  14 ->  48 ->  52 ->  15 ->  20 ->  53 ->  28 ->  1 ->  27 ->  30 ->  25 ->  47 ->  22 ->  42 ->  6 ->  23 ->  13 ->  24 ->  17 ->  46 ->  33 ->  49 ->  37 ->  10 ->  45 ->  51 ->  5 ->  7 ->  21 ->  19 ->  34 ->  35 ->  2 ->  31 ->  11 ->  36 ->  43 ->  41 ->  16 ->  4 ->  8 ->  29 ->  9 ->  38 ->  32 ->  44 ->  26 ->  3 -> 0
-Distance of the route: 705m
+ 0 ->  37 ->  32 ->  38 ->  29 ->  33 ->  20 ->  34 ->  35 ->  2 ->  27 ->  30 ->  6 ->  22 ->  24 ->  40 ->  12 ->  50 ->  43 ->  11 ->  45 ->  51 ->  26 ->  7 ->  47 ->  5 ->  46 ->  3 ->  17 ->  13 ->  23 ->  42 ->  1 ->  10 ->  4 ->  52 ->  48 ->  8 ->  49 ->  28 ->  53 ->  19 ->  31 ->  15 ->  9 ->  14 ->  44 ->  41 ->  39 ->  18 ->  16 ->  36 -> 0
+Distance of the route: 669m
 
-Total Distance of all routes: 705m
+Total Distance of all routes: 714m
