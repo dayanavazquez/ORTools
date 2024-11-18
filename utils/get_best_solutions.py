@@ -36,6 +36,22 @@ def extract_info_from_txt(file_path):
     return None, None, None, None
 
 
+def obtain_technique(f_path, f_name):
+    for file_name in os.listdir(f_path):
+        file_path = os.path.join(f_path, file_name)
+        with open(file_path, 'r') as file:
+            for line in file:
+                if 'Heuristic:' in line:
+                    heuristic = line.split(':')[1].strip()
+                elif 'Metaheuristic:' in line:
+                    metaheuristic = line.split(':')[1].strip()
+        if heuristic == 'None':
+            metaheuristic = f_name
+        elif metaheuristic == 'None':
+            heuristic = f_name
+    return heuristic, metaheuristic
+
+
 def process_solutions_folder(base_folder):
     results = []
     for folder_name in os.listdir(base_folder):
@@ -47,9 +63,10 @@ def process_solutions_folder(base_folder):
                     f_name = f_name[len("solutions_"):]
                     if '&' in f_name:
                         heuristic, metaheuristic = map(str.strip, f_name.split('&'))
-                    else:
+                    elif f_name.replace('_', '').isdigit():  # Verifica si todos los componentes de f_name son numéricos
                         heuristic, metaheuristic = map(int, f_name.split('_'))
-
+                    else:
+                        heuristic, metaheuristic = obtain_technique(f_path, f_name)
                     for file_name in os.listdir(f_path):
                         if file_name.endswith('.txt'):
                             file_path = os.path.join(f_path, file_name)
@@ -94,8 +111,8 @@ def write_best_solutions(output_file, best_results):
 
 
 def main():
-    base_folder = '../problems/vrptw'
-    output_file = '../problems/vrptw/best_solutions_vrppd.txt'
+    base_folder = '../problems/manhattan'
+    output_file = '../problems/manhattan/best_solutions.txt'
 
     results = process_solutions_folder(base_folder)
     best_results = filter_best_solutions(results)

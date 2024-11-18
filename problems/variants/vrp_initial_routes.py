@@ -70,7 +70,7 @@ def print_solution(data, manager, routing, solution):
 
 
 def main():
-    """Solve the cvrp problem."""
+    """Solve the manhattan problem."""
     # Instantiate the data problem.
     # [START data]
     data = create_data_model()

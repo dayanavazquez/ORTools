@@ -5,7 +5,7 @@ from problems.execute import cvrp, dvrp, mdvrp, vrppd, vrptw, tsp
 
 
 class ProblemType(Enum):
-    CVRP = 'cvrp'
+    CVRP = 'manhattan'
     VRPTW = 'vrptw'
     DVRP = 'dvrp'
     TSP = 'tsp'

@@ -11,11 +11,11 @@ import time
 def save_solution(data, manager, routing, solution, instance, heuristic, metaheuristic, elapsed_time, i):
     """Saves solution to a text file."""
     if heuristic and not metaheuristic:
-        solutions_dir = os.path.join(f"problems/cvrp/solutions_cvrp_{i}/solutions_{heuristic}")
+        solutions_dir = os.path.join(f"problems/manhattan/solutions_cvrp_{i}/solutions_{heuristic}")
     elif metaheuristic and not heuristic:
-        solutions_dir = os.path.join(f"problems/cvrp/solutions_cvrp_{i}/solutions_{metaheuristic}")
+        solutions_dir = os.path.join(f"problems/manhattan/solutions_cvrp_{i}/solutions_{metaheuristic}")
     else:
-        solutions_dir = os.path.join(f"problems/cvrp/solutions_cvrp_{i}/solutions_{heuristic}_&_{metaheuristic}")
+        solutions_dir = os.path.join(f"problems/manhattan/solutions_cvrp_{i}/solutions_{heuristic}_&_{metaheuristic}")
     try:
         os.makedirs(solutions_dir, exist_ok=True)
         print(f"Directory {solutions_dir} created successfully or already exists.")
@@ -62,7 +62,7 @@ def save_solution(data, manager, routing, solution, instance, heuristic, metaheu
 
 def execute(i, instance_type, time_limit, distance_type: DistanceType = None, heuristic: HeuristicType = None,
             metaheuristic: MetaheuristicType = None):
-    """Solve the cvrp problem."""
+    """Solve the manhattan problem."""
     # Instantiate the data problem.
     instances_data = process_files(instance_type, distance_type)
     for instance, data in instances_data.items():

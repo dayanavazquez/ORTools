@@ -19,15 +19,18 @@ from problems.strategy_type import HeuristicType, MetaheuristicType
 # 10. metaheuristic => metaheurística específica que se desea utilizar
 # (si no se elige una heurística ni una metaheurística entonces se ejecutan todas por defecto)
 
+
+
 execute(
     problem_type=ProblemType.CVRP,
-    instance="./instances/hfvrp_instances/CVRP_1.txt",
+    instance=InstanceType.BHCVRP,
     distance_type=DistanceType.MANHATTAN,
     time_limit=60,
     executions=10,
     vehicle_maximum_travel_distance=None,
     vehicle_max_time=None,
     vehicle_speed=None,
-    heuristic=HeuristicType.PATH_CHEAPEST_ARC,
-    metaheuristic=MetaheuristicType.GREEDY_DESCENT
+    heuristic=HeuristicType.SAVINGS,
+    metaheuristic=None
 )
+
