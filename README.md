@@ -29,4 +29,4 @@ Experiment with OR-Tools to solve transport problems. OR-Tools, an optimization 
  according to the problems. 
 
 
-6. The "run.py" file contains the code to run the program.
+6. The "run.py" file contains the code to run the program and call ORTools solvers.
