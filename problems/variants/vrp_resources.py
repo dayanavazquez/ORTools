@@ -97,7 +97,6 @@ def print_solution(data, manager, routing, solution):
             f" Time({solution.Min(time_var)},{solution.Max(time_var)})\n"
         )
         plan_output += f"Time of the route: {solution.Min(time_var)}min\n"
-        print(plan_output)
         total_time += solution.Min(time_var)
     print(f"Total time of all routes: {total_time}min")
     # [END solution_printer]

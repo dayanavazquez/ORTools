@@ -7,17 +7,14 @@ from load_data.instance_type import process_files
 from distances.distance_type import DistanceType
 from problems.strategy_type import HeuristicType, MetaheuristicType
 from utils.get_strategies import get_strategies
+from utils.utils import get_distance_and_solution_name
 
 
-def save_solution(routing_manager, routing_model, instance, heuristic, metaheuristic, elapsed_time, i):
+def save_solution(routing_manager, routing_model, instance, heuristic, metaheuristic, elapsed_time, i, distance_type):
     """Saves solution to a text file."""
     # Create the solutions_vrp_01 directory if it doesn't exist
-    if heuristic and not metaheuristic:
-        solutions_dir = os.path.join(f"problems/dvrp/solutions_dvrp_{i}/solutions_{heuristic}")
-    elif metaheuristic and not heuristic:
-        solutions_dir = os.path.join(f"problems/dvrp/solutions_dvrp_{i}/solutions_{metaheuristic}")
-    else:
-        solutions_dir = os.path.join(f"problems/dvrp/solutions_dvrp_{i}/solutions_{heuristic}_&_{metaheuristic}")
+    distance_type, solution_name = get_distance_and_solution_name(distance_type, heuristic, metaheuristic)
+    solutions_dir = os.path.join(f"problems/{distance_type}/solutions_dvrp_{i}/solutions_{solution_name}")
     try:
         os.makedirs(solutions_dir, exist_ok=True)
         print(f"Directory {solutions_dir} created successfully or already exists.")
@@ -32,6 +29,7 @@ def save_solution(routing_manager, routing_model, instance, heuristic, metaheuri
             file.write(f"Execution Time: {elapsed_time}\n\n")
             file.write(f"Heuristic: {heuristic}\n\n")
             file.write(f"Metaheuristic: {metaheuristic}\n\n")
+            file.write(f"Distance type: {distance_type}\n\n")
             total_distance = 0
             for vehicle_id in range(routing_manager.GetNumberOfVehicles()):
                 index = routing_model.Start(vehicle_id)
@@ -58,7 +56,7 @@ class SolutionCallback:
     """Create a solution callback."""
 
     def __init__(self, manager, model, limit, instance, search_parameters, first_solution_strategy,
-                 local_search_metaheuristic, i, elapsed_time):
+                 local_search_metaheuristic, i, distance_type, elapsed_time):
 
         # We need a weak ref on the routing model to avoid a cycle.
         self._routing_manager_ref = weakref.ref(manager)
@@ -72,6 +70,7 @@ class SolutionCallback:
         self.local_search_metaheuristic = local_search_metaheuristic
         self.elapsed_time = elapsed_time
         self.i = i
+        self.distance_type = distance_type
 
     def __call__(self):
         objective = int(self._routing_model_ref().CostVar().Value())
@@ -80,13 +79,14 @@ class SolutionCallback:
             self._counter += 1
         if self._counter >= self._counter_limit:
             save_solution(self._routing_manager_ref(), self._routing_model_ref(), self.instance,
-                          self.first_solution_strategy, self.local_search_metaheuristic, self.elapsed_time, self.i)
+                          self.first_solution_strategy, self.local_search_metaheuristic, self.elapsed_time, self.i,
+                          self.distance_type)
             self._routing_model_ref().solver().FinishCurrentSearch()
 
 
 def execute(i, instance_type, time_limit, vehicle_maximum_travel_distance, distance_type: DistanceType = None,
             heuristic: HeuristicType = None,
-            metaheuristic: MetaheuristicType = None):
+            metaheuristic: MetaheuristicType = None, initial_routes=None):
     """Entry point of the program."""
     # Instantiate the data problem.
     instances_data = process_files(instance_type, distance_type)
@@ -130,14 +130,16 @@ def execute(i, instance_type, time_limit, vehicle_maximum_travel_distance, dista
             search_parameters.local_search_metaheuristic = getattr(
                 routing_enums_pb2.LocalSearchMetaheuristic, local_search_metaheuristics[0]
             )
-            get_solutions(i, search_parameters, routing_model, time_limit, routing_manager, instance,
+            get_solutions(i, initial_routes, distance_type, search_parameters, routing_model, time_limit,
+                          routing_manager, instance,
                           local_search_metaheuristics[0])
         elif not local_search_metaheuristics and first_solution_strategies:
             search_parameters = pywrapcp.DefaultRoutingSearchParameters()
             search_parameters.first_solution_strategy = getattr(
                 routing_enums_pb2.FirstSolutionStrategy, first_solution_strategies[0]
             )
-            get_solutions(i, search_parameters, routing_model, time_limit, routing_manager, instance,
+            get_solutions(i, initial_routes, distance_type, search_parameters, routing_model, time_limit,
+                          routing_manager, instance,
                           first_solution_strategies[0])
         else:
             search_parameters = pywrapcp.DefaultRoutingSearchParameters()
@@ -147,23 +149,37 @@ def execute(i, instance_type, time_limit, vehicle_maximum_travel_distance, dista
             search_parameters.local_search_metaheuristic = getattr(
                 routing_enums_pb2.LocalSearchMetaheuristic, local_search_metaheuristics[0]
             )
-            get_solutions(i, search_parameters, routing_model, time_limit, routing_manager, instance,
+            get_solutions(i, initial_routes, distance_type, search_parameters, routing_model, time_limit,
+                          routing_manager, instance,
                           first_solution_strategies[0], local_search_metaheuristics[0])
 
 
-def get_solutions(i, search_parameters, routing_model, time_limit, routing_manager, instance,
-                  first_solution_strategy=None,
-                  local_search_metaheuristic=None):
+def get_solutions(
+        i, initial_routes, distance_type, search_parameters, routing_model, time_limit, routing_manager,
+        instance,
+        first_solution_strategy=None,
+        local_search_metaheuristic=None
+):
     search_parameters.time_limit.FromSeconds(time_limit)
     # Measure the time taken to solve the problem
     start_time = time.time()
     # Attach a solution callback.
-    solution_callback = SolutionCallback(routing_manager, routing_model, 20, instance, search_parameters,
-                                         first_solution_strategy, local_search_metaheuristic,
-                                         i, elapsed_time=0)
+    solution_callback = SolutionCallback(
+        routing_manager, routing_model, 20, instance, search_parameters,
+        first_solution_strategy, local_search_metaheuristic,
+        i, distance_type, elapsed_time=0
+    )
     routing_model.AddAtSolutionCallback(solution_callback)
     # Solve the problem.
-    routing_model.SolveWithParameters(search_parameters)
+    if initial_routes:
+        filtered_routes = [route for route in initial_routes if len(route) > 2]
+        print("Initial Routes:", filtered_routes)
+        initial_solution = routing_model.ReadAssignmentFromRoutes(filtered_routes, True)
+        routing_model.SolveFromAssignmentWithParameters(
+            initial_solution, search_parameters
+        )
+    else:
+        routing_model.SolveWithParameters(search_parameters)
     end_time = time.time()
     # Update the elapsed time in the solution callback
     solution_callback.elapsed_time = end_time - start_time

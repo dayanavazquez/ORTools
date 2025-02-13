@@ -1,21 +1,15 @@
-from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
 from load_data.instance_type import process_files
 import os
-import time
 from distances.distance_type import DistanceType
 from problems.strategy_type import HeuristicType, MetaheuristicType
-from utils.get_strategies import get_strategies
+from utils.utils import get_distance_and_solution_name, execute_solution
 
 
-def save_solution(data, manager, routing, solution, instance, heuristic, metaheuristic, elapsed_time, i):
+def save_solution(data, manager, routing, solution, instance, heuristic, metaheuristic, elapsed_time, i, distance_type):
     """Saves solution to a file."""
-    if heuristic and not metaheuristic:
-        output_dir = os.path.join(f"problems/vrppd/solutions_vrppd_{i}/solutions_{heuristic}")
-    elif metaheuristic and not heuristic:
-        output_dir = os.path.join(f"problems/vrppd/solutions_vrppd_{i}/solutions_{metaheuristic}")
-    else:
-        output_dir = os.path.join(f"problems/vrppd/solutions_vrppd_{i}/solutions_{heuristic}_&_{metaheuristic}")
+    distance_type, solution_name = get_distance_and_solution_name(distance_type, heuristic, metaheuristic)
+    output_dir = os.path.join(f"problems/{distance_type}/solutions_vrppd_{i}/solutions_{solution_name}")
     try:
         os.makedirs(output_dir, exist_ok=True)
         print(f"Directory {output_dir} created successfully or already exists.")
@@ -30,6 +24,7 @@ def save_solution(data, manager, routing, solution, instance, heuristic, metaheu
             f.write(f"Execution Time: {elapsed_time}\n\n")
             f.write(f"Heuristic: {heuristic}\n\n")
             f.write(f"Metaheuristic: {metaheuristic}\n\n")
+            f.write(f"Distance type: {distance_type}\n\n")
             total_distance = 0
             for vehicle_id in range(data["num_vehicles"]):
                 index = routing.Start(vehicle_id)
@@ -52,8 +47,11 @@ def save_solution(data, manager, routing, solution, instance, heuristic, metaheu
         print(f"Error writing to file {filename}: {error}")
 
 
-def execute(i, instance_type, time_limit, vehicle_maximum_travel_distance, distance_type: DistanceType = None, heuristic: HeuristicType = None,
-            metaheuristic: MetaheuristicType = None):
+def execute(
+    i, instance_type, time_limit, vehicle_maximum_travel_distance, distance_type: DistanceType = None,
+    heuristic: HeuristicType = None,
+    metaheuristic: MetaheuristicType = None, initial_routes = None
+):
     """Entry point of the program."""
     # Instantiate the data problem.
     instances_data = process_files(instance_type, distance_type)
@@ -98,48 +96,6 @@ def execute(i, instance_type, time_limit, vehicle_maximum_travel_distance, dista
                 distance_dimension.CumulVar(pickup_index)
                 <= distance_dimension.CumulVar(delivery_index)
             )
-
-        first_solution_strategies, local_search_metaheuristics = get_strategies(heuristic, metaheuristic)
-        if not first_solution_strategies and local_search_metaheuristics:
-            search_parameters = pywrapcp.DefaultRoutingSearchParameters()
-            search_parameters.local_search_metaheuristic = getattr(
-                routing_enums_pb2.LocalSearchMetaheuristic, local_search_metaheuristics[0]
-            )
-            get_solutions(i, search_parameters, routing, time_limit, data, manager, instance,
-                          local_search_metaheuristics[0])
-        elif not local_search_metaheuristics and first_solution_strategies:
-            search_parameters = pywrapcp.DefaultRoutingSearchParameters()
-            search_parameters.first_solution_strategy = getattr(
-                routing_enums_pb2.FirstSolutionStrategy, first_solution_strategies[0]
-            )
-            get_solutions(i, search_parameters, routing, time_limit, data, manager, instance,
-                          first_solution_strategies[0])
-        else:
-            for first_solution_strategy in first_solution_strategies:
-                for local_search_metaheuristic in local_search_metaheuristics:
-                    search_parameters = pywrapcp.DefaultRoutingSearchParameters()
-                    search_parameters.first_solution_strategy = getattr(
-                        routing_enums_pb2.FirstSolutionStrategy, first_solution_strategy
-                    )
-                    search_parameters.local_search_metaheuristic = getattr(
-                        routing_enums_pb2.LocalSearchMetaheuristic, local_search_metaheuristic
-                    )
-                    get_solutions(i, search_parameters, routing, time_limit, data, manager, instance,
-                                  first_solution_strategy, local_search_metaheuristic)
-
-
-def get_solutions(i, search_parameters, routing, time_limit, data, manager, instance, first_solution_strategy=None,
-                  local_search_metaheuristic=None):
-    search_parameters.time_limit.FromSeconds(time_limit)
-    start_time = time.time()
-    solution = routing.SolveWithParameters(search_parameters)
-    end_time = time.time()  # End timing
-    elapsed_time = end_time - start_time  # Calculate elapsed time
-
-    # Save solution on console.
-    if solution:
-        save_solution(data, manager, routing, solution, instance, first_solution_strategy,
-                              local_search_metaheuristic,
-                              elapsed_time, i)
-    else:
-        print("No solution found !")
+        execute_solution(
+            save_solution, heuristic, metaheuristic, i, distance_type, routing, time_limit, data, manager, instance, initial_routes
+        )

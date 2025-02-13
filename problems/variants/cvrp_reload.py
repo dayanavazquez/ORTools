@@ -329,7 +329,6 @@ def print_solution(data, manager, routing, assignment):  # pylint:disable=too-ma
         plan_output += f'Distance of the route: {distance}m\n'
         plan_output += f'Load of the route: {assignment.Min(load_var)}\n'
         plan_output += f'Time of the route: {assignment.Min(time_var)}min\n'
-        print(plan_output)
         total_distance += distance
         total_load += assignment.Min(load_var)
         total_time += assignment.Min(time_var)

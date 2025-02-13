@@ -17,20 +17,29 @@ from problems.strategy_type import HeuristicType, MetaheuristicType
 # 8. vehicle_speed => velocidad del vehículo (solo para VRPTW, se pone 83.33 km/h por defecto)
 # 9. heuristic => heurística específica que se desea utilizar
 # 10. metaheuristic => metaheurística específica que se desea utilizar
+# 11. initial_routes => rutas iniciales para reoptimizar en tiempo real
 # (si no se elige una heurística ni una metaheurística entonces se ejecutan todas por defecto)
 
 
 
 execute(
-    problem_type=ProblemType.CVRP,
-    instance=InstanceType.BHCVRP,
+    problem_type=ProblemType.MDVRP,
+    instance=InstanceType.MDCVRP,
     distance_type=DistanceType.MANHATTAN,
     time_limit=60,
-    executions=10,
+    executions=1,
     vehicle_maximum_travel_distance=None,
     vehicle_max_time=None,
     vehicle_speed=None,
-    heuristic=HeuristicType.SAVINGS,
-    metaheuristic=None
+    heuristic=HeuristicType.PATH_CHEAPEST_ARC,
+    metaheuristic=MetaheuristicType.GUIDED_LOCAL_SEARCH,
+    initial_routes=[
+        # fmt: off
+        [8, 16, 14, 13, 12, 11],
+        [3, 4, 9, 10],
+        [15, 1],
+        [7, 5, 2, 6],
+        # fmt: on
+    ]
 )
 

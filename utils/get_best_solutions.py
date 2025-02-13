@@ -3,10 +3,19 @@ import re
 import csv
 
 
+def get_cost(data, routes_count, cost_matches):
+    cost = 0
+    for load in data:
+        if load != '0':
+            routes_count += 1
+            if not cost_matches:
+                cost += int(load)
+    return cost, routes_count
+
+
 def extract_info_from_txt(file_path):
     routes_count = 0
     execution_time = 0
-    cost = 0
 
     with open(file_path, 'r') as file:
         content = file.read()
@@ -15,12 +24,12 @@ def extract_info_from_txt(file_path):
         time_match = re.search(r'Execution Time:\s*([\d\.]+)', content)
         load_matches = re.findall(r'Distance of the route:\s*(\d+)', content)
         cost_matches = re.findall(r'Total Distance of all routes:\s*(\d+)', content)
+        other_cost_matches = re.findall(r'Total load of all routes:\s*(\d+)', content)
+        load_route_matches = re.findall(r'Load of the route:\s*(\d+)', content)
         if load_matches:
-            for load in load_matches:
-                if load != '0':
-                    routes_count += 1
-                    if not cost_matches:
-                        cost += int(load)
+            cost, routes_count = get_cost(load_matches, routes_count, cost_matches)
+        if not cost and load_route_matches:
+            cost, routes_count = get_cost(load_route_matches, routes_count, cost_matches)
         if instance_match:
             instance = instance_match.group(1)
         if objective_match:
@@ -32,6 +41,8 @@ def extract_info_from_txt(file_path):
         if objective != 0:
             if cost != objective and cost != 0:
                 objective = cost
+        elif other_cost_matches:
+            objective = other_cost_matches[0]
         return instance, objective, execution_time, routes_count
     return None, None, None, None
 
