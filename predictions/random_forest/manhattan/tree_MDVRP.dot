@@ -1,0 +1,29 @@
+digraph Tree {
+node [shape=box, style="filled, rounded", color="black", fontname="helvetica"] ;
+edge [fontname="helvetica"] ;
+0 [label=<node &#35;0<br/>Demands &le; 14<br/>samples = 100%<br/>value = [0, 0, 0, 0, 0, 0]<br/>class = BEST_INSERTION_and_GREEDY_DESCENT>, fillcolor="#fffefe"] ;
+1 [label=<node &#35;1<br/>Vehicles &le; 3<br/>samples = 49.7%<br/>value = [0, 0, 0, 0, 0, 0]<br/>class = PATH_CHEAPEST_ARC_and_TABU_SEARCH>, fillcolor="#ffffff"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label=<node &#35;2<br/>samples = 16.4%<br/>value = [0, 0, 0, 0, 1, 0]<br/>class = PATH_CHEAPEST_ARC_and_TABU_SEARCH>, fillcolor="#8139e5"] ;
+1 -> 2 ;
+3 [label=<node &#35;3<br/>Demands &le; 13<br/>samples = 33.3%<br/>value = [0, 0, 0, 1, 0, 0]<br/>class = PATH_CHEAPEST_ARC_and_SIMULATED_ANNEALING>, fillcolor="#ffffff"] ;
+1 -> 3 ;
+4 [label=<node &#35;4<br/>samples = 16.9%<br/>value = [0, 0, 0, 1, 0, 0]<br/>class = PATH_CHEAPEST_ARC_and_SIMULATED_ANNEALING>, fillcolor="#399de5"] ;
+3 -> 4 ;
+5 [label=<node &#35;5<br/>samples = 16.5%<br/>value = [0, 0, 0, 0, 0, 1]<br/>class = SEQUENTIAL_CHEAPEST_INSERTION_and_SIMULATED_ANNEALING>, fillcolor="#e5399d"] ;
+3 -> 5 ;
+6 [label=<node &#35;6<br/>Demands &le; 16<br/>samples = 50.3%<br/>value = [0, 0, 0, 0, 0, 0]<br/>class = BEST_INSERTION_and_GREEDY_DESCENT>, fillcolor="#fffdfb"] ;
+0 -> 6 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+7 [label=<node &#35;7<br/>Demands &le; 14<br/>samples = 33.2%<br/>value = [0, 1, 0, 0, 0, 0]<br/>class = PATH_CHEAPEST_ARC_and_GREEDY_DESCENT>, fillcolor="#fefffd"] ;
+6 -> 7 ;
+8 [label=<node &#35;8<br/>Vehicles &le; 3<br/>samples = 22.3%<br/>value = [0, 0, 1, 0, 0, 0]<br/>class = PATH_CHEAPEST_ARC_and_GUIDED_LOCAL_SEARCH>, fillcolor="#7deeac"] ;
+7 -> 8 ;
+9 [label=<node &#35;9<br/>samples = 16.9%<br/>value = [0, 0, 1, 0, 0, 0]<br/>class = PATH_CHEAPEST_ARC_and_GUIDED_LOCAL_SEARCH>, fillcolor="#39e581"] ;
+8 -> 9 ;
+10 [label=<node &#35;10<br/>samples = 5.4%<br/>value = [0, 1, 0, 0, 0, 0]<br/>class = PATH_CHEAPEST_ARC_and_GREEDY_DESCENT>, fillcolor="#9de539"] ;
+8 -> 10 ;
+11 [label=<node &#35;11<br/>samples = 11%<br/>value = [0, 1, 0, 0, 0, 0]<br/>class = PATH_CHEAPEST_ARC_and_GREEDY_DESCENT>, fillcolor="#9de539"] ;
+7 -> 11 ;
+12 [label=<node &#35;12<br/>samples = 17%<br/>value = [1, 0, 0, 0, 0, 0]<br/>class = BEST_INSERTION_and_GREEDY_DESCENT>, fillcolor="#e58139"] ;
+6 -> 12 ;
+}

@@ -3,7 +3,7 @@ from ortools.constraint_solver import pywrapcp
 from load_data.instance_type import process_files
 from distances.distance_type import calculate_distance, DistanceType
 from problems.strategy_type import HeuristicType, MetaheuristicType
-from utils.utils import get_distance_and_solution_name, execute_solution
+from utils.execute_algorithm import get_distance_and_solution_name, execute_solution
 
 
 # [START distance_callback]
@@ -85,5 +85,5 @@ def execute(i, instance_type, time_limit, distance_type: DistanceType = None, he
         # Setting first solution heuristic.
 
         execute_solution(
-            save_solution, heuristic, metaheuristic, i, distance_type, routing, time_limit, data, manager, instance, initial_routes
+            save_solution, heuristic, metaheuristic, i, distance_type, routing, time_limit, data, manager, instance, initial_routes, True
         )

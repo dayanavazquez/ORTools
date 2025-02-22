@@ -1,0 +1,29 @@
+Accuracy: 1.0000
+
+F1 Score: 1.0000
+
+Best Parameters:
+{'bootstrap': True, 'criterion': 'entropy', 'max_depth': 30, 'max_features': 'sqrt', 'min_samples_leaf': 8, 'min_samples_split': 8, 'n_estimators': 221}
+
+Cross-Validation Scores:
+[1. 1. 1. 1. 1.]
+Mean Cross-Validation Accuracy: 1.0000
+
+Classification Report:
+                                               precision    recall  f1-score   support
+
+   LOCAL_CHEAPEST_ARC_and_GENERIC_TABU_SEARCH       1.00      1.00      1.00       135
+LOCAL_CHEAPEST_COST_INSERTION_and_TABU_SEARCH       1.00      1.00      1.00       270
+     LOCAL_CHEAPEST_INSERTION_and_TABU_SEARCH       1.00      1.00      1.00       811
+         PATH_CHEAPEST_ARC_and_GREEDY_DESCENT       1.00      1.00      1.00       353
+              SAVINGS_and_SIMULATED_ANNEALING       1.00      1.00      1.00       502
+
+                                     accuracy                           1.00      2071
+                                    macro avg       1.00      1.00      1.00      2071
+                                 weighted avg       1.00      1.00      1.00      2071
+
+
+Feature Importances:
+ Feature  Importance
+   Nodes    0.545817
+Vehicles    0.454183

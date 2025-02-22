@@ -4,7 +4,7 @@ from load_data.instance_type import process_files
 from distances.distance_type import calculate_distance, DistanceType
 import os
 from problems.strategy_type import HeuristicType, MetaheuristicType
-from utils.utils import get_distance_and_solution_name, execute_solution
+from utils.execute_algorithm import get_distance_and_solution_name, execute_solution
 
 
 def create_distance_evaluator(data, distance_type):
@@ -21,8 +21,14 @@ def create_distance_evaluator(data, distance_type):
             elif from_node in range(6) and to_node in range(6):
                 _distances[from_node][to_node] = data['vehicle_max_distance']
             else:
-                _distances[from_node][to_node] = (calculate_distance(
-                    data['locations'][from_node], data['locations'][to_node], distance_type=distance_type))
+                _distances[from_node][to_node] = (
+                    calculate_distance(
+                        point_1=data['locations'][from_node],
+                        point_2=data['locations'][to_node],
+                        distance_type=distance_type,
+                        integer=True
+                    )
+                )
 
     def distance_evaluator(manager, from_node, to_node):
         """Returns the distance between the two nodes"""
@@ -93,8 +99,10 @@ def create_time_evaluator(data, distance_type):
             travel_time = 0
         else:
             travel_time = calculate_distance(
-                data['locations'][from_node],
-                data['locations'][to_node], distance_type=distance_type) / data['vehicle_speed']
+                point_1=data['locations'][from_node],
+                point_2=data['locations'][to_node],
+                distance_type=distance_type
+            ) / data['vehicle_speed']
         return travel_time
 
     _total_time = {}
@@ -224,10 +232,10 @@ def save_solution(data, manager, routing, assignment, instance, heuristic, metah
 def execute(
         i, instance_type, time_limit, vehicle_maximum_travel_distance=None, vehicle_max_time=None,
         vehicle_speed=None, distance_type: DistanceType = None, heuristic: HeuristicType = None,
-        metaheuristic: MetaheuristicType = None, initial_routes = None
+        metaheuristic: MetaheuristicType = None, initial_routes=None
 ):
     # Instantiate the data problem.
-    instances_data = process_files(instance_type, vehicle_max_time, vehicle_speed, vehicle_maximum_travel_distance)
+    instances_data = process_files(instance_type, distance_type, vehicle_max_time, vehicle_speed, vehicle_maximum_travel_distance)
     for instance, data in instances_data.items():
         # Create the routing index manager
         manager = pywrapcp.RoutingIndexManager(data['num_locations'],
@@ -253,5 +261,6 @@ def execute(
             partial(create_time_evaluator(data, distance_type), manager))
         add_time_window_constraints(routing, manager, data, time_evaluator_index)
         execute_solution(
-            save_solution, heuristic, metaheuristic, i, distance_type, routing, time_limit, data, manager, instance, initial_routes
+            save_solution, heuristic, metaheuristic, i, distance_type, routing, time_limit, data, manager, instance,
+            initial_routes
         )

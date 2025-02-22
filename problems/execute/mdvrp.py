@@ -4,7 +4,7 @@ from load_data.instance_type import process_files
 import os
 from distances.distance_type import DistanceType
 from problems.strategy_type import HeuristicType, MetaheuristicType
-from utils.utils import get_distance_and_solution_name, execute_solution
+from utils.execute_algorithm import get_distance_and_solution_name, execute_solution
 
 
 def save_solution(data, manager, routing, solution, instance, heuristic, metaheuristic, elapsed_time, i, distance_type):

@@ -1,0 +1,41 @@
+Accuracy: 0.6559
+
+F1 Score: 0.6069
+
+Best Parameters:
+{'bootstrap': True, 'criterion': 'entropy', 'max_depth': 30, 'max_features': 'sqrt', 'min_samples_leaf': 8, 'min_samples_split': 8, 'n_estimators': 221}
+
+Cross-Validation Scores:
+[0.6218018  0.65189189 0.62198198 0.61927928 0.64720721]
+Mean Cross-Validation Accuracy: 0.6324
+
+Classification Report:
+                                                       precision    recall  f1-score   support
+
+              ALL_UNPERFORMED_and_GUIDED_LOCAL_SEARCH       0.50      1.00      0.67       253
+                 CHRISTOFIDES_and_GUIDED_LOCAL_SEARCH       0.00      0.00      0.00       209
+           EVALUATOR_STRATEGY_and_GENERIC_TABU_SEARCH       0.00      0.00      0.00       233
+           EVALUATOR_STRATEGY_and_SIMULATED_ANNEALING       0.00      0.00      0.00       251
+          GLOBAL_CHEAPEST_ARC_and_SIMULATED_ANNEALING       0.00      0.00      0.00       230
+          LOCAL_CHEAPEST_INSERTION_and_GREEDY_DESCENT       0.00      0.00      0.00       214
+  PARALLEL_CHEAPEST_INSERTION_and_GENERIC_TABU_SEARCH       0.21      1.00      0.34       458
+                 PATH_CHEAPEST_ARC_and_GREEDY_DESCENT       0.53      1.00      0.70       230
+            PATH_CHEAPEST_ARC_and_GUIDED_LOCAL_SEARCH       1.00      0.92      0.96      2465
+            PATH_CHEAPEST_ARC_and_SIMULATED_ANNEALING       1.00      0.86      0.93      1599
+         PATH_MOST_CONSTRAINED_ARC_and_GREEDY_DESCENT       0.00      0.00      0.00       238
+    PATH_MOST_CONSTRAINED_ARC_and_GUIDED_LOCAL_SEARCH       1.00      0.52      0.68       416
+            PATH_MOST_CONSTRAINED_ARC_and_TABU_SEARCH       0.00      0.00      0.00       675
+                      SAVINGS_and_GENERIC_TABU_SEARCH       0.49      1.00      0.66       229
+                      SAVINGS_and_SIMULATED_ANNEALING       0.49      1.00      0.66       195
+SEQUENTIAL_CHEAPEST_INSERTION_and_GUIDED_LOCAL_SEARCH       0.52      1.00      0.69       239
+                             SWEEP_and_GREEDY_DESCENT       0.00      0.00      0.00       191
+
+                                             accuracy                           0.66      8325
+                                            macro avg       0.34      0.49      0.37      8325
+                                         weighted avg       0.62      0.66      0.61      8325
+
+
+Feature Importances:
+          Feature  Importance
+          Demands    0.563277
+Vehicles Capacity    0.436723

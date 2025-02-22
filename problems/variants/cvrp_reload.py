@@ -1,52 +1,10 @@
-#!/usr/bin/env python3
-# This Python file uses the following encoding: utf-8
-# Copyright 2015 Tin Arm Engineering AB
-# Copyright 2018 Google LLC
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-"""Capacitated Vehicle Routing Problem (CVRP).
-
-   This is a sample using the routing library python wrapper to solve a CVRP
-   problem while allowing multiple trips, i.e., vehicles can return to a depot
-   to reset their load ("reload").
-
-   A description of the CVRP problem can be found here:
-   http://en.wikipedia.org/wiki/Vehicle_routing_problem.
-
-   Distances are in meters.
-
-   In order to implement multiple trips, new nodes are introduced at the same
-   locations of the original depots. These additional nodes can be dropped
-   from the schedule at 0 cost.
-
-   The max_slack parameter associated to the capacity constraints of all nodes
-   can be set to be the maximum of the vehicles' capacities, rather than 0 like
-   in a traditional CVRP. Slack is required since before a solution is found,
-   it is not known how much capacity will be transferred at the new nodes. For
-   all the other (original) nodes, the slack is then re-set to 0.
-
-   The above two considerations are implemented in `add_capacity_constraints()`.
-
-   Last, it is useful to set a large distance between the initial depot and the
-   new nodes introduced, to avoid schedules having spurious transits through
-   those new nodes unless it's necessary to reload. This consideration is taken
-   into account in `create_distance_evaluator()`.
-"""
-
 from functools import partial
-
+from distances.distance_type import calculate_distance, DistanceType
+import os
+from problems.strategy_type import HeuristicType, MetaheuristicType
 from ortools.constraint_solver import pywrapcp
-from ortools.constraint_solver import routing_enums_pb2
-
+from utils.execute_algorithm import get_distance_and_solution_name, execute_solution
+from load_data.instance_type import process_files
 
 ###########################
 # Problem Data Definition #
@@ -87,36 +45,36 @@ def create_data_model():
     data['locations'] = [(l[0] * 114, l[1] * 80) for l in _locations]
     data['num_locations'] = len(data['locations'])
     data['demands'] = \
-          [0, # depot
-           -_capacity, # unload depot_first
-           -_capacity, # unload depot_second
-           -_capacity, # unload depot_third
-           -_capacity, # unload depot_fourth
-           -_capacity, # unload depot_fifth
-           3, 3, # 1, 2
-           3, 4, # 3, 4
-           3, 4, # 5, 6
-           8, 8, # 7, 8
-           3, 3, # 9,10
-           3, 3, # 11,12
-           4, 4, # 13, 14
-           8, 8] # 15, 16
+        [0,  # depot
+         -_capacity,  # unload depot_first
+         -_capacity,  # unload depot_second
+         -_capacity,  # unload depot_third
+         -_capacity,  # unload depot_fourth
+         -_capacity,  # unload depot_fifth
+         3, 3,  # 1, 2
+         3, 4,  # 3, 4
+         3, 4,  # 5, 6
+         8, 8,  # 7, 8
+         3, 3,  # 9,10
+         3, 3,  # 11,12
+         4, 4,  # 13, 14
+         8, 8]  # 15, 16
     data['time_per_demand_unit'] = 5  # 5 minutes/unit
     data['time_windows'] = \
-          [(0, 0), # depot
-           (0, 1000), # unload depot_first
-           (0, 1000), # unload depot_second
-           (0, 1000), # unload depot_third
-           (0, 1000), # unload depot_fourth
-           (0, 1000), # unload depot_fifth
-           (75, 850), (75, 850), # 1, 2
-           (60, 700), (45, 550), # 3, 4
-           (0, 800), (50, 600), # 5, 6
-           (0, 1000), (10, 200), # 7, 8
-           (0, 1000), (75, 850), # 9, 10
-           (85, 950), (5, 150), # 11, 12
-           (15, 250), (10, 200), # 13, 14
-           (45, 550), (30, 400)] # 15, 16
+        [(0, 0),  # depot
+         (0, 1000),  # unload depot_first
+         (0, 1000),  # unload depot_second
+         (0, 1000),  # unload depot_third
+         (0, 1000),  # unload depot_fourth
+         (0, 1000),  # unload depot_fifth
+         (75, 850), (75, 850),  # 1, 2
+         (60, 700), (45, 550),  # 3, 4
+         (0, 800), (50, 600),  # 5, 6
+         (0, 1000), (10, 200),  # 7, 8
+         (0, 1000), (75, 850),  # 9, 10
+         (85, 950), (5, 150),  # 11, 12
+         (15, 250), (10, 200),  # 13, 14
+         (45, 550), (30, 400)]  # 15, 16
     data['num_vehicles'] = 3
     data['vehicle_capacity'] = _capacity
     data['vehicle_max_distance'] = 10_000
@@ -125,6 +83,79 @@ def create_data_model():
         'vehicle_speed'] = 5 * 60 / 3.6  # Travel speed: 5km/h to convert in m/min
     data['depot'] = 0
     return data
+
+def save_solution(data, manager, routing, assignment, instance, heuristic, metaheuristic, elapsed_time, i,
+                  distance_type):
+    """Prints assignment on console"""
+    distance_type, solution_name = get_distance_and_solution_name(distance_type, heuristic, metaheuristic)
+    output_dir = os.path.join(f"problems/{distance_type}/solutions_vrptw_{i}/solutions_{solution_name}")
+    try:
+        os.makedirs(output_dir, exist_ok=True)
+        print(f"Directory {output_dir} created successfully or already exists.")
+    except OSError as error:
+        print(f"Error creating directory {output_dir}: {error}")
+        return
+    filename = os.path.join(output_dir, f'{instance}')
+    try:
+        with open(filename, 'w') as f:
+            f.write(f'Instance: {instance}\n\n')
+            f.write(f'Objective: {assignment.ObjectiveValue()}\n\n')
+            f.write(f"Execution Time: {elapsed_time}\n\n")
+            f.write(f"Heuristic: {heuristic}\n\n")
+            f.write(f"Metaheuristic: {metaheuristic}\n\n")
+            f.write(f"Distance type: {distance_type}\n\n")
+            total_distance = 0
+            total_load = 0
+            total_time = 0
+            capacity_dimension = routing.GetDimensionOrDie('Capacity')
+            time_dimension = routing.GetDimensionOrDie('Time')
+            dropped = []
+            for order in range(6, routing.nodes()):
+                index = manager.NodeToIndex(order)
+                if assignment.Value(routing.NextVar(index)) == index:
+                    dropped.append(order)
+            f.write(f'dropped orders: {dropped}\n\n')
+            for reload in range(1, 6):
+                index = manager.NodeToIndex(reload)
+                if assignment.Value(routing.NextVar(index)) == index:
+                    dropped.append(reload)
+            f.write(f'dropped reload stations: {dropped}\n\n')
+
+            for vehicle_id in range(data['num_vehicles']):
+                index = routing.Start(vehicle_id)
+                plan_output = f'Route for vehicle {vehicle_id}:\n'
+                distance = 0
+                while not routing.IsEnd(index):
+                    load_var = capacity_dimension.CumulVar(index)
+                    time_var = time_dimension.CumulVar(index)
+                    plan_output += (
+                        f' {manager.IndexToNode(index)} '
+                        f'Load({assignment.Min(load_var)}) '
+                        f'Time({assignment.Min(time_var)},{assignment.Max(time_var)}) ->'
+                    )
+                    previous_index = index
+                    index = assignment.Value(routing.NextVar(index))
+                    distance += routing.GetArcCostForVehicle(previous_index, index,
+                                                             vehicle_id)
+                load_var = capacity_dimension.CumulVar(index)
+                time_var = time_dimension.CumulVar(index)
+                plan_output += (
+                    f' {manager.IndexToNode(index)} '
+                    f'Load({assignment.Min(load_var)}) '
+                    f'Time({assignment.Min(time_var)},{assignment.Max(time_var)})\n')
+                plan_output += f'Distance of the route: {distance}m\n'
+                plan_output += f'Load of the route: {assignment.Min(load_var)}\n'
+                plan_output += f'Time of the route: {assignment.Min(time_var)}min\n\n'
+                f.write(plan_output)
+                total_distance += distance
+                total_load += assignment.Min(load_var)
+                total_time += assignment.Min(time_var)
+            f.write(f'Total Distance of all routes: {total_distance}m\n\n')
+            f.write(f'Total Load of all routes: {total_load}\n\n')
+            f.write(f'Total Time of all routes: {total_time}min\n\n')
+        print(f"Solution saved successfully in {filename}")
+    except OSError as error:
+        print(f"Error writing to file {filename}: {error}")
 
 
 #######################
@@ -136,7 +167,7 @@ def manhattan_distance(position_1, position_2):
             abs(position_1[1] - position_2[1]))
 
 
-def create_distance_evaluator(data):
+def create_distance_evaluator(data, distance_type=None):
     """Creates callback to return distance between points."""
     _distances = {}
     # precompute distance between location to have distance callback in O(1)
@@ -149,8 +180,8 @@ def create_distance_evaluator(data):
             elif from_node in range(6) and to_node in range(6):
                 _distances[from_node][to_node] = data['vehicle_max_distance']
             else:
-                _distances[from_node][to_node] = (manhattan_distance(
-                    data['locations'][from_node], data['locations'][to_node]))
+                _distances[from_node][to_node] = (calculate_distance(
+                    data['locations'][from_node], data['locations'][to_node], distance_type=distance_type))
 
     def distance_evaluator(manager, from_node, to_node):
         """Returns the manhattan distance between the two nodes"""
@@ -278,7 +309,7 @@ def add_time_window_constraints(routing, manager, data, time_evaluator):
                                                 data['time_windows'][0][1])
         routing.AddToAssignment(time_dimension.SlackVar(index))
         # Warning: Slack var is not defined for vehicle's end node
-        #routing.AddToAssignment(time_dimension.SlackVar(self.routing.End(vehicle_id)))
+        # routing.AddToAssignment(time_dimension.SlackVar(self.routing.End(vehicle_id)))
 
 
 ###########
@@ -340,51 +371,43 @@ def print_solution(data, manager, routing, assignment):  # pylint:disable=too-ma
 ########
 # Main #
 ########
-def main():
+def execute(
+        i, instance_type, time_limit, vehicle_maximum_travel_distance=None, vehicle_max_time=None,
+        vehicle_speed=None, distance_type: DistanceType = None, heuristic: HeuristicType = None,
+        metaheuristic: MetaheuristicType = None, initial_routes=None, time_per_demand_unit=None
+):
     """Entry point of the program"""
     # Instantiate the data problem.
-    data = create_data_model()
+    instances_data = process_files(instance_type, distance_type, vehicle_max_time, vehicle_speed,
+                                   vehicle_maximum_travel_distance, time_per_demand_unit)
+    for instance, data in instances_data.items():
 
-    # Create the routing index manager
-    manager = pywrapcp.RoutingIndexManager(data['num_locations'],
-                                           data['num_vehicles'], data['depot'])
+        # Create the routing index manager
+        manager = pywrapcp.RoutingIndexManager(data['num_locations'],
+                                               data['num_vehicles'], data['depot'])
 
-    # Create Routing Model
-    routing = pywrapcp.RoutingModel(manager)
+        # Create Routing Model
+        routing = pywrapcp.RoutingModel(manager)
 
-    # Define weight of each edge
-    distance_evaluator_index = routing.RegisterTransitCallback(
-        partial(create_distance_evaluator(data), manager))
-    routing.SetArcCostEvaluatorOfAllVehicles(distance_evaluator_index)
+        # Define weight of each edge
+        distance_evaluator_index = routing.RegisterTransitCallback(
+            partial(create_distance_evaluator(data, distance_type), manager))
+        routing.SetArcCostEvaluatorOfAllVehicles(distance_evaluator_index)
 
-    # Add Distance constraint to minimize the longuest route
-    add_distance_dimension(routing, manager, data, distance_evaluator_index)
+        # Add Distance constraint to minimize the longuest route
+        add_distance_dimension(routing, manager, data, distance_evaluator_index)
 
-    # Add Capacity constraint
-    demand_evaluator_index = routing.RegisterUnaryTransitCallback(
-        partial(create_demand_evaluator(data), manager))
-    add_capacity_constraints(routing, manager, data, demand_evaluator_index)
+        # Add Capacity constraint
+        demand_evaluator_index = routing.RegisterUnaryTransitCallback(
+            partial(create_demand_evaluator(data), manager))
+        add_capacity_constraints(routing, manager, data, demand_evaluator_index)
 
-    # Add Time Window constraint
-    time_evaluator_index = routing.RegisterTransitCallback(
-        partial(create_time_evaluator(data), manager))
-    add_time_window_constraints(routing, manager, data, time_evaluator_index)
+        # Add Time Window constraint
+        time_evaluator_index = routing.RegisterTransitCallback(
+            partial(create_time_evaluator(data), manager))
+        add_time_window_constraints(routing, manager, data, time_evaluator_index)
 
-    # Setting first solution heuristic (cheapest addition).
-    search_parameters = pywrapcp.DefaultRoutingSearchParameters()
-    search_parameters.first_solution_strategy = (
-        routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC)  # pylint: disable=no-member
-    search_parameters.local_search_metaheuristic = (
-        routing_enums_pb2.LocalSearchMetaheuristic.GUIDED_LOCAL_SEARCH)
-    search_parameters.time_limit.FromSeconds(3)
-
-    # Solve the problem.
-    solution = routing.SolveWithParameters(search_parameters)
-    if solution:
-        print_solution(data, manager, routing, solution)
-    else:
-        print("No solution found !")
-
-
-if __name__ == '__main__':
-    main()
+        execute_solution(
+            save_solution, heuristic, metaheuristic, i, distance_type, routing, time_limit, data, manager, instance,
+            initial_routes
+        )

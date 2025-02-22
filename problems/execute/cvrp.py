@@ -2,7 +2,7 @@ from ortools.constraint_solver import pywrapcp
 from problems.strategy_type import HeuristicType, MetaheuristicType
 from distances.distance_type import DistanceType
 from load_data.instance_type import process_files
-from utils.utils import get_distance_and_solution_name, execute_solution
+from utils.execute_algorithm import get_distance_and_solution_name, execute_solution
 import os
 
 
@@ -87,9 +87,9 @@ def execute(i, instance_type, time_limit, distance_type: DistanceType = None, he
         def demand_callback(from_index):
             """Returns the demand of the node."""
             # Convert from routing variable Index to demands NodeIndex.
-            from_index = int(from_index)
             from_node = manager.IndexToNode(from_index)
-            return data["demands"][from_node]
+            demands = [int(route) for route in data["demands"]]
+            return demands[from_node]
 
         demand_callback_index = routing.RegisterUnaryTransitCallback(demand_callback)
         routing.AddDimensionWithVehicleCapacity(

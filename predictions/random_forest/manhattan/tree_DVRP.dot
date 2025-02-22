@@ -1,0 +1,33 @@
+digraph Tree {
+node [shape=box, style="filled, rounded", color="black", fontname="helvetica"] ;
+edge [fontname="helvetica"] ;
+0 [label=<node &#35;0<br/>Nodes &le; 53<br/>samples = 100%<br/>value = [0, 0, 0, 0, 0, 0, 0]<br/>class = SAVINGS_and_SIMULATED_ANNEALING>, fillcolor="#fffeff"] ;
+1 [label=<node &#35;1<br/>Demands &le; 14<br/>samples = 42.9%<br/>value = [0, 0, 0, 0, 0, 0, 0]<br/>class = LOCAL_CHEAPEST_ARC_and_GENERIC_TABU_SEARCH>, fillcolor="#fffffe"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label=<node &#35;2<br/>samples = 14.5%<br/>value = [0, 0, 0, 0, 0, 0, 1]<br/>class = SAVINGS_and_TABU_SEARCH>, fillcolor="#e53986"] ;
+1 -> 2 ;
+3 [label=<node &#35;3<br/>Nodes &le; 34<br/>samples = 28.4%<br/>value = [0, 1, 0, 0, 0, 0, 0]<br/>class = LOCAL_CHEAPEST_ARC_and_GENERIC_TABU_SEARCH>, fillcolor="#fdfefa"] ;
+1 -> 3 ;
+4 [label=<node &#35;4<br/>samples = 14.3%<br/>value = [0, 0, 0, 0, 1, 0, 0]<br/>class = PARALLEL_CHEAPEST_INSERTION_and_TABU_SEARCH>, fillcolor="#3956e5"] ;
+3 -> 4 ;
+5 [label=<node &#35;5<br/>samples = 14.1%<br/>value = [0, 1, 0, 0, 0, 0, 0]<br/>class = LOCAL_CHEAPEST_ARC_and_GENERIC_TABU_SEARCH>, fillcolor="#b7e539"] ;
+3 -> 5 ;
+6 [label=<node &#35;6<br/>Nodes &le; 103<br/>samples = 57.1%<br/>value = [0, 0, 0, 0, 0, 0, 0]<br/>class = SAVINGS_and_SIMULATED_ANNEALING>, fillcolor="#fefcff"] ;
+0 -> 6 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+7 [label=<node &#35;7<br/>Nodes &le; 65<br/>samples = 28%<br/>value = [1, 0, 0, 0, 0, 0, 0]<br/>class = CHRISTOFIDES_and_GREEDY_DESCENT>, fillcolor="#fffefd"] ;
+6 -> 7 ;
+8 [label=<node &#35;8<br/>samples = 12.2%<br/>value = [0, 0, 1, 0, 0, 0, 0]<br/>class = LOCAL_CHEAPEST_COST_INSERTION_and_TABU_SEARCH>, fillcolor="#39e54d"] ;
+7 -> 8 ;
+9 [label=<node &#35;9<br/>Demands &le; 16<br/>samples = 15.8%<br/>value = [1, 0, 0, 0, 0, 0, 0]<br/>class = CHRISTOFIDES_and_GREEDY_DESCENT>, fillcolor="#e89050"] ;
+7 -> 9 ;
+10 [label=<node &#35;10<br/>samples = 2.6%<br/>value = [0, 0, 1, 0, 0, 0, 0]<br/>class = LOCAL_CHEAPEST_COST_INSERTION_and_TABU_SEARCH>, fillcolor="#aaf4b3"] ;
+9 -> 10 ;
+11 [label=<node &#35;11<br/>samples = 13.2%<br/>value = [1, 0, 0, 0, 0, 0, 0]<br/>class = CHRISTOFIDES_and_GREEDY_DESCENT>, fillcolor="#e58139"] ;
+9 -> 11 ;
+12 [label=<node &#35;12<br/>Nodes &le; 127<br/>samples = 29.2%<br/>value = [0, 0, 0, 0, 0, 1, 0]<br/>class = SAVINGS_and_SIMULATED_ANNEALING>, fillcolor="#fcf8fe"] ;
+6 -> 12 ;
+13 [label=<node &#35;13<br/>samples = 14.6%<br/>value = [0, 0, 0, 1, 0, 0, 0]<br/>class = LOCAL_CHEAPEST_INSERTION_and_TABU_SEARCH>, fillcolor="#39e5e2"] ;
+12 -> 13 ;
+14 [label=<node &#35;14<br/>samples = 14.6%<br/>value = [0, 0, 0, 0, 0, 1, 0]<br/>class = SAVINGS_and_SIMULATED_ANNEALING>, fillcolor="#b139e5"] ;
+12 -> 14 ;
+}

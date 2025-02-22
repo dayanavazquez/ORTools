@@ -1,13 +1,12 @@
 from enum import Enum
 from problems.strategy_type import HeuristicType, MetaheuristicType
 from distances.distance_type import DistanceType
-from problems.execute import cvrp, dvrp, mdvrp, vrppd, vrptw, tsp
+from problems.execute import cvrp, mdvrp, vrppd, vrptw, tsp
 
 
 class ProblemType(Enum):
-    CVRP = 'manhattan'
+    CVRP = 'cvrp'
     VRPTW = 'vrptw'
-    DVRP = 'dvrp'
     TSP = 'tsp'
     MDVRP = 'mdvrp'
     VRPPD = 'vrppd'
@@ -16,7 +15,8 @@ class ProblemType(Enum):
 def execute(
         problem_type: ProblemType, instance, distance_type: DistanceType = None,
         time_limit=None, executions=None, vehicle_maximum_travel_distance=None, vehicle_max_time=None,
-        vehicle_speed=None, heuristic: HeuristicType = None, metaheuristic: MetaheuristicType = None, initial_routes=None
+        vehicle_speed=None, heuristic: HeuristicType = None, metaheuristic: MetaheuristicType = None,
+        initial_routes=None
 ):
     if not executions:
         executions = 1
@@ -38,9 +38,6 @@ def execute_problem(
 ):
     if problem_type == ProblemType.CVRP:
         return cvrp.execute(i, instance, time_limit, distance_type, heuristic, metaheuristic, initial_routes)
-    if problem_type == ProblemType.DVRP:
-        return dvrp.execute(i, instance, time_limit, vehicle_maximum_travel_distance, distance_type, heuristic,
-                            metaheuristic, initial_routes)
     if problem_type == ProblemType.TSP:
         return tsp.execute(i, instance, time_limit, distance_type, heuristic, metaheuristic, initial_routes)
     if problem_type == ProblemType.VRPTW:

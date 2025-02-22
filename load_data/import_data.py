@@ -32,6 +32,7 @@ def process_string_instance(instance_string, distance_type: DistanceType = None,
                             vehicle_maximum_travel_distance)
     return {os.path.basename(instance_string): data}
 
+
 #######################
 # DATA BSS
 #######################
@@ -78,6 +79,7 @@ def read_file_tsp(file, distance_type: DistanceType = None, vehicle_max_time=Non
             locations.append((x_coord, y_coord))
     return {
         "locations": locations,
+        "num_locations": len(locations),
         "num_vehicles": 1,
         "depot": 0
     }
@@ -203,7 +205,7 @@ def read_file_bh(file, distance_type: DistanceType = None, vehicle_max_time=None
                 demand = float(data[3]) if data[3] else 0
                 demands.append(demand)
                 num_locations += 1
-    result = create_pd(num_locations, locations, distance_type)
+    result = create_pd(num_locations, locations, distance_type, integer=True)
     return {"distance_matrix": result['distance_matrix'], "num_vehicles": num_vehicles,
             "vehicle_capacities": capacities,
             "demands": demands, "depot": 0, "pickups_deliveries": result['pickups_deliveries']}
@@ -247,7 +249,7 @@ def read_file_tw(file_path, distance_type: DistanceType = None, vehicle_max_time
     }
 
 
-def create_pd(num_locations, locations, distance_type):
+def create_pd(num_locations, locations, distance_type, integer=False):
     all_ids = list(range(num_locations))
     all_ids.remove(0)
     random.shuffle(all_ids)
@@ -261,7 +263,7 @@ def create_pd(num_locations, locations, distance_type):
             if i == j:
                 row.append(0)
             else:
-                distance = calculate_distance(coord1, coord2, distance_type)
+                distance = calculate_distance(coord1, coord2, distance_type, integer)
                 row.append(distance)
         distance_matrix.append(row)
     return {'pickups_deliveries': pickups_deliveries, 'distance_matrix': distance_matrix}

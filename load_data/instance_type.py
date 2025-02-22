@@ -14,33 +14,33 @@ class InstanceType(Enum):
     HFVRP = 'hfvrp'
 
 
-def process_files(instance_type, distance_type: DistanceType = None, vehicle_max_time=None, vehicle_speed=None, vehicle_maximum_travel_distance=None):
+def process_files(instance_type, distance_type: DistanceType = None, vehicle_max_time=None, vehicle_speed=None, vehicle_maximum_travel_distance=None, path=None):
     if isinstance(instance_type, str) and (instance_type.endswith('.txt') or instance_type.endswith('.json')):
         return process_string_instance(instance_type, distance_type, vehicle_max_time, vehicle_speed, vehicle_maximum_travel_distance)
     problem_data = {
         InstanceType.TSP: {
             'read_function': read_file_tsp,
-            'path': ['./instances/tsp_instances']
+            'path': path if path else ['./instances/tsp_instances']
         },
         InstanceType.BHCVRP: {
             'read_function': read_file_bh,
-            'path': ['./instances/bhcvrp_instances']
+            'path': path if path else ['./instances/bhcvrp_instances']
         },
         InstanceType.MDCVRP: {
             'read_function': read_file_md,
-            'path': ['./instances/mdcvrp_instances/C-mdvrp']
+            'path': path if path else ['./instances/mdcvrp_instances/C-mdvrp']
         },
         InstanceType.VRPTW: {
             'read_function': read_file_tw,
-            'path': ['./instances/vrptw_instances']
+            'path': path if path else ['./instances/vrptw_instances']
         },
         InstanceType.BSS: {
             'read_function': read_file_bss,
-            'path': ['./instances/bss_instances']
+            'path': path if path else ['./instances/bss_instances']
         },
         InstanceType.HFVRP: {
             'read_function': read_file_hf,
-            'path': ['./instances/hfvrp_instances']
+            'path': path if path else ['./instances/hfvrp_instances']
         },
     }
     total_data = {}
@@ -58,4 +58,4 @@ def process_files(instance_type, distance_type: DistanceType = None, vehicle_max
                     route = os.path.join(directory, file)
                     data = read_function(route, distance_type, vehicle_max_time, vehicle_speed, vehicle_maximum_travel_distance)
                     total_data[file] = data
-        return total_data
+    return total_data

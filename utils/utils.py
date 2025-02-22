@@ -1,83 +1,121 @@
-import time
-from utils.get_strategies import get_strategies
-from ortools.constraint_solver import routing_enums_pb2
-from ortools.constraint_solver import pywrapcp
+from distances.distance_type import DistanceType
+from problems.problem_type import ProblemType
+from load_data.instance_type import process_files, InstanceType
+
+problems_data = [
+    {
+        "instance_type": InstanceType.TSP,
+        "problem_type": ProblemType.TSP,
+        "distance_type": DistanceType.EUCLIDEAN,
+        "path": ['../../instances/tsp_instances']
+    },
+    {
+        "instance_type": InstanceType.BHCVRP,
+        "problem_type": ProblemType.CVRP,
+        "distance_type": DistanceType.EUCLIDEAN,
+        "path": ['../../instances/bhcvrp_instances']
+    },
+    {
+        "instance_type": InstanceType.HFVRP,
+        "problem_type": ProblemType.CVRP,
+        "distance_type": DistanceType.EUCLIDEAN,
+        "path": ['../../instances/hfvrp_instances']
+    },
+    {
+        "instance_type": InstanceType.VRPTW,
+        "problem_type": ProblemType.CVRP,
+        "distance_type": DistanceType.EUCLIDEAN,
+        "path": ['../../instances/vrptw_instances']
+    },
+    {
+        "instance_type": InstanceType.VRPTW,
+        "problem_type": ProblemType.VRPTW,
+        "distance_type": DistanceType.EUCLIDEAN,
+        "path": ['../../instances/vrptw_instances']
+    },
+    {
+        "instance_type": InstanceType.VRPTW,
+        "problem_type": ProblemType.VRPTW,
+        "distance_type": DistanceType.EUCLIDEAN,
+        "path": ['../../instances/vrptw_instances']
+    },
+    {
+        "instance_type": InstanceType.MDCVRP,
+        "problem_type": ProblemType.MDVRP,
+        "distance_type": DistanceType.EUCLIDEAN,
+        "path": ['../../instances/mdcvrp_instances/C-mdvrp']
+    },
+    {
+        "instance_type": InstanceType.BHCVRP,
+        "problem_type": ProblemType.VRPPD,
+        "distance_type": DistanceType.EUCLIDEAN,
+        "path": ['../../instances/bhcvrp_instances']
+    },
+    {
+        "instance_type": InstanceType.MDCVRP,
+        "problem_type": ProblemType.VRPPD,
+        "distance_type": DistanceType.EUCLIDEAN,
+        "path": ['../../instances/mdcvrp_instances/C-mdvrp']
+    }
+]
 
 
-def get_distance_and_solution_name(distance_type, heuristic, metaheuristic):
-    distance_type = distance_type.value if distance_type else "manhattan"
-    solution_name = heuristic if heuristic and not metaheuristic else metaheuristic if metaheuristic and not heuristic else f"{heuristic}_&_{metaheuristic}"
-    return distance_type, solution_name
+def get_data_for_predictions():
+    results = {
+        "CVRP": {
+            "Instance": [],
+            "Vehicles": [],
+            "Vehicles Capacity": [],
+            "Demands": [],
+            "Nodes": [],
+            "Objective": [],
+            "Method": [],
+            "Time": [],
+            "Routes": []
+        },
+        "VRPTW": {
+            "Instance": [],
+            "Vehicles": [],
+            "Vehicles Capacity": [],
+            "Demands": [],
+            "Nodes": [],
+            "Objective": [],
+            "Method": [],
+            "Time": [],
+            "Routes": []
+        },
 
+    }
 
-def get_solutions(
-        initial_routes, save_solution, i, distance_type, search_parameters, routing, time_limit, data, manager,
-        instance,
-        first_solution_strategy=None,
-        local_search_metaheuristic=None
-):
-    try:
-        search_parameters.time_limit.FromSeconds(time_limit)
-        start_time = time.time()
-        if initial_routes:
-            filtered_routes = [route for route in initial_routes if len(route) > 2]
-            print("Initial Routes:", filtered_routes)
-            initial_solution = routing.ReadAssignmentFromRoutes(filtered_routes, True)
-            solution = routing.SolveFromAssignmentWithParameters(
-                initial_solution, search_parameters
-            )
-        else:
-            solution = routing.SolveWithParameters(search_parameters)
-        end_time = time.time()
-        elapsed_time = end_time - start_time
-        if solution:
-            save_solution(
-                data, manager, routing, solution, instance, first_solution_strategy,
-                local_search_metaheuristic,
-                elapsed_time, i, distance_type)
-        else:
-            print("No solution found !")
-    except OSError as error:
-        print(f"Error writing in the initial routes {initial_routes}: {error}")
-
-
-def execute_solution(
-        save_solution, heuristic, metaheuristic, i, distance_type, routing, time_limit, data, manager, instance,
-        initial_routes
-):
-    first_solution_strategies, local_search_metaheuristics = get_strategies(heuristic, metaheuristic)
-    if not first_solution_strategies and local_search_metaheuristics:
-        search_parameters = pywrapcp.DefaultRoutingSearchParameters()
-        search_parameters.local_search_metaheuristic = getattr(
-            routing_enums_pb2.LocalSearchMetaheuristic, local_search_metaheuristics[0]
-        )
-        get_solutions(
-            initial_routes, save_solution, i, distance_type, search_parameters, routing, time_limit, data, manager,
-            instance,
-            local_search_metaheuristics[0]
-        )
-    elif not local_search_metaheuristics and first_solution_strategies:
-        search_parameters = pywrapcp.DefaultRoutingSearchParameters()
-        search_parameters.first_solution_strategy = getattr(
-            routing_enums_pb2.FirstSolutionStrategy, first_solution_strategies[0]
-        )
-        get_solutions(
-            initial_routes, save_solution, i, distance_type, search_parameters, routing, time_limit, data, manager,
-            instance,
-            first_solution_strategies[0]
-        )
-    else:
-        for first_solution_strategy in first_solution_strategies:
-            for local_search_metaheuristic in local_search_metaheuristics:
-                search_parameters = pywrapcp.DefaultRoutingSearchParameters()
-                search_parameters.first_solution_strategy = getattr(
-                    routing_enums_pb2.FirstSolutionStrategy, first_solution_strategy
-                )
-                search_parameters.local_search_metaheuristic = getattr(
-                    routing_enums_pb2.LocalSearchMetaheuristic, local_search_metaheuristic
-                )
-                get_solutions(
-                    initial_routes, save_solution, i, distance_type, search_parameters, routing, time_limit, data,
-                    manager,
-                    instance, first_solution_strategy, local_search_metaheuristic
-                )
+    for row in problems_data:
+        problem_type = row["problem_type"].value.upper()
+        if problem_type in results:
+            instance_data = process_files(row["instance_type"], row["distance_type"], None,
+                                          None, None, row["path"])
+            with open(
+                    f"../../problems/solutions/{row['distance_type'].value}/solutions_{row['problem_type'].value}/all_solutions_{row['problem_type'].value}_{row['distance_type'].value}.txt",
+                    "r") as file:
+                lines = file.readlines()
+            header = lines[0].strip().split(";")
+            records = [dict(zip(header, line.strip().split(";"))) for line in lines[1:]]
+            for record in records:
+                for instance, data in instance_data.items():
+                    if record["Instance"] == instance:
+                        results[problem_type]["Instance"].append(instance)
+                        results[problem_type]["Vehicles"].append(int(data["num_vehicles"]))
+                        if problem_type != 'TSP':
+                            results[problem_type]["Demands"].append(
+                                float(((sum(row for row in data["demands"])) / len(data["demands"])))
+                            )
+                            results[problem_type]["Vehicles Capacity"].append(
+                                float(((sum(row for row in data["vehicle_capacities"])) / len(
+                                    data["vehicle_capacities"])))
+                            )
+                        results[problem_type]["Nodes"].append(
+                            int(data["num_locations"] if "num_locations" in data else len(data["distance_matrix"])))
+                        results[problem_type]["Objective"].append(float(record["Objective"]))
+                        results[problem_type]["Method"].append(f"{record['Heuristic']}and{record['Metaheuristic']}")
+                        results[problem_type]["Time"].append(float(record["Time"]))
+                        results[problem_type]["Routes"].append(
+                            int(record["Routes"]) if int(record["Routes"]) > 0 else 1)
+    return results
