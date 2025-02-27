@@ -90,33 +90,39 @@ def process_solutions_folder(base_folder):
     return results
 
 
-def filter_best_solutions_per_algorithm(results):
-    best_results = {}
+def filter_average_solutions_per_algorithm(results):
+    average_results = {}
     for instance, objective, heuristic, metaheuristic, execution_time, routes_count in results:
-        algorithm = heuristic + "and" + metaheuristic
-        if instance not in best_results:
-            best_results[instance] = {}
-        if algorithm not in best_results[instance]:
-            best_results[instance][algorithm] = []
-
-        best_results[instance][algorithm].append(
-            (objective, execution_time, routes_count, heuristic, metaheuristic)
-        )
-    final_best_results = []
-    for instance, algorithms in best_results.items():
-        for algorithm, candidates in algorithms.items():
-            min_objective = min(candidates, key=lambda x: x[0])[0]
-            min_candidates = [c for c in candidates if c[0] == min_objective]
-            if len(min_candidates) > 1:
-                best_candidate = min(min_candidates, key=lambda x: x[1])
-            else:
-                best_candidate = min_candidates[0]
-            final_best_results.append(
+        algorithm = heuristic.strip() + "and" + metaheuristic.strip()
+        if instance not in average_results:
+            average_results[instance] = {}
+        if algorithm not in average_results[instance]:
+            average_results[instance][algorithm] = {
+                "objectives": [],
+                "execution_times": [],
+                "routes_counts": [],
+            }
+        average_results[instance][algorithm]["objectives"].append(objective)
+        average_results[instance][algorithm]["execution_times"].append(execution_time)
+        average_results[instance][algorithm]["routes_counts"].append(routes_count)
+    final_average_results = []
+    for instance, algorithms in average_results.items():
+        for algorithm, data in algorithms.items():
+            avg_objective = sum(data["objectives"]) / len(data["objectives"])
+            avg_execution_time = sum(data["execution_times"]) / len(data["execution_times"])
+            avg_routes_count = sum(data["routes_counts"]) / len(data["routes_counts"])
+            final_average_results.append(
                 (
-                instance, best_candidate[0], best_candidate[3], best_candidate[4], best_candidate[1], best_candidate[2])
+                    instance,
+                    avg_objective,
+                    algorithm.split("and")[0],
+                    algorithm.split("and")[1],
+                    algorithm,
+                    avg_execution_time,
+                    avg_routes_count,
+                )
             )
-
-    return final_best_results
+    return final_average_results
 
 
 def filter_best_solutions(results):
@@ -143,52 +149,100 @@ def filter_best_solutions(results):
     return final_best_results
 
 
-def write_solutions(output_file, results, best_solution, is_csv):
-    with open(output_file, 'w', newline='') as file:
-        writer = csv.writer(file, delimiter=';')
-        if not is_csv:
+def generate_csv_files(results, best_solution, output_folder, filtered=None):
+    if best_solution:
+        results = filter_average_solutions_per_algorithm(results)
+    data = []
+    for row in results:
+        instance = row[0].split(".")[0]
+        heuristic = row[2]
+        metaheuristic = row[3]
+        objective = row[1]
+        execution_time = row[5]
+        algorithm = row[4]
+        data.append([instance, objective, execution_time, heuristic, metaheuristic, algorithm])
+
+    df = pd.DataFrame(
+        data,
+        columns=["Instance", "Objective", "Time", "Heuristic", "Metaheuristic", "Algorithm"]
+    )
+    if not filtered:
+        metaheuristics = df["Metaheuristic"].unique()
+        for metaheuristic in metaheuristics:
+            df_meta = df[df["Metaheuristic"] == metaheuristic]
+            objective_dict = {"Instance": []}
+            time_dict = {"Instance": []}
+            algorithms = df_meta["Algorithm"].unique()
+            for algorithm in algorithms:
+                objective_dict[algorithm] = []
+                time_dict[algorithm] = []
+            for instance in df_meta["Instance"].unique():
+                objective_dict["Instance"].append(instance)
+                time_dict["Instance"].append(instance)
+                for algorithm in algorithms:
+                    objective_value = df_meta.loc[
+                        (df_meta["Algorithm"] == algorithm) & (df_meta["Instance"] == instance), "Objective"]
+                    objective_dict[algorithm].append(objective_value.iloc[0] if not objective_value.empty else "")
+                    time_value = df_meta.loc[
+                        (df_meta["Algorithm"] == algorithm) & (df_meta["Instance"] == instance), "Time"]
+                    time_dict[algorithm].append(time_value.iloc[0] if not time_value.empty else "")
+            df_objective = pd.DataFrame(objective_dict)
+            df_time = pd.DataFrame(time_dict)
+            objective_file = f"{output_folder}/{metaheuristic}_objective.csv"
+            time_file = f"{output_folder}/{metaheuristic}_time.csv"
+            df_objective.to_csv(objective_file, sep=";", index=False)
+            df_time.to_csv(time_file, sep=";", index=False)
+            print(f"Generated files: {objective_file}, {time_file}")
+    else:
+        df_filtered = df[df["Algorithm"].isin(filtered)]
+        result_dict = {"Instance": []}
+        for algorithm in filtered:
+            result_dict[algorithm] = []
+        for instance in df_filtered["Instance"].unique():
+            result_dict["Instance"].append(instance)
+            for algorithm in filtered:
+                value = df_filtered.loc[
+                    (df_filtered["Algorithm"] == algorithm) & (df_filtered["Instance"] == instance), "Objective"]
+                result_dict[algorithm].append(value.iloc[0] if not value.empty else "")
+        df_result = pd.DataFrame(result_dict)
+        file = f"{output_folder}/best_algorithms_objective.csv"
+        df_result.to_csv(file, sep=";", index=False)
+        print(f"Archivo generado: {file}")
+
+
+def write_solutions(output_file, results, best_solution, is_csv, filtered):
+    if not is_csv:
+        with open(output_file, 'w', newline='') as file:
+            writer = csv.writer(file, delimiter=';')
             writer.writerow(['Instance', 'Objective', 'Heuristic', 'Metaheuristic', 'Time', 'Routes'])
             if best_solution:
                 results = filter_best_solutions(results).values()
             for row in results:
                 writer.writerow(row)
-        else:
-            if best_solution:
-                results = filter_best_solutions_per_algorithm(results)
-            data = []
-            for row in results:
-                instance = row[0].split(".")[0]
-                heuristic = row[2]
-                metaheuristic = row[3]
-                objective = row[1]
-                algorithm = heuristic + "&" + metaheuristic
-                data.append([instance, objective, heuristic, metaheuristic, algorithm])
-
-            df = pd.DataFrame(data, columns=["Instance", "Objective", "Heuristic", "Metaheuristic", "Algorithm"])
-            algorithms = df["Algorithm"].unique()
-
-            # Crear diccionario con instancias como claves
-            result_dict = {"Instance": []}
-            for algorithm in algorithms:
-                result_dict[algorithm] = []
-
-            for instance in df["Instance"].unique():
-                result_dict["Instance"].append(instance)
-                for algorithm in algorithms:
-                    value = df.loc[(df["Algorithm"] == algorithm) & (df["Instance"] == instance), "Objective"]
-                    result_dict[algorithm].append(value.iloc[0] if not value.empty else "")
-
-            df_result = pd.DataFrame(result_dict)
-            df_result.to_csv(output_file, sep=";", index=False)
+    else:
+        generate_csv_files(results, best_solution, output_file, filtered)
 
 
-def main(best_solution=False, csv=False):
-    base_folder = '../problems/solutions/manhattan/solutions_tsp'
-    output_file = '../problems/solutions/manhattan/solutions_tsp/best_solutions_tsp_manhattan_per_algorithm.csv'
+def main(best_solution=False, csv=False, filtered=None):
+    base_folder = '../problems/solutions/manhattan/solutions_cvrp'
+    output_file = '../friedman/manhattan/cvrp'
 
     results = process_solutions_folder(base_folder)
-    write_solutions(output_file, results, best_solution, csv)
+    write_solutions(output_file, results, best_solution, csv, filtered)
 
 
 if __name__ == "__main__":
-    main(best_solution=True, csv=True)
+    main(
+        best_solution=True,
+        csv=True,
+        filtered=[
+            "PATH_CHEAPEST_ARC_and_TABU_SEARCH",
+            "PATH_CHEAPEST_ARC_and_SIMULATED_ANNEALING",
+            "PATH_CHEAPEST_ARC_and_GUIDED_LOCAL_SEARCH",
+            "SAVINGS_and_GREEDY_DESCENT",
+            "SEQUENTIAL_CHEAPEST_INSERTION_and_GREEDY_DESCENT",
+            "LOCAL_CHEAPEST_ARC_and_GENERIC_TABU_SEARCH",
+            "BEST_INSERTION_and_GENERIC_TABU_SEARCH",
+            "PATH_MOST_CONSTRAINED_ARC_and_GENERIC_TABU_SEARCH"
+        ]
+    )

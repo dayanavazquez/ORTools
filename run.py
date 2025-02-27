@@ -25,9 +25,9 @@ from problems.strategy_type import HeuristicType, MetaheuristicType
 execute(
     problem_type=ProblemType.TSP,
     instance=InstanceType.TSP,
-    distance_type=DistanceType.HAVERSINE,
+    distance_type=DistanceType.CHEBYSHEV,
     time_limit=60,
-    executions=7,
+    executions=9,
     vehicle_maximum_travel_distance=None,
     vehicle_max_time=None,
     vehicle_speed=None,

@@ -44,7 +44,7 @@ def get_solutions(
 
 def get_distance_and_solution_name(distance_type, heuristic, metaheuristic):
     distance_type = distance_type.value if distance_type else "manhattan"
-    solution_name = heuristic if heuristic and not metaheuristic else metaheuristic if metaheuristic and not heuristic else f"{heuristic}_&_{metaheuristic}"
+    solution_name = heuristic if heuristic and not metaheuristic else metaheuristic if metaheuristic and not heuristic else f"{heuristic}_and_{metaheuristic}"
     return distance_type, solution_name
 
 

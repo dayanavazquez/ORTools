@@ -1,45 +1,45 @@
-from sklearn.preprocessing import LabelEncoder
-from xgboost import XGBClassifier
-from sklearn.model_selection import train_test_split, StratifiedKFold, GridSearchCV, cross_val_score, learning_curve
-from sklearn.metrics import accuracy_score, classification_report, f1_score, precision_score, recall_score, roc_auc_score
-from sklearn.preprocessing import StandardScaler
-from sklearn.feature_selection import SelectFromModel, VarianceThreshold
-from imblearn.combine import SMOTEENN
-from collections import Counter
+from sklearn.ensemble import RandomForestClassifier, VotingClassifier, BaggingClassifier
+from sklearn.model_selection import train_test_split, StratifiedKFold, GridSearchCV, cross_val_score
+from sklearn.metrics import accuracy_score, classification_report, f1_score, roc_auc_score
 import pandas as pd
 import joblib
-import numpy as np
-import matplotlib.pyplot as plt
 from utils.utils import get_data_for_predictions
+from sklearn.tree import export_graphviz
+import plotly.express as px
+from imblearn.over_sampling import SMOTE, ADASYN
+from imblearn.under_sampling import RandomUnderSampler
+from collections import Counter
+import os
+import re
+from sklearn.feature_selection import SelectFromModel
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler, PolynomialFeatures
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.decomposition import PCA
 
-
-def save_results_to_txt(filename, accuracy, f1, precision, recall, roc_auc, best_params, cv_scores, classification_rep, importance_df, class_mapping):
+def save_results_to_txt(filename, accuracy, cv_scores, importance_df, best_params, classification_report_str):
     with open(filename, "w") as f:
         f.write(f"Accuracy: {accuracy:.4f}\n\n")
-        f.write(f"F1 Score: {f1:.4f}\n\n")
-        f.write(f"Precision: {precision:.4f}\n\n")
-        f.write(f"Recall: {recall:.4f}\n\n")
-        f.write(f"ROC-AUC: {roc_auc if roc_auc is not None else 'N/A'}\n\n")
-        f.write("Best Parameters:\n")
-        f.write(f"{best_params}\n\n")
         f.write("Cross-Validation Scores:\n")
         f.write(f"{cv_scores}\n")
-        f.write(f"Mean Cross-Validation F1-score: {cv_scores.mean():.4f}\n\n")
+        f.write(f"Mean Cross-Validation Accuracy: {cv_scores.mean():.4f}\n\n")
+        f.write("Best Parameters:\n")
+        f.write(f"{best_params}\n\n")
         f.write("Classification Report:\n")
-        f.write(f"{classification_rep}\n\n")
+        f.write(f"{classification_report_str}\n\n")
         f.write("Feature Importances:\n")
         f.write(importance_df.to_string(index=False))
-        f.write("\n\nClass Mapping:\n")
-        for class_name, class_value in class_mapping.items():
-            f.write(f"{class_name}: {class_value}\n")
 
-
-def get_xgboost():
+def get_random_forest():
     results = get_data_for_predictions()
-
     for key, data in results.items():
         dataset = pd.DataFrame(data)
         dataset.dropna(subset=["Method"], inplace=True)
+
+        # Feature Engineering: Crear nuevas características
+        dataset["Objective_Time_Ratio"] = dataset["Objective"] / (dataset["Time"] + 1e-6)
+        dataset["Routes_Time_Ratio"] = dataset["Routes"] / (dataset["Time"] + 1e-6)
 
         dataset["Score"] = (
                 0.6 * dataset["Objective"] +
@@ -56,149 +56,133 @@ def get_xgboost():
         x = dataset.drop(columns=["Method", "Score", "Instance", "Objective", "Time", "Routes", "Optimal_Method"])
         y = dataset["Optimal_Method"]
 
-        # Codificar las etiquetas de clase
-        label_encoder = LabelEncoder()
-        y_encoded = label_encoder.fit_transform(y)
-
-        # Crear un diccionario con el mapeo de clases
-        class_mapping = {class_name: class_value for class_value, class_name in enumerate(label_encoder.classes_)}
-
-        class_distribution = Counter(y_encoded)
+        class_distribution = Counter(y)
         print(f"Class distribution for {key}: {class_distribution}")
 
-        if len(set(y_encoded)) < 2:
-            print(f"Error: Only one class present in {key}. Skipping dataset.")
+        classes_to_keep = [cls for cls, count in class_distribution.items() if count >= 2]
+        if len(classes_to_keep) < len(class_distribution):
+            print(f"Warning: Some classes have less than 2 samples in {key}. Removing those classes.")
+            mask = y.isin(classes_to_keep)
+            x = x[mask]
+            y = y[mask]
+
+        if len(y) == 0:
+            print(f"Error: Not enough samples to train the model in {key}. Skipping this dataset.")
             continue
 
         x = x.values
 
-        x_train, x_test, y_train, y_test = train_test_split(x, y_encoded, test_size=0.3, stratify=y_encoded, random_state=42)
+        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
-        # Normalizar las características
-        scaler = StandardScaler()
-        x_train = scaler.fit_transform(x_train)
-        x_test = scaler.transform(x_test)
+        # Balanceo de clases con SMOTE, ADASYN y RandomUnderSampler
+        smote = SMOTE(random_state=42)
+        adasyn = ADASYN(random_state=42)
+        rus = RandomUnderSampler(random_state=42)
 
-        # Eliminar características con baja varianza
-        variance_threshold = VarianceThreshold(threshold=0.01)
-        x_train = variance_threshold.fit_transform(x_train)
-        x_test = variance_threshold.transform(x_test)
+        # Probar diferentes técnicas de balanceo
+        x_train_balanced, y_train_balanced = smote.fit_resample(x_train, y_train)  # SMOTE por defecto
+        # x_train_balanced, y_train_balanced = adasyn.fit_resample(x_train, y_train)  # ADASYN
+        # x_train_balanced, y_train_balanced = rus.fit_resample(x_train, y_train)  # RandomUnderSampler
 
-        # Usar SMOTEENN para balancear las clases
-        smote_enn = SMOTEENN(random_state=42)
-        x_train, y_train = smote_enn.fit_resample(x_train, y_train)
+        # Feature Selection
+        feature_selector = SelectFromModel(RandomForestClassifier(random_state=42))
+        x_train_selected = feature_selector.fit_transform(x_train_balanced, y_train_balanced)
+        x_test_selected = feature_selector.transform(x_test)
 
-        # Verificar y reindexar las etiquetas después de SMOTEENN
-        unique_classes = np.unique(y_train)
-        if not np.array_equal(unique_classes, np.arange(len(unique_classes))):
-            print("Warning: Some classes were removed by SMOTEENN. Reindexing labels.")
-            label_encoder_after_smote = LabelEncoder()
-            y_train = label_encoder_after_smote.fit_transform(y_train)
-            class_mapping = {class_name: class_value for class_value, class_name in enumerate(label_encoder_after_smote.classes_)}
+        # Obtener los nombres de las características seleccionadas
+        feature_names = dataset.drop(
+            columns=["Method", "Score", "Instance", "Objective", "Time", "Routes", "Optimal_Method"]).columns.tolist()
+        selected_feature_names = [feature_names[i] for i in feature_selector.get_support(indices=True)]
 
-        # Selección de características con SelectFromModel
-        selector = SelectFromModel(XGBClassifier(random_state=42), threshold='median')
-        x_train_selected = selector.fit_transform(x_train, y_train)
-        x_test_selected = selector.transform(x_test)
+        # Model Pipeline con Polynomial Features para Feature Engineering
+        model = Pipeline([
+            ('scaler', StandardScaler()),
+            ('poly', PolynomialFeatures(degree=2, include_bias=False)),  # Añadir interacciones entre características
+            ('pca', PCA(n_components=0.95)),  # Reducción de dimensionalidad
+            ('clf', RandomForestClassifier(class_weight="balanced", random_state=42))
+        ])
 
-        # Optimización de hiperparámetros con GridSearchCV
+        # Hiperparámetros para GridSearchCV (rango más amplio)
         param_grid = {
-            "n_estimators": [100, 300, 500, 700, 1000],
-            "max_depth": [3, 5, 7, 10, 15],
-            "learning_rate": [0.001, 0.01, 0.1, 0.2],
-            "subsample": [0.6, 0.8, 1.0],
-            "colsample_bytree": [0.6, 0.8, 1.0],
-            "gamma": [0, 0.1, 0.2, 0.5],
-            "reg_alpha": [0, 0.1, 0.5],
-            "reg_lambda": [0, 0.1, 0.5],
+            "clf__n_estimators": [50, 100, 200, 300, 400, 500],
+            "clf__max_depth": [None, 5, 10, 20, 30, 50, 100],
+            "clf__min_samples_split": [2, 5, 10, 20],
+            "clf__min_samples_leaf": [1, 2, 4, 10],
+            "clf__bootstrap": [True, False],
+            "clf__max_features": ['sqrt', 'log2', None],
+            "clf__criterion": ['gini', 'entropy']
         }
 
         grid_search = GridSearchCV(
-            XGBClassifier(random_state=42, eval_metric='mlogloss'),
-            param_grid,
+            model,
+            param_grid=param_grid,
             cv=5,
-            scoring="f1_weighted",
+            scoring="accuracy",
             n_jobs=-1,
-            verbose=2
+            verbose=2,
+            error_score='raise'
         )
 
-        grid_search.fit(x_train_selected, y_train)
+        grid_search.fit(x_train_selected, y_train_balanced)
         model = grid_search.best_estimator_
 
-        joblib.dump(model, f"xgboost_model_{key}.pkl")
-
-        best_params = grid_search.best_params_
-        print(f"Best parameters: {best_params}")
+        joblib.dump(model, f"random_forest_model_{key}.pkl")
 
         y_pred = model.predict(x_test_selected)
         accuracy = accuracy_score(y_test, y_pred)
         f1 = f1_score(y_test, y_pred, average='weighted')
-        precision = precision_score(y_test, y_pred, average='weighted', zero_division=0)
-        recall = recall_score(y_test, y_pred, average='weighted', zero_division=0)
-
-        # Calcular ROC-AUC solo si todas las clases están presentes en y_test
-        if len(np.unique(y_test)) == len(model.classes_):
-            roc_auc = roc_auc_score(y_test, model.predict_proba(x_test_selected), multi_class='ovr')
-        else:
-            print("Warning: Not all classes are present in y_test. Skipping ROC-AUC calculation.")
-            roc_auc = None
+        roc_auc = roc_auc_score(y_test, model.predict_proba(x_test_selected), multi_class='ovr')
 
         print(f"Accuracy for {key}: {accuracy:.4f}")
         print(f"F1 Score for {key}: {f1:.4f}")
-        print(f"Precision for {key}: {precision:.4f}")
-        print(f"Recall for {key}: {recall:.4f}")
-        print(f"ROC-AUC for {key}: {roc_auc if roc_auc is not None else 'N/A'}")
+        print(f"ROC-AUC Score for {key}: {roc_auc:.4f}")
 
-        cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
-        cv_scores = cross_val_score(model, x, y_encoded, cv=cv, scoring="f1_weighted")
+        cv = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
+        cv_scores = cross_val_score(model, x, y, cv=cv, scoring="accuracy")
         print(f"Cross-validation scores for {key}: {cv_scores}")
-        print(f"Cross-validation mean F1-score for {key}: {cv_scores.mean():.4f}")
+        print(f"Cross-validation mean accuracy for {key}: {cv_scores.mean():.4f}")
 
-        # Decodificar las etiquetas para el reporte de clasificación
-        y_test_decoded = label_encoder.inverse_transform(y_test)
-        y_pred_decoded = label_encoder.inverse_transform(y_pred)
-
-        classification_rep = classification_report(y_test_decoded, y_pred_decoded, zero_division=0)
+        classification_report_str = classification_report(y_test, y_pred, zero_division=0)
         print("Classification Report:")
-        print(classification_rep)
+        print(classification_report_str)
 
-        # Importancia de las características
-        importances = model.feature_importances_
-        feature_names = dataset.drop(
-            columns=["Method", "Score", "Instance", "Objective", "Time", "Routes", "Optimal_Method"]).columns.tolist()
+        # Obtener las importancias de las características
+        importances = model.named_steps['clf'].feature_importances_
+
+        # Crear el DataFrame con las características seleccionadas y sus importancias
         importance_df = pd.DataFrame({
-            "Feature": feature_names,
+            "Feature": selected_feature_names,
             "Importance": importances
         }).sort_values(by="Importance", ascending=False)
 
+        # Filtrar características con importancia mayor a 0.01
         importance_df = importance_df[importance_df["Importance"] > 0.01]
 
         print(f"Feature Importances for {key}:")
         print(importance_df)
 
         # Guardar resultados en un archivo de texto
-        save_results_to_txt(
-            f"results_{key}.txt",
-            accuracy,
-            f1,
-            precision,
-            recall,
-            roc_auc,
-            best_params,
-            cv_scores,
-            classification_rep,
-            importance_df,
-            class_mapping  # Incluir el mapeo de clases
+        save_results_to_txt(f"results_{key}.txt", accuracy, cv_scores, importance_df, grid_search.best_params_, classification_report_str)
+
+        fig = px.bar(importance_df, x="Feature", y="Importance", title=f"Feature Importances ({key})")
+        fig.update_layout(xaxis_title="Features", yaxis_title="Importance", xaxis_tickangle=-90)
+        fig.write_image(f"feature_importances_{key}.jpg")
+
+        # Ensemble Methods: Usar VotingClassifier
+        log_reg = LogisticRegression(max_iter=1000, random_state=42)
+        svm = SVC(probability=True, random_state=42)
+        ensemble_model = VotingClassifier(
+            estimators=[
+                ('rf', model.named_steps['clf']),
+                ('lr', log_reg),
+                ('svm', svm)
+            ],
+            voting='soft'
         )
 
-        # Graficar la curva de aprendizaje
-        train_sizes, train_scores, test_scores = learning_curve(model, x_train_selected, y_train, cv=5, scoring="f1_weighted")
-        plt.plot(train_sizes, train_scores.mean(axis=1), label="Training score")
-        plt.plot(train_sizes, test_scores.mean(axis=1), label="Cross-validation score")
-        plt.xlabel("Training examples")
-        plt.ylabel("F1 Score")
-        plt.legend()
-        plt.show()
+        ensemble_model.fit(x_train_selected, y_train_balanced)
+        y_pred_ensemble = ensemble_model.predict(x_test_selected)
+        accuracy_ensemble = accuracy_score(y_test, y_pred_ensemble)
+        print(f"Ensemble Model Accuracy for {key}: {accuracy_ensemble:.4f}")
 
-
-get_xgboost()
+get_random_forest()
