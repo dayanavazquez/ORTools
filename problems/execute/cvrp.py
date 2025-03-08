@@ -62,7 +62,7 @@ def execute(i, instance_type, time_limit, distance_type: DistanceType = None, he
             metaheuristic: MetaheuristicType = None, initial_routes=None):
     """Solve the manhattan problem."""
     # Instantiate the data problem.
-    instances_data = process_files(instance_type, distance_type)
+    instances_data = process_files(instance_type=instance_type, distance_type=distance_type, integer=True)
     for instance, data in instances_data.items():
         # Create the routing index manager.
         manager = pywrapcp.RoutingIndexManager(

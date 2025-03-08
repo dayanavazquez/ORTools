@@ -14,7 +14,7 @@ class InstanceType(Enum):
     HFVRP = 'hfvrp'
 
 
-def process_files(instance_type, distance_type: DistanceType = None, vehicle_max_time=None, vehicle_speed=None, vehicle_maximum_travel_distance=None, path=None):
+def process_files(instance_type, distance_type: DistanceType = None, vehicle_max_time=None, vehicle_speed=None, vehicle_maximum_travel_distance=None, path=None, integer=False):
     if isinstance(instance_type, str) and (instance_type.endswith('.txt') or instance_type.endswith('.json')):
         return process_string_instance(instance_type, distance_type, vehicle_max_time, vehicle_speed, vehicle_maximum_travel_distance)
     problem_data = {
@@ -51,11 +51,11 @@ def process_files(instance_type, distance_type: DistanceType = None, vehicle_max
             if instance_type == InstanceType.BSS:
                 if file.endswith('.json'):
                     route = os.path.join(directory, file)
-                    data = read_function(route, distance_type, vehicle_max_time, vehicle_speed, vehicle_maximum_travel_distance)
+                    data = read_function(route, distance_type, vehicle_max_time, vehicle_speed, vehicle_maximum_travel_distance, integer)
                     total_data[file] = data
             else:
                 if file.endswith('.txt'):
                     route = os.path.join(directory, file)
-                    data = read_function(route, distance_type, vehicle_max_time, vehicle_speed, vehicle_maximum_travel_distance)
+                    data = read_function(route, distance_type, vehicle_max_time, vehicle_speed, vehicle_maximum_travel_distance, integer)
                     total_data[file] = data
     return total_data

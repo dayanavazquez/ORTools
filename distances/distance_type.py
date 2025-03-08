@@ -21,7 +21,7 @@ def calculate_distance(point_1, point_2, distance_type=None, integer=False):
         result = max(abs(point_1[0] - point_2[0]), abs(point_1[1] - point_2[1]))
     else:
         return "The distance type is not supported"
-    return int(result) if integer else float(result)
+    return int(result) if integer else result
 
 
 def calculate_haversine(point_1, point_2):

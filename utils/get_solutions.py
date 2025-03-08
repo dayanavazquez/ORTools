@@ -18,6 +18,8 @@ def extract_info_from_txt(file_path):
     routes_count = 0
     execution_time = 0
     cost = 0
+    objective = None
+    instance = None
 
     with open(file_path, 'r') as file:
         content = file.read()
@@ -50,6 +52,8 @@ def extract_info_from_txt(file_path):
 
 
 def obtain_technique(f_path, f_name):
+    heuristic = None
+    metaheuristic = None
     for file_name in os.listdir(f_path):
         file_path = os.path.join(f_path, file_name)
         with open(file_path, 'r') as file:
@@ -129,12 +133,13 @@ def filter_best_solutions(results):
     best_results = {}
 
     for instance, objective, heuristic, metaheuristic, execution_time, routes_count in results:
-        if instance not in best_results:
-            best_results[instance] = [
-                (instance, objective, heuristic, metaheuristic, execution_time, routes_count)]
-        else:
-            best_results[instance].append(
-                (instance, objective, heuristic, metaheuristic, execution_time, routes_count))
+        if objective != 0:
+            if instance not in best_results:
+                best_results[instance] = [
+                    (instance, objective, heuristic, metaheuristic, execution_time, routes_count)]
+            else:
+                best_results[instance].append(
+                    (instance, objective, heuristic, metaheuristic, execution_time, routes_count))
 
     final_best_results = {}
     for instance, candidates in best_results.items():
@@ -202,10 +207,10 @@ def generate_csv_files(results, best_solution, output_folder, filtered=None):
             result_dict["Instance"].append(instance)
             for algorithm in filtered:
                 value = df_filtered.loc[
-                    (df_filtered["Algorithm"] == algorithm) & (df_filtered["Instance"] == instance), "Objective"]
+                    (df_filtered["Algorithm"] == algorithm) & (df_filtered["Instance"] == instance), "Time"]
                 result_dict[algorithm].append(value.iloc[0] if not value.empty else "")
         df_result = pd.DataFrame(result_dict)
-        file = f"{output_folder}/best_algorithms_objective.csv"
+        file = f"{output_folder}/best_algorithms_time_tsp.csv"
         df_result.to_csv(file, sep=";", index=False)
         print(f"Archivo generado: {file}")
 
@@ -224,8 +229,8 @@ def write_solutions(output_file, results, best_solution, is_csv, filtered):
 
 
 def main(best_solution=False, csv=False, filtered=None):
-    base_folder = '../problems/solutions/manhattan/solutions_cvrp'
-    output_file = '../friedman/manhattan/cvrp'
+    base_folder = '../problems/solutions/tsp'
+    output_file = '../friedman'
 
     results = process_solutions_folder(base_folder)
     write_solutions(output_file, results, best_solution, csv, filtered)
@@ -236,13 +241,15 @@ if __name__ == "__main__":
         best_solution=True,
         csv=True,
         filtered=[
-            "PATH_CHEAPEST_ARC_and_TABU_SEARCH",
-            "PATH_CHEAPEST_ARC_and_SIMULATED_ANNEALING",
-            "PATH_CHEAPEST_ARC_and_GUIDED_LOCAL_SEARCH",
-            "SAVINGS_and_GREEDY_DESCENT",
-            "SEQUENTIAL_CHEAPEST_INSERTION_and_GREEDY_DESCENT",
-            "LOCAL_CHEAPEST_ARC_and_GENERIC_TABU_SEARCH",
-            "BEST_INSERTION_and_GENERIC_TABU_SEARCH",
-            "PATH_MOST_CONSTRAINED_ARC_and_GENERIC_TABU_SEARCH"
+            "FIRST_UNBOUND_MIN_VALUE_and_SIMULATED_ANNEALING",
+            "PATH_CHEAPEST_ARC_and_GREEDY_DESCENT",
+            "CHRISTOFIDES_and_GENERIC_TABU_SEARCH"
         ]
+        #filtered=[
+        #    "SEQUENTIAL_CHEAPEST_INSERTION_and_TABU_SEARCH",
+        #    "FIRST_UNBOUND_MIN_VALUE_and_SIMULATED_ANNEALING",
+        #    "LOCAL_CHEAPEST_INSERTION_and_GUIDED_LOCAL_SEARCH",
+        #    "SAVINGS_and_GREEDY_DESCENT",
+        #    "LOCAL_CHEAPEST_INSERTION_and_GENERIC_TABU_SEARCH"
+        #]
     )

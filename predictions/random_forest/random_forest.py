@@ -1,22 +1,20 @@
-from sklearn.ensemble import RandomForestClassifier, VotingClassifier, BaggingClassifier
+from sklearn.ensemble import RandomForestClassifier, VotingClassifier
 from sklearn.model_selection import train_test_split, StratifiedKFold, GridSearchCV, cross_val_score
 from sklearn.metrics import accuracy_score, classification_report, f1_score, roc_auc_score
 import pandas as pd
 import joblib
 from utils.utils import get_data_for_predictions
-from sklearn.tree import export_graphviz
 import plotly.express as px
 from imblearn.over_sampling import SMOTE, ADASYN
 from imblearn.under_sampling import RandomUnderSampler
 from collections import Counter
-import os
-import re
 from sklearn.feature_selection import SelectFromModel
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.decomposition import PCA
+
 
 def save_results_to_txt(filename, accuracy, cv_scores, importance_df, best_params, classification_report_str):
     with open(filename, "w") as f:
@@ -30,6 +28,7 @@ def save_results_to_txt(filename, accuracy, cv_scores, importance_df, best_param
         f.write(f"{classification_report_str}\n\n")
         f.write("Feature Importances:\n")
         f.write(importance_df.to_string(index=False))
+
 
 def get_random_forest():
     results = get_data_for_predictions()
@@ -162,7 +161,8 @@ def get_random_forest():
         print(importance_df)
 
         # Guardar resultados en un archivo de texto
-        save_results_to_txt(f"results_{key}.txt", accuracy, cv_scores, importance_df, grid_search.best_params_, classification_report_str)
+        save_results_to_txt(f"results_{key}.txt", accuracy, cv_scores, importance_df, grid_search.best_params_,
+                            classification_report_str)
 
         fig = px.bar(importance_df, x="Feature", y="Importance", title=f"Feature Importances ({key})")
         fig.update_layout(xaxis_title="Features", yaxis_title="Importance", xaxis_tickangle=-90)
@@ -184,5 +184,6 @@ def get_random_forest():
         y_pred_ensemble = ensemble_model.predict(x_test_selected)
         accuracy_ensemble = accuracy_score(y_test, y_pred_ensemble)
         print(f"Ensemble Model Accuracy for {key}: {accuracy_ensemble:.4f}")
+
 
 get_random_forest()

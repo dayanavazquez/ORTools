@@ -21,13 +21,12 @@ from problems.strategy_type import HeuristicType, MetaheuristicType
 # (si no se elige una heurística ni una metaheurística entonces se ejecutan todas por defecto)
 
 
-
 execute(
-    problem_type=ProblemType.TSP,
-    instance=InstanceType.TSP,
-    distance_type=DistanceType.CHEBYSHEV,
+    problem_type=ProblemType.CVRP,
+    instance=InstanceType.VRPTW,
+    distance_type=DistanceType.HAVERSINE,
     time_limit=60,
-    executions=9,
+    executions=10,
     vehicle_maximum_travel_distance=None,
     vehicle_max_time=None,
     vehicle_speed=None,
@@ -41,4 +40,3 @@ execute(
     #   [7, 5, 2, 6],
     #],
 )
-

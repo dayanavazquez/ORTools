@@ -11,25 +11,25 @@ from distances.distance_type import DistanceType
 
 
 def process_string_instance(instance_string, distance_type: DistanceType = None, vehicle_max_time=None,
-                            vehicle_speed=None, vehicle_maximum_travel_distance=None):
+                            vehicle_speed=None, vehicle_maximum_travel_distance=None, integer=False):
     if 'bhcvrp_instances' in instance_string:
         data = read_file_bh(instance_string, distance_type, vehicle_max_time, vehicle_speed,
-                            vehicle_maximum_travel_distance)
+                            vehicle_maximum_travel_distance, integer)
     elif 'hfvrp_instances' in instance_string:
         data = read_file_hf(instance_string, distance_type, vehicle_max_time, vehicle_speed,
-                            vehicle_maximum_travel_distance)
+                            vehicle_maximum_travel_distance, integer)
     elif 'bss_instances' in instance_string:
         data = read_file_bss(instance_string, distance_type, vehicle_max_time, vehicle_speed,
-                             vehicle_maximum_travel_distance)
+                             vehicle_maximum_travel_distance, integer)
     elif 'mdcvrp_instances' in instance_string:
         data = read_file_md(instance_string, distance_type, vehicle_max_time, vehicle_speed,
-                            vehicle_maximum_travel_distance)
+                            vehicle_maximum_travel_distance, integer)
     elif 'tsp_instances' in instance_string:
         data = read_file_tsp(instance_string, distance_type, vehicle_max_time, vehicle_speed,
-                             vehicle_maximum_travel_distance)
+                             vehicle_maximum_travel_distance, integer)
     else:
         data = read_file_tw(instance_string, distance_type, vehicle_max_time, vehicle_speed,
-                            vehicle_maximum_travel_distance)
+                            vehicle_maximum_travel_distance, integer)
     return {os.path.basename(instance_string): data}
 
 
@@ -39,7 +39,7 @@ def process_string_instance(instance_string, distance_type: DistanceType = None,
 
 
 def read_file_bss(file, distance_type: DistanceType = None, vehicle_max_time=None, vehicle_speed=None,
-                  vehicle_maximum_travel_distance=None):
+                  vehicle_maximum_travel_distance=None, integer=False):
     with open(file, 'r') as file:
         json_data = json.load(file)
         locations = []
@@ -49,7 +49,7 @@ def read_file_bss(file, distance_type: DistanceType = None, vehicle_max_time=Non
         for bus_stop in json_data["bus_stops"]:
             bus_stop_coords = (bus_stop["coordinate_x"], bus_stop["coordinate_y"])
             locations.append(bus_stop_coords)
-    result = get_distance_matrix(locations, distance_type)
+    result = get_distance_matrix(locations, distance_type, integer)
     return {
         "locations": locations,
         "distance_matrix": result['distance_matrix'],
@@ -65,7 +65,7 @@ def read_file_bss(file, distance_type: DistanceType = None, vehicle_max_time=Non
 #######################
 
 def read_file_tsp(file, distance_type: DistanceType = None, vehicle_max_time=None, vehicle_speed=None,
-                  vehicle_maximum_travel_distance=None):
+                  vehicle_maximum_travel_distance=None, integer=False):
     with open(file, "r") as f:
         lines = f.readlines()
         node_coord_section_index = lines.index("NODE_COORD_SECTION\n")
@@ -90,7 +90,7 @@ def read_file_tsp(file, distance_type: DistanceType = None, vehicle_max_time=Non
 #######################
 
 def read_file_md(file, distance_type: DistanceType = None, vehicle_max_time=None, vehicle_speed=None,
-                 vehicle_maximum_travel_distance=None):
+                 vehicle_maximum_travel_distance=None, integer=False):
     locations = []
     demands = []
     num_locations = 0
@@ -126,7 +126,7 @@ def read_file_md(file, distance_type: DistanceType = None, vehicle_max_time=None
                 depot_index = int(data[0]) - 1
                 starts.append(depot_index)
                 ends.append(depot_index)
-    result = create_pd(num_locations, locations, distance_type)
+    result = create_pd(num_locations, locations, distance_type, integer)
     return {
         "distance_matrix": result['distance_matrix'],
         "num_vehicles": num_vehicles,
@@ -145,7 +145,7 @@ def read_file_md(file, distance_type: DistanceType = None, vehicle_max_time=None
 
 
 def read_file_hf(file, distance_type: DistanceType = None, vehicle_max_time=None, vehicle_speed=None,
-                 vehicle_maximum_travel_distance=None):
+                 vehicle_maximum_travel_distance=None, integer=False):
     locations = []
     demands = []
     num_locations = 0
@@ -169,7 +169,7 @@ def read_file_hf(file, distance_type: DistanceType = None, vehicle_max_time=None
                     demand = 0
                 demands.append(demand)
                 num_locations += 1
-    result = create_pd(num_locations, locations, distance_type)
+    result = create_pd(num_locations, locations, distance_type, integer)
     return {
         "distance_matrix": result['distance_matrix'],
         "num_vehicles": num_vehicles,
@@ -185,7 +185,7 @@ def read_file_hf(file, distance_type: DistanceType = None, vehicle_max_time=None
 #######################
 
 def read_file_bh(file, distance_type: DistanceType = None, vehicle_max_time=None, vehicle_speed=None,
-                 vehicle_maximum_travel_distance=None):
+                 vehicle_maximum_travel_distance=None, integer=False):
     locations = []
     demands = []
     num_locations = 0
@@ -205,7 +205,7 @@ def read_file_bh(file, distance_type: DistanceType = None, vehicle_max_time=None
                 demand = float(data[3]) if data[3] else 0
                 demands.append(demand)
                 num_locations += 1
-    result = create_pd(num_locations, locations, distance_type, integer=True)
+    result = create_pd(num_locations, locations, distance_type, integer)
     return {"distance_matrix": result['distance_matrix'], "num_vehicles": num_vehicles,
             "vehicle_capacities": capacities,
             "demands": demands, "depot": 0, "pickups_deliveries": result['pickups_deliveries']}
@@ -216,7 +216,7 @@ def read_file_bh(file, distance_type: DistanceType = None, vehicle_max_time=None
 #######################
 
 def read_file_tw(file_path, distance_type: DistanceType = None, vehicle_max_time=None, vehicle_speed=None,
-                 vehicle_maximum_travel_distance=None):
+                 vehicle_maximum_travel_distance=None, integer=False):
     with open(file_path, 'r') as file:
         lines = file.readlines()
         num_vehicles, vehicle_capacities = map(int, lines[0].split())
@@ -231,7 +231,7 @@ def read_file_tw(file_path, distance_type: DistanceType = None, vehicle_max_time
                 demands.append(int(parts[3]))
                 time_windows.append((int(parts[4]), int(parts[5])))
                 service_times.append(int(parts[6]))
-        result = get_distance_matrix(locations, distance_type)
+        result = get_distance_matrix(locations, distance_type, integer)
     return {
         "num_vehicles": num_vehicles,
         "vehicle_capacity": vehicle_capacities,
@@ -269,11 +269,11 @@ def create_pd(num_locations, locations, distance_type, integer=False):
     return {'pickups_deliveries': pickups_deliveries, 'distance_matrix': distance_matrix}
 
 
-def get_distance_matrix(locations, distance_type):
+def get_distance_matrix(locations, distance_type, integer=False):
     num_locations = len(locations)
     distance_matrix = [[0] * num_locations for _ in range(num_locations)]
     for i in range(num_locations):
         for j in range(num_locations):
             if i != j:
-                distance_matrix[i][j] = calculate_distance(locations[i], locations[j], distance_type)
+                distance_matrix[i][j] = calculate_distance(locations[i], locations[j], distance_type, integer)
     return {'num_locations': num_locations, 'distance_matrix': distance_matrix}
