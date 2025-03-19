@@ -20,11 +20,30 @@ from problems.strategy_type import HeuristicType, MetaheuristicType
 # 11. initial_routes => rutas iniciales para reoptimizar en tiempo real
 # (si no se elige una heurística ni una metaheurística entonces se ejecutan todas por defecto)
 
+execute(
+    problem_type=ProblemType.CVRP,
+    instance=InstanceType.HFVRP,
+    distance_type=DistanceType.CHEBYSHEV,
+    time_limit=60,
+    executions=10,
+    vehicle_maximum_travel_distance=None,
+    vehicle_max_time=None,
+    vehicle_speed=None,
+    heuristic=None,
+    metaheuristic=None,
+    initial_routes=None,
+    #[
+    #   [8, 16, 14, 13, 12, 11],
+    #   [3, 4, 9, 10],
+    #   [15, 1],
+    #   [7, 5, 2, 6],
+    #],
+)
 
 execute(
     problem_type=ProblemType.CVRP,
     instance=InstanceType.VRPTW,
-    distance_type=DistanceType.HAVERSINE,
+    distance_type=DistanceType.CHEBYSHEV,
     time_limit=60,
     executions=10,
     vehicle_maximum_travel_distance=None,

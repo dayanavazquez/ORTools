@@ -97,24 +97,63 @@ def process_solutions_folder(base_folder):
 def filter_average_solutions_per_algorithm(results):
     average_results = {}
     for instance, objective, heuristic, metaheuristic, execution_time, routes_count in results:
-        algorithm = heuristic.strip() + "and" + metaheuristic.strip()
+        algorithm = heuristic.strip() + "_and_" + metaheuristic.strip()
+
         if instance not in average_results:
             average_results[instance] = {}
+
         if algorithm not in average_results[instance]:
             average_results[instance][algorithm] = {
                 "objectives": [],
                 "execution_times": [],
                 "routes_counts": [],
             }
-        average_results[instance][algorithm]["objectives"].append(objective)
-        average_results[instance][algorithm]["execution_times"].append(execution_time)
-        average_results[instance][algorithm]["routes_counts"].append(routes_count)
+        try:
+            average_results[instance][algorithm]["objectives"].append(float(objective))
+            average_results[instance][algorithm]["execution_times"].append(float(execution_time))
+            average_results[instance][algorithm]["routes_counts"].append(int(routes_count))
+        except ValueError:
+            average_results[instance][algorithm]["objectives"].append(None)
+            average_results[instance][algorithm]["execution_times"].append(None)
+            average_results[instance][algorithm]["routes_counts"].append(0)
+
     final_average_results = []
+    all_algorithms = set()
+    for instance_data in average_results.values():
+        all_algorithms.update(instance_data.keys())
+
     for instance, algorithms in average_results.items():
-        for algorithm, data in algorithms.items():
-            avg_objective = sum(data["objectives"]) / len(data["objectives"])
-            avg_execution_time = sum(data["execution_times"]) / len(data["execution_times"])
-            avg_routes_count = sum(data["routes_counts"]) / len(data["routes_counts"])
+        max_objective = 0.0
+        max_execution_time = 0.0
+        for algorithm_data in algorithms.values():
+            valid_objectives = [obj for obj in algorithm_data["objectives"] if obj is not None]
+            if valid_objectives:
+                max_objective = max(max_objective, max(valid_objectives))
+            valid_execution_times = [time for time in algorithm_data["execution_times"] if time is not None]
+            if valid_execution_times:
+                max_execution_time = max(max_execution_time, max(valid_execution_times))
+        if max_objective > 0:
+            penalty_value_objective = max_objective * 10
+        else:
+            penalty_value_objective = 1000
+
+        if max_execution_time > 0:
+            penalty_value_execution_time = max_execution_time * 10
+        else:
+            penalty_value_execution_time = 1000
+
+        for algorithm in all_algorithms:
+            if algorithm not in algorithms:
+                avg_objective = penalty_value_objective
+                avg_execution_time = penalty_value_execution_time
+                avg_routes_count = 0
+            else:
+                data = algorithms[algorithm]
+                valid_objectives = [obj for obj in data["objectives"] if obj is not None]
+                avg_objective = sum(valid_objectives) / len(valid_objectives) if valid_objectives else penalty_value_objective
+                valid_execution_times = [time for time in data["execution_times"] if time is not None]
+                avg_execution_time = sum(valid_execution_times) / len(valid_execution_times) if valid_execution_times else penalty_value_execution_time
+                avg_routes_count = sum(data["routes_counts"]) / len(data["routes_counts"]) if data["routes_counts"] else 0
             final_average_results.append(
                 (
                     instance,
@@ -126,6 +165,7 @@ def filter_average_solutions_per_algorithm(results):
                     avg_routes_count,
                 )
             )
+
     return final_average_results
 
 
@@ -210,7 +250,7 @@ def generate_csv_files(results, best_solution, output_folder, filtered=None):
                     (df_filtered["Algorithm"] == algorithm) & (df_filtered["Instance"] == instance), "Time"]
                 result_dict[algorithm].append(value.iloc[0] if not value.empty else "")
         df_result = pd.DataFrame(result_dict)
-        file = f"{output_folder}/best_algorithms_time_tsp.csv"
+        file = f"{output_folder}/best_algorithms_time.csv"
         df_result.to_csv(file, sep=";", index=False)
         print(f"Archivo generado: {file}")
 
@@ -229,8 +269,8 @@ def write_solutions(output_file, results, best_solution, is_csv, filtered):
 
 
 def main(best_solution=False, csv=False, filtered=None):
-    base_folder = '../problems/solutions/tsp'
-    output_file = '../friedman'
+    base_folder = '../problems/solutions/haversine/solutions_cvrp'
+    output_file = '../friedman/haversine/cvrp'
 
     results = process_solutions_folder(base_folder)
     write_solutions(output_file, results, best_solution, csv, filtered)
@@ -241,15 +281,10 @@ if __name__ == "__main__":
         best_solution=True,
         csv=True,
         filtered=[
-            "FIRST_UNBOUND_MIN_VALUE_and_SIMULATED_ANNEALING",
-            "PATH_CHEAPEST_ARC_and_GREEDY_DESCENT",
-            "CHRISTOFIDES_and_GENERIC_TABU_SEARCH"
+            "FIRST_UNBOUND_MIN_VALUE_and_TABU_SEARCH",
+            "LOCAL_CHEAPEST_COST_INSERTION_and_SIMULATED_ANNEALING",
+            "LOCAL_CHEAPEST_COST_INSERTION_and_GUIDED_LOCAL_SEARCH",
+            "SAVINGS_and_GREEDY_DESCENT",
+            "LOCAL_CHEAPEST_INSERTION_and_GENERIC_TABU_SEARCH"
         ]
-        #filtered=[
-        #    "SEQUENTIAL_CHEAPEST_INSERTION_and_TABU_SEARCH",
-        #    "FIRST_UNBOUND_MIN_VALUE_and_SIMULATED_ANNEALING",
-        #    "LOCAL_CHEAPEST_INSERTION_and_GUIDED_LOCAL_SEARCH",
-        #    "SAVINGS_and_GREEDY_DESCENT",
-        #    "LOCAL_CHEAPEST_INSERTION_and_GENERIC_TABU_SEARCH"
-        #]
     )
