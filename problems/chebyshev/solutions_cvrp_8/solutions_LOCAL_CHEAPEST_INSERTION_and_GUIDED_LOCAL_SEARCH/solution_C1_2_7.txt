@@ -1,8 +1,8 @@
 Instance: C1_2_7.txt
 
-Objective: 2384
+Objective: 2383
 
-Execution Time: 60.001209020614624
+Execution Time: 60.001200675964355
 
 Heuristic: LOCAL_CHEAPEST_INSERTION
 
@@ -36,12 +36,12 @@ Distance of the route: 143m
 Load of the route: 200
 
 Route for vehicle 5:
- 0 Load(0) ->  0 Load(0)
-Distance of the route: 0m
-Load of the route: 0
+ 0 Load(0) ->  32 Load(10) ->  65 Load(30) ->  86 Load(40) ->  115 Load(70) ->  94 Load(90) ->  171 Load(120) ->  51 Load(130) ->  174 Load(160) ->  136 Load(170) ->  189 Load(180) ->  0 Load(180)
+Distance of the route: 152m
+Load of the route: 180
 
 Route for vehicle 6:
- 0 Load(0) ->  17 Load(10) ->  188 Load(20) ->  125 Load(30) ->  191 Load(40) ->  84 Load(50) ->  180 Load(80) ->  82 Load(90) ->  4 Load(100) ->  72 Load(140) ->  60 Load(160) ->  143 Load(180) ->  121 Load(200) ->  0 Load(200)
+ 0 Load(0) ->  165 Load(10) ->  143 Load(30) ->  60 Load(50) ->  72 Load(90) ->  4 Load(100) ->  82 Load(110) ->  180 Load(140) ->  84 Load(150) ->  191 Load(160) ->  125 Load(170) ->  121 Load(190) ->  17 Load(200) ->  0 Load(200)
 Distance of the route: 151m
 Load of the route: 200
 
@@ -91,8 +91,8 @@ Distance of the route: 88m
 Load of the route: 200
 
 Route for vehicle 16:
- 0 Load(0) ->  101 Load(10) ->  99 Load(20) ->  144 Load(40) ->  1 Load(60) ->  9 Load(80) ->  71 Load(100) ->  35 Load(120) ->  57 Load(130) ->  118 Load(150) ->  165 Load(160) ->  108 Load(180) ->  190 Load(200) ->  0 Load(200)
-Distance of the route: 141m
+ 0 Load(0) ->  101 Load(10) ->  99 Load(20) ->  144 Load(40) ->  1 Load(60) ->  9 Load(80) ->  71 Load(100) ->  35 Load(120) ->  57 Load(130) ->  118 Load(150) ->  188 Load(160) ->  108 Load(180) ->  190 Load(200) ->  0 Load(200)
+Distance of the route: 140m
 Load of the route: 200
 
 Route for vehicle 17:
@@ -101,9 +101,9 @@ Distance of the route: 103m
 Load of the route: 190
 
 Route for vehicle 18:
- 0 Load(0) ->  189 Load(10) ->  136 Load(20) ->  174 Load(50) ->  171 Load(80) ->  51 Load(90) ->  94 Load(110) ->  86 Load(120) ->  115 Load(150) ->  65 Load(170) ->  32 Load(180) ->  0 Load(180)
-Distance of the route: 152m
-Load of the route: 180
+ 0 Load(0) ->  0 Load(0)
+Distance of the route: 0m
+Load of the route: 0
 
 Route for vehicle 19:
  0 Load(0) ->  0 Load(0)
@@ -260,5 +260,5 @@ Route for vehicle 49:
 Distance of the route: 0m
 Load of the route: 0
 
-Total distance of all routes: 2384m
+Total distance of all routes: 2383m
 Total load of all routes: 3530

@@ -1,8 +1,8 @@
 Instance: C1_2_7.txt
 
-Objective: 2354
+Objective: 2352
 
-Execution Time: 60.0013382434845
+Execution Time: 60.00088572502136
 
 Heuristic: PATH_MOST_CONSTRAINED_ARC
 
@@ -11,9 +11,9 @@ Metaheuristic: GUIDED_LOCAL_SEARCH
 Distance type: chebyshev
 
 Route for vehicle 0:
- 0 Load(0) ->  0 Load(0)
-Distance of the route: 0m
-Load of the route: 0
+ 0 Load(0) ->  189 Load(10) ->  136 Load(20) ->  174 Load(50) ->  51 Load(60) ->  171 Load(90) ->  94 Load(110) ->  86 Load(120) ->  115 Load(150) ->  65 Load(170) ->  32 Load(180) ->  0 Load(180)
+Distance of the route: 152m
+Load of the route: 180
 
 Route for vehicle 1:
  0 Load(0) ->  138 Load(20) ->  199 Load(30) ->  184 Load(50) ->  8 Load(90) ->  186 Load(110) ->  127 Load(120) ->  54 Load(150) ->  18 Load(160) ->  104 Load(180) ->  161 Load(190) ->  58 Load(200) ->  0 Load(200)
@@ -21,9 +21,9 @@ Distance of the route: 151m
 Load of the route: 200
 
 Route for vehicle 2:
- 0 Load(0) ->  189 Load(10) ->  136 Load(20) ->  171 Load(50) ->  174 Load(80) ->  51 Load(90) ->  94 Load(110) ->  86 Load(120) ->  115 Load(150) ->  65 Load(170) ->  32 Load(180) ->  0 Load(180)
-Distance of the route: 154m
-Load of the route: 180
+ 0 Load(0) ->  0 Load(0)
+Distance of the route: 0m
+Load of the route: 0
 
 Route for vehicle 3:
  0 Load(0) ->  95 Load(10) ->  121 Load(30) ->  60 Load(50) ->  72 Load(90) ->  4 Load(100) ->  82 Load(110) ->  180 Load(140) ->  84 Load(150) ->  191 Load(160) ->  125 Load(170) ->  128 Load(180) ->  106 Load(190) ->  0 Load(190)
@@ -260,5 +260,5 @@ Route for vehicle 49:
 Distance of the route: 81m
 Load of the route: 170
 
-Total distance of all routes: 2354m
+Total distance of all routes: 2352m
 Total load of all routes: 3530
