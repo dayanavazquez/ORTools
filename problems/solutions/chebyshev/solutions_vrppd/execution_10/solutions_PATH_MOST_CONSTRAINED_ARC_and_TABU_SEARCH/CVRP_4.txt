@@ -1,0 +1,49 @@
+Instance: CVRP_4.txt
+
+Objective: 18486
+
+Execution Time: 31.53370237350464
+
+Heuristic: PATH_MOST_CONSTRAINED_ARC
+
+Metaheuristic: TABU_SEARCH
+
+Distance type: chebyshev
+
+Route for vehicle 0:
+ 0 ->  6 ->  28 ->  49 ->  44 ->  18 ->  25 ->  31 ->  38 ->  58 ->  40 ->  3 ->  63 -> 0
+Distance of the route: 169m
+
+Route for vehicle 1:
+ 0 ->  55 ->  9 ->  72 ->  65 ->  11 ->  54 ->  36 ->  69 ->  30 ->  45 -> 0
+Distance of the route: 175m
+
+Route for vehicle 2:
+ 0 -> 0
+Distance of the route: 0m
+
+Route for vehicle 3:
+ 0 ->  20 ->  37 ->  5 ->  48 ->  61 ->  22 ->  43 ->  62 ->  8 ->  19 ->  14 ->  35 -> 0
+Distance of the route: 156m
+
+Route for vehicle 4:
+ 0 -> 0
+Distance of the route: 0m
+
+Route for vehicle 5:
+ 0 -> 0
+Distance of the route: 0m
+
+Route for vehicle 6:
+ 0 ->  26 ->  52 ->  13 ->  59 ->  66 ->  10 ->  12 ->  17 ->  51 ->  2 ->  68 -> 0
+Distance of the route: 140m
+
+Route for vehicle 7:
+ 0 ->  75 ->  73 ->  1 ->  64 ->  42 ->  41 ->  56 ->  23 ->  24 ->  16 ->  33 ->  21 ->  47 ->  70 ->  29 ->  4 -> 0
+Distance of the route: 171m
+
+Route for vehicle 8:
+ 0 ->  46 ->  7 ->  53 ->  39 ->  32 ->  50 ->  74 ->  71 ->  60 ->  15 ->  57 ->  27 ->  34 ->  67 -> 0
+Distance of the route: 175m
+
+Total Distance of all routes: 986m

@@ -173,13 +173,18 @@ def filter_best_solutions(results):
     best_results = {}
 
     for instance, objective, heuristic, metaheuristic, execution_time, routes_count in results:
-        if objective != 0:
+        try:
+            obj_value = float(objective) if isinstance(objective, str) else objective
+        except (ValueError, TypeError):
+            continue
+
+        if obj_value != 0:
             if instance not in best_results:
                 best_results[instance] = [
-                    (instance, objective, heuristic, metaheuristic, execution_time, routes_count)]
+                    (instance, obj_value, heuristic, metaheuristic, execution_time, routes_count)]
             else:
                 best_results[instance].append(
-                    (instance, objective, heuristic, metaheuristic, execution_time, routes_count))
+                    (instance, obj_value, heuristic, metaheuristic, execution_time, routes_count))
 
     final_best_results = {}
     for instance, candidates in best_results.items():
@@ -247,10 +252,10 @@ def generate_csv_files(results, best_solution, output_folder, filtered=None):
             result_dict["Instance"].append(instance)
             for algorithm in filtered:
                 value = df_filtered.loc[
-                    (df_filtered["Algorithm"] == algorithm) & (df_filtered["Instance"] == instance), "Time"]
+                    (df_filtered["Algorithm"] == algorithm) & (df_filtered["Instance"] == instance), "Objective"]
                 result_dict[algorithm].append(value.iloc[0] if not value.empty else "")
         df_result = pd.DataFrame(result_dict)
-        file = f"{output_folder}/best_algorithms_time.csv"
+        file = f"{output_folder}/best_algorithms_objective.csv"
         df_result.to_csv(file, sep=";", index=False)
         print(f"Archivo generado: {file}")
 
@@ -269,8 +274,8 @@ def write_solutions(output_file, results, best_solution, is_csv, filtered):
 
 
 def main(best_solution=False, csv=False, filtered=None):
-    base_folder = '../problems/solutions/haversine/solutions_cvrp'
-    output_file = '../friedman/haversine/cvrp'
+    base_folder = '../problems/solutions/chebyshev/solutions_vrppd'
+    output_file = '../friedman/chebyshev/vrppd'
 
     results = process_solutions_folder(base_folder)
     write_solutions(output_file, results, best_solution, csv, filtered)
@@ -281,10 +286,10 @@ if __name__ == "__main__":
         best_solution=True,
         csv=True,
         filtered=[
-            "FIRST_UNBOUND_MIN_VALUE_and_TABU_SEARCH",
-            "LOCAL_CHEAPEST_COST_INSERTION_and_SIMULATED_ANNEALING",
-            "LOCAL_CHEAPEST_COST_INSERTION_and_GUIDED_LOCAL_SEARCH",
-            "SAVINGS_and_GREEDY_DESCENT",
-            "LOCAL_CHEAPEST_INSERTION_and_GENERIC_TABU_SEARCH"
+            "LOCAL_CHEAPEST_COST_INSERTION_and_TABU_SEARCH",
+            "SWEEP_and_SIMULATED_ANNEALING",
+            "SEQUENTIAL_CHEAPEST_INSERTION_and_GUIDED_LOCAL_SEARCH",
+            "EVALUATOR_STRATEGY_and_GREEDY_DESCENT",
+            "ALL_UNPERFORMED_and_GENERIC_TABU_SEARCH"
         ]
     )

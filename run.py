@@ -22,12 +22,12 @@ from problems.strategy_type import HeuristicType, MetaheuristicType
 
 
 execute(
-    problem_type=ProblemType.CVRP,
+    problem_type=ProblemType.VRPTW,
     instance=InstanceType.VRPTW,
-    distance_type=DistanceType.CHEBYSHEV,
+    distance_type=DistanceType.HAVERSINE,
     time_limit=60,
-    executions=9,
-    vehicle_maximum_travel_distance=None,
+    executions=10,
+    vehicle_maximum_travel_distance=100000,
     vehicle_max_time=None,
     vehicle_speed=None,
     heuristic=None,

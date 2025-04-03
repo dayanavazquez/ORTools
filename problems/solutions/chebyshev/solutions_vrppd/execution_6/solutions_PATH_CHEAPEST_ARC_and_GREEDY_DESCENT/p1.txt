@@ -1,0 +1,29 @@
+Instance: p1.txt
+
+Objective: 19305
+
+Execution Time: 8.644872426986694
+
+Heuristic: PATH_CHEAPEST_ARC
+
+Metaheuristic: GREEDY_DESCENT
+
+Distance type: chebyshev
+
+Route for vehicle 0:
+ 0 ->  6 ->  23 ->  24 ->  12 ->  18 ->  41 ->  16 ->  46 ->  31 ->  27 -> 0
+Distance of the route: 150m
+
+Route for vehicle 1:
+ 0 ->  1 ->  30 ->  22 ->  42 ->  45 ->  48 ->  52 ->  29 ->  8 ->  49 ->  20 ->  19 ->  35 ->  2 -> 0
+Distance of the route: 186m
+
+Route for vehicle 2:
+ 0 ->  10 ->  34 ->  33 ->  38 ->  32 ->  44 ->  14 ->  43 ->  3 ->  11 ->  4 ->  9 ->  37 -> 0
+Distance of the route: 186m
+
+Route for vehicle 3:
+ 0 ->  47 ->  7 ->  25 ->  21 ->  53 ->  28 ->  15 ->  36 ->  50 ->  39 ->  40 ->  17 ->  13 ->  5 ->  51 ->  26 -> 0
+Distance of the route: 183m
+
+Total Distance of all routes: 705m

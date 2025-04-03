@@ -1,0 +1,25 @@
+Instance: CVRP_100.txt
+
+Objective: 1357732
+
+Execution Time: 0.08194971084594727
+
+Heuristic: GLOBAL_CHEAPEST_ARC
+
+Metaheuristic: GENERIC_TABU_SEARCH
+
+Distance type: haversine
+
+Route for vehicle 0:
+ 0 ->  13 ->  15 ->  5 ->  11 ->  12 -> 0
+Distance of the route: 11248m
+
+Route for vehicle 1:
+ 0 ->  10 ->  9 ->  2 ->  3 ->  8 ->  14 -> 0
+Distance of the route: 13237m
+
+Route for vehicle 2:
+ 0 ->  4 ->  6 ->  7 ->  1 -> 0
+Distance of the route: 9547m
+
+Total Distance of all routes: 34032m
