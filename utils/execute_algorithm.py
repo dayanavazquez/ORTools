@@ -5,41 +5,50 @@ from ortools.constraint_solver import pywrapcp
 
 
 def get_solutions(
-        initial_routes, save_solution, i, distance_type, search_parameters, routing, time_limit, data, manager,
-        instance,
-        first_solution_strategy=None,
-        local_search_metaheuristic=None,
-        one_vehicle=False
+        initial_routes, save_solution, i, distance_type, search_parameters, routing,
+        time_limit, data, manager, instance, first_solution_strategy=None,
+        local_search_metaheuristic=None, one_vehicle=False
 ):
     try:
         search_parameters.time_limit.FromSeconds(time_limit)
         start_time = time.time()
+
         if initial_routes:
             initial_routes = [[int(node) for node in route] for route in initial_routes]
-            filtered_routes = []
+
             if one_vehicle:
-                if len(initial_routes[0]) >= 2:
-                    filtered_routes = [initial_routes[0]]
+                filtered_routes = [route for route in initial_routes if len(route) >= 2][:1]
             else:
                 filtered_routes = [route for route in initial_routes if len(route) >= 2]
-            print("Initial Routes:", filtered_routes)
+
+            if not filtered_routes:
+                raise ValueError("No valid initial routes provided (all routes have < 2 nodes)")
+
+            print(f"Optimizing from {len(filtered_routes)} initial routes...")
+
             initial_solution = routing.ReadAssignmentFromRoutes(filtered_routes, True)
             solution = routing.SolveFromAssignmentWithParameters(
                 initial_solution, search_parameters
             )
         else:
+            print("No initial routes provided - using default solver")
             solution = routing.SolveWithParameters(search_parameters)
-        end_time = time.time()
-        elapsed_time = end_time - start_time
+
+        elapsed_time = time.time() - start_time
+
         if solution:
             save_solution(
                 data, manager, routing, solution, instance, first_solution_strategy,
-                local_search_metaheuristic,
-                elapsed_time, i, distance_type)
+                local_search_metaheuristic, elapsed_time, i, distance_type
+            )
+            return solution
         else:
-            print("No solution found !")
-    except OSError as error:
-        print(f"Error writing in the initial routes {initial_routes}: {error}")
+            print(f"No solution found for instance {i}!")
+            return None
+
+    except Exception as error:
+        print(f"Error processing initial routes {initial_routes}: {str(error)}")
+        return None
 
 
 def get_distance_and_solution_name(distance_type, heuristic, metaheuristic):

@@ -22,21 +22,15 @@ from problems.strategy_type import HeuristicType, MetaheuristicType
 
 
 execute(
-    problem_type=ProblemType.VRPTW,
+    problem_type=ProblemType.CVRP,
     instance=InstanceType.VRPTW,
-    distance_type=DistanceType.HAVERSINE,
+    distance_type=DistanceType.EUCLIDEAN,
     time_limit=60,
     executions=10,
-    vehicle_maximum_travel_distance=100000,
+    vehicle_maximum_travel_distance=None,
     vehicle_max_time=None,
     vehicle_speed=None,
     heuristic=None,
     metaheuristic=None,
-    initial_routes=None,
-    #[
-    #   [8, 16, 14, 13, 12, 11],
-    #   [3, 4, 9, 10],
-    #   [15, 1],
-    #   [7, 5, 2, 6],
-    #],
+    initial_routes=None
 )

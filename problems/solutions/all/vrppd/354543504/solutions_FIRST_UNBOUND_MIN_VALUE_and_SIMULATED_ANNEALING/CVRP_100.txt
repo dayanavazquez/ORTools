@@ -1,0 +1,25 @@
+Instance: CVRP_100.txt
+
+Objective: 1339697
+
+Execution Time: 0.06196141242980957
+
+Heuristic: FIRST_UNBOUND_MIN_VALUE
+
+Metaheuristic: SIMULATED_ANNEALING
+
+Distance type: haversine
+
+Route for vehicle 0:
+ 0 ->  10 ->  3 ->  8 ->  14 -> 0
+Distance of the route: 13048m
+
+Route for vehicle 1:
+ 0 ->  6 ->  7 ->  1 ->  2 ->  9 ->  11 -> 0
+Distance of the route: 10565m
+
+Route for vehicle 2:
+ 0 ->  5 ->  4 ->  13 ->  15 ->  12 -> 0
+Distance of the route: 11284m
+
+Total Distance of all routes: 34897m

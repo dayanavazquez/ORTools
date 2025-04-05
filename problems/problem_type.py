@@ -24,7 +24,7 @@ def execute(
         time_limit = 20
     if not vehicle_maximum_travel_distance:
         vehicle_maximum_travel_distance = 500
-    for i in range(5, executions):
+    for i in range(0, executions):
         execute_problem(
             i, problem_type, instance, distance_type, time_limit, vehicle_maximum_travel_distance,
             vehicle_max_time, vehicle_speed, heuristic, metaheuristic, initial_routes

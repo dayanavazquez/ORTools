@@ -150,10 +150,13 @@ def filter_average_solutions_per_algorithm(results):
             else:
                 data = algorithms[algorithm]
                 valid_objectives = [obj for obj in data["objectives"] if obj is not None]
-                avg_objective = sum(valid_objectives) / len(valid_objectives) if valid_objectives else penalty_value_objective
+                avg_objective = sum(valid_objectives) / len(
+                    valid_objectives) if valid_objectives else penalty_value_objective
                 valid_execution_times = [time for time in data["execution_times"] if time is not None]
-                avg_execution_time = sum(valid_execution_times) / len(valid_execution_times) if valid_execution_times else penalty_value_execution_time
-                avg_routes_count = sum(data["routes_counts"]) / len(data["routes_counts"]) if data["routes_counts"] else 0
+                avg_execution_time = sum(valid_execution_times) / len(
+                    valid_execution_times) if valid_execution_times else penalty_value_execution_time
+                avg_routes_count = sum(data["routes_counts"]) / len(data["routes_counts"]) if data[
+                    "routes_counts"] else 0
             final_average_results.append(
                 (
                     instance,
@@ -252,10 +255,10 @@ def generate_csv_files(results, best_solution, output_folder, filtered=None):
             result_dict["Instance"].append(instance)
             for algorithm in filtered:
                 value = df_filtered.loc[
-                    (df_filtered["Algorithm"] == algorithm) & (df_filtered["Instance"] == instance), "Objective"]
+                    (df_filtered["Algorithm"] == algorithm) & (df_filtered["Instance"] == instance), "Time"]
                 result_dict[algorithm].append(value.iloc[0] if not value.empty else "")
         df_result = pd.DataFrame(result_dict)
-        file = f"{output_folder}/best_algorithms_objective.csv"
+        file = f"{output_folder}/best_algorithms_time_vrptw.csv"
         df_result.to_csv(file, sep=";", index=False)
         print(f"Archivo generado: {file}")
 
@@ -274,8 +277,8 @@ def write_solutions(output_file, results, best_solution, is_csv, filtered):
 
 
 def main(best_solution=False, csv=False, filtered=None):
-    base_folder = '../problems/solutions/chebyshev/solutions_vrppd'
-    output_file = '../friedman/chebyshev/vrppd'
+    base_folder = '../problems/initial_solutions'
+    output_file = '../problems/solutions/initial_solutions/best_solutions_initial_routes'
 
     results = process_solutions_folder(base_folder)
     write_solutions(output_file, results, best_solution, csv, filtered)
@@ -284,12 +287,7 @@ def main(best_solution=False, csv=False, filtered=None):
 if __name__ == "__main__":
     main(
         best_solution=True,
-        csv=True,
-        filtered=[
-            "LOCAL_CHEAPEST_COST_INSERTION_and_TABU_SEARCH",
-            "SWEEP_and_SIMULATED_ANNEALING",
-            "SEQUENTIAL_CHEAPEST_INSERTION_and_GUIDED_LOCAL_SEARCH",
-            "EVALUATOR_STRATEGY_and_GREEDY_DESCENT",
-            "ALL_UNPERFORMED_and_GENERIC_TABU_SEARCH"
-        ]
+        csv=False,
+
+
     )

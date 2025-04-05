@@ -1,0 +1,25 @@
+Instance: CVRP_100.txt
+
+Objective: 1213529
+
+Execution Time: 0.11692929267883301
+
+Heuristic: LOCAL_CHEAPEST_INSERTION
+
+Metaheuristic: GUIDED_LOCAL_SEARCH
+
+Distance type: haversine
+
+Route for vehicle 0:
+ 0 ->  5 ->  15 ->  13 ->  14 -> 0
+Distance of the route: 10340m
+
+Route for vehicle 1:
+ 0 ->  11 ->  10 ->  9 ->  2 ->  7 -> 0
+Distance of the route: 11692m
+
+Route for vehicle 2:
+ 0 ->  1 ->  3 ->  8 ->  6 ->  4 ->  12 -> 0
+Distance of the route: 11797m
+
+Total Distance of all routes: 33829m

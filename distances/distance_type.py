@@ -4,7 +4,7 @@ import math
 
 
 class DistanceType(Enum):
-    EUCLIDEAN = 'euclidean'
+    EUCLIDEAN = 'initial_solutions'
     MANHATTAN = 'manhattan'
     HAVERSINE = 'haversine'
     CHEBYSHEV = 'chebyshev'

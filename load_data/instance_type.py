@@ -16,7 +16,7 @@ class InstanceType(Enum):
 
 def process_files(instance_type, distance_type: DistanceType = None, vehicle_max_time=None, vehicle_speed=None, vehicle_maximum_travel_distance=None, path=None, integer=False):
     if isinstance(instance_type, str) and (instance_type.endswith('.txt') or instance_type.endswith('.json')):
-        return process_string_instance(instance_type, distance_type, vehicle_max_time, vehicle_speed, vehicle_maximum_travel_distance)
+        return process_string_instance(instance_type, distance_type, vehicle_max_time, vehicle_speed, vehicle_maximum_travel_distance, integer)
     problem_data = {
         InstanceType.TSP: {
             'read_function': read_file_tsp,
@@ -32,7 +32,7 @@ def process_files(instance_type, distance_type: DistanceType = None, vehicle_max
         },
         InstanceType.VRPTW: {
             'read_function': read_file_tw,
-            'path': path if path else ['./instances/vrptw_instances']
+            'path': path if path else ['./instances/vrptw_instances/test']
         },
         InstanceType.BSS: {
             'read_function': read_file_bss,

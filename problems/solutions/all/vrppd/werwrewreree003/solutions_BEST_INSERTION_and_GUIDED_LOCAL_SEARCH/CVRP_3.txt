@@ -1,0 +1,33 @@
+Instance: CVRP_3.txt
+
+Objective: 20594
+
+Execution Time: 5.151651620864868
+
+Heuristic: BEST_INSERTION
+
+Metaheuristic: GUIDED_LOCAL_SEARCH
+
+Distance type: chebyshev
+
+Route for vehicle 0:
+ 0 ->  36 ->  28 ->  26 ->  7 ->  18 ->  41 ->  4 ->  15 ->  9 ->  1 -> 0
+Distance of the route: 199m
+
+Route for vehicle 1:
+ 0 ->  5 ->  49 ->  2 ->  20 ->  8 ->  6 -> 0
+Distance of the route: 98m
+
+Route for vehicle 2:
+ 0 -> 0
+Distance of the route: 0m
+
+Route for vehicle 3:
+ 0 ->  32 ->  11 ->  34 ->  30 ->  45 ->  44 ->  40 ->  19 ->  42 ->  13 ->  25 ->  14 ->  43 ->  23 ->  48 ->  27 -> 0
+Distance of the route: 198m
+
+Route for vehicle 4:
+ 0 ->  47 ->  24 ->  31 ->  22 ->  3 ->  35 ->  29 ->  21 ->  50 ->  16 ->  38 ->  10 ->  39 ->  33 ->  37 ->  17 ->  12 ->  46 -> 0
+Distance of the route: 199m
+
+Total Distance of all routes: 694m

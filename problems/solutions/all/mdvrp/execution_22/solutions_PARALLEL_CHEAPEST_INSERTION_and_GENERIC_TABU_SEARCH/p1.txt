@@ -1,0 +1,29 @@
+Instance: p1.txt
+
+Objective: 128889305
+
+Execution Time: 1.2353153228759766
+
+Heuristic: PARALLEL_CHEAPEST_INSERTION
+
+Metaheuristic: GENERIC_TABU_SEARCH
+
+Distance type: chebyshev
+
+Route for vehicle 0:
+ 50 ->  43 ->  41 ->  18 ->  39 ->  40 ->  12 ->  24 ->  13 ->  17 ->  46 ->  3 -> 50
+Distance of the route: 101m
+
+Route for vehicle 1:
+ 51 ->  4 ->  37 ->  26 ->  47 ->  6 ->  42 ->  23 ->  22 ->  5 -> 51
+Distance of the route: 96m
+
+Route for vehicle 2:
+ 52 ->  48 ->  9 ->  38 ->  32 ->  44 ->  14 ->  36 ->  16 ->  11 ->  45 ->  31 ->  10 ->  15 ->  49 ->  33 ->  29 ->  8 -> 52
+Distance of the route: 116m
+
+Route for vehicle 3:
+ 53 ->  27 ->  30 ->  25 ->  7 ->  0 ->  21 ->  2 ->  35 ->  34 ->  19 ->  1 ->  20 ->  28 -> 53
+Distance of the route: 116m
+
+Total Distance of all routes: 429m

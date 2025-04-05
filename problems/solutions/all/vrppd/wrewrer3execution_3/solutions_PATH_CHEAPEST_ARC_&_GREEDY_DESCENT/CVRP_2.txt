@@ -1,0 +1,31 @@
+Instance: CVRP_2.txt
+
+Objective: 25238
+
+Execution Time: 8.224836111068726
+
+Heuristic: PATH_CHEAPEST_ARC
+
+Metaheuristic: GREEDY_DESCENT
+
+Route for vehicle 0:
+ 0 ->  5 ->  30 ->  50 ->  16 ->  11 ->  22 ->  35 ->  36 ->  31 ->  1 ->  27 ->  48 ->  24 ->  14 -> 0
+Distance of the route: 240m
+
+Route for vehicle 1:
+ 0 ->  40 ->  10 -> 0
+Distance of the route: 160m
+
+Route for vehicle 2:
+ 0 ->  17 ->  19 ->  41 ->  13 ->  4 ->  38 ->  9 ->  34 ->  39 ->  44 ->  42 ->  18 -> 0
+Distance of the route: 242m
+
+Route for vehicle 3:
+ 0 ->  12 ->  37 ->  15 ->  45 ->  33 ->  49 ->  2 ->  3 ->  26 ->  7 ->  23 ->  43 ->  25 ->  6 -> 0
+Distance of the route: 242m
+
+Route for vehicle 4:
+ 0 ->  47 ->  46 ->  8 ->  28 ->  20 ->  29 ->  21 ->  32 -> 0
+Distance of the route: 154m
+
+Total Distance of all routes: 1038m
