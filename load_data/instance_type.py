@@ -20,27 +20,27 @@ def process_files(instance_type, distance_type: DistanceType = None, vehicle_max
     problem_data = {
         InstanceType.TSP: {
             'read_function': read_file_tsp,
-            'path': path if path else ['./instances/tsp_instances']
+            'path': path if path else ['../../instances/tsp_instances']
         },
         InstanceType.BHCVRP: {
             'read_function': read_file_bh,
-            'path': path if path else ['./instances/bhcvrp_instances']
+            'path': path if path else ['../../instances/bhcvrp_instances']
         },
         InstanceType.MDCVRP: {
             'read_function': read_file_md,
-            'path': path if path else ['./instances/mdcvrp_instances/C-mdvrp']
+            'path': path if path else ['../../instances/mdcvrp_instances/C-mdvrp']
         },
         InstanceType.VRPTW: {
             'read_function': read_file_tw,
-            'path': path if path else ['./instances/vrptw_instances/test']
+            'path': path if path else ['../../instances/vrptw_instances/test']
         },
         InstanceType.BSS: {
             'read_function': read_file_bss,
-            'path': path if path else ['./instances/bss_instances']
+            'path': path if path else ['../../instances/bss_instances']
         },
         InstanceType.HFVRP: {
             'read_function': read_file_hf,
-            'path': path if path else ['./instances/hfvrp_instances']
+            'path': path if path else ['../../instances/hfvrp_instances']
         },
     }
     total_data = {}

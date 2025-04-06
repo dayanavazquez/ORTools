@@ -80,7 +80,7 @@ def process_solutions_folder(base_folder):
                     f_name = f_name[len("solutions_"):]
                     if '&' in f_name:
                         heuristic, metaheuristic = map(str.strip, f_name.split('&'))
-                    elif f_name.replace('_', '').isdigit():  # Verifica si todos los componentes de f_name son numéricos
+                    elif f_name.replace('_', '').isdigit():
                         heuristic, metaheuristic = map(int, f_name.split('_'))
                     else:
                         heuristic, metaheuristic = obtain_technique(f_path, f_name)
@@ -258,7 +258,7 @@ def generate_csv_files(results, best_solution, output_folder, filtered=None):
                     (df_filtered["Algorithm"] == algorithm) & (df_filtered["Instance"] == instance), "Time"]
                 result_dict[algorithm].append(value.iloc[0] if not value.empty else "")
         df_result = pd.DataFrame(result_dict)
-        file = f"{output_folder}/best_algorithms_time_vrptw.csv"
+        file = f"{output_folder}/best_algorithms_time.csv"
         df_result.to_csv(file, sep=";", index=False)
         print(f"Archivo generado: {file}")
 
@@ -277,8 +277,8 @@ def write_solutions(output_file, results, best_solution, is_csv, filtered):
 
 
 def main(best_solution=False, csv=False, filtered=None):
-    base_folder = '../problems/initial_solutions'
-    output_file = '../problems/solutions/initial_solutions/best_solutions_initial_routes'
+    base_folder = '../problems/manhattan'
+    output_file = '../problems/manhattan/best_solutions_initial_routes'
 
     results = process_solutions_folder(base_folder)
     write_solutions(output_file, results, best_solution, csv, filtered)
