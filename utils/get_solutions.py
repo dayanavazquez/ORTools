@@ -47,7 +47,7 @@ def extract_info_from_txt(file_path):
                 objective = cost
         elif other_cost_matches:
             objective = other_cost_matches[0]
-        return instance, objective, execution_time, routes_count
+        return instance, objective, execution_time, (routes_count or 1)
     return None, None, None, None
 
 
@@ -277,8 +277,8 @@ def write_solutions(output_file, results, best_solution, is_csv, filtered):
 
 
 def main(best_solution=False, csv=False, filtered=None):
-    base_folder = '../problems/manhattan'
-    output_file = '../problems/manhattan/best_solutions_initial_routes'
+    base_folder = '../problems/solutions/chebyshev/solutions_tsp'
+    output_file = '../problems/solutions/chebyshev/solutions_tsp/all_solutions_tsp_chebyshev.txt'
 
     results = process_solutions_folder(base_folder)
     write_solutions(output_file, results, best_solution, csv, filtered)
@@ -286,7 +286,7 @@ def main(best_solution=False, csv=False, filtered=None):
 
 if __name__ == "__main__":
     main(
-        best_solution=True,
+        best_solution=False,
         csv=False,
 
 
