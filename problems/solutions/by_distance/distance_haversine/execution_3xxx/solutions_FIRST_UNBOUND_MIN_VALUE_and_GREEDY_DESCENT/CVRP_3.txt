@@ -1,0 +1,33 @@
+Instance: CVRP_3.txt
+
+Objective: 1860475
+
+Execution Time: 39.17949891090393
+
+Heuristic: FIRST_UNBOUND_MIN_VALUE
+
+Metaheuristic: GREEDY_DESCENT
+
+Distance type: haversine
+
+Route for vehicle 0:
+ 0 ->  13 ->  1 ->  22 ->  20 ->  36 ->  26 -> 0
+Distance of the route: 17712m
+
+Route for vehicle 1:
+ 0 ->  11 ->  10 ->  39 ->  50 ->  16 ->  3 ->  35 ->  29 ->  21 ->  34 ->  49 ->  33 ->  45 ->  5 -> 0
+Distance of the route: 17441m
+
+Route for vehicle 2:
+ 0 ->  27 ->  46 ->  15 ->  17 ->  4 ->  41 ->  18 ->  47 ->  12 ->  30 ->  9 ->  38 -> 0
+Distance of the route: 17089m
+
+Route for vehicle 3:
+ 0 ->  19 ->  40 ->  25 ->  14 ->  6 ->  7 ->  8 ->  31 ->  28 ->  32 -> 0
+Distance of the route: 17731m
+
+Route for vehicle 4:
+ 0 ->  24 ->  43 ->  23 ->  48 ->  2 ->  44 ->  42 ->  37 -> 0
+Distance of the route: 17402m
+
+Total Distance of all routes: 87375m

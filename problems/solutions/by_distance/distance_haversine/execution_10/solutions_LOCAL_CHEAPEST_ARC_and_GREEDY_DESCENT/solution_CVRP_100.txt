@@ -1,0 +1,29 @@
+Instance: CVRP_100.txt
+
+Objective: 27353
+
+Execution Time: 0.0218966007232666
+
+Heuristic: LOCAL_CHEAPEST_ARC
+
+Metaheuristic: GREEDY_DESCENT
+
+Distance type: haversine
+
+Route for vehicle 0:
+ 0 Load(0.0) ->  1 Load(10.0) ->  11 Load(20.0) ->  5 Load(40.0) ->  15 Load(60.0) ->  12 Load(75.0) ->  0 Load(75.0)
+Distance of the route: 7056m
+Load of the route: 75.0
+
+Route for vehicle 1:
+ 0 Load(0.0) ->  6 Load(30.0) ->  7 Load(40.0) ->  8 Load(55.0) ->  3 Load(70.0) ->  2 Load(80.0) ->  9 Load(90.0) ->  10 Load(100.0) ->  0 Load(100.0)
+Distance of the route: 12798m
+Load of the route: 100.0
+
+Route for vehicle 2:
+ 0 Load(0.0) ->  4 Load(40.0) ->  13 Load(70.0) ->  14 Load(90.0) ->  0 Load(90.0)
+Distance of the route: 7499m
+Load of the route: 90.0
+
+Total distance of all routes: 27353m
+Total load of all routes: 265.0

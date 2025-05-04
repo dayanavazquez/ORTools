@@ -62,8 +62,6 @@ for problem in base_problems:
 
 
 def get_data_for_predictions():
-    # Se agregan campos adicionales para problemas no TSP:
-    # "Load Factor", "Instance Type" y "Problem Type"
     results = {
         "TSP": {
             "Instance": [],

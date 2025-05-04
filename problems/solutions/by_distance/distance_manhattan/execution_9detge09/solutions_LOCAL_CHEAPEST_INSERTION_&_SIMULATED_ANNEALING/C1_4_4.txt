@@ -1,0 +1,620 @@
+Instance: C1_4_4.txt
+
+Objective: 45436
+
+Execution Time: 59.45933437347412
+
+Heuristic: LOCAL_CHEAPEST_INSERTION
+
+Metaheuristic: SIMULATED_ANNEALING
+
+dropped orders: []
+
+dropped reload stations: [1, 2, 3, 4, 5]
+
+Route for vehicle 0:
+ 0 Load(0) Time(0,162) -> 73 Load(0) Time(0,162) -> 30 Load(20) Time(90,252) -> 95 Load(40) Time(180,342) -> 177 Load(70) Time(270,432) -> 51 Load(110) Time(360,522) -> 389 Load(130) Time(450,612) -> 127 Load(160) Time(540,702) -> 96 Load(190) Time(714,792) -> 0 Load(200) Time(804,1500)
+Distance of the route: 352m
+Load of the route: 200
+Time of the route: 804min
+
+Route for vehicle 1:
+ 0 Load(0) Time(0,261) -> 392 Load(0) Time(0,261) -> 36 Load(20) Time(90,351) -> 376 Load(30) Time(180,441) -> 347 Load(50) Time(270,531) -> 377 Load(60) Time(607,621) -> 124 Load(80) Time(709,711) -> 337 Load(90) Time(799,801) -> 160 Load(120) Time(889,891) -> 89 Load(130) Time(979,981) -> 166 Load(140) Time(1069,1071) -> 258 Load(160) Time(1159,1161) -> 385 Load(180) Time(1249,1323) -> 0 Load(200) Time(1339,1500)
+Distance of the route: 352m
+Load of the route: 200
+Time of the route: 1339min
+
+Route for vehicle 2:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 3:
+ 0 Load(0) Time(0,328) -> 101 Load(0) Time(281,328) -> 47 Load(20) Time(404,467) -> 171 Load(30) Time(494,557) -> 243 Load(40) Time(584,647) -> 239 Load(70) Time(703,737) -> 192 Load(90) Time(798,827) -> 345 Load(100) Time(888,917) -> 48 Load(130) Time(978,1007) -> 57 Load(150) Time(1068,1097) -> 244 Load(160) Time(1158,1187) -> 174 Load(170) Time(1248,1277) -> 33 Load(190) Time(1338,1367) -> 0 Load(200) Time(1428,1500)
+Distance of the route: 342m
+Load of the route: 200
+Time of the route: 1428min
+
+Route for vehicle 4:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 5:
+ 0 Load(0) Time(0,36) -> 371 Load(0) Time(0,36) -> 363 Load(10) Time(90,126) -> 181 Load(20) Time(180,216) -> 380 Load(30) Time(270,306) -> 85 Load(40) Time(360,398) -> 328 Load(70) Time(450,488) -> 265 Load(100) Time(540,939) -> 317 Load(110) Time(630,1029) -> 16 Load(120) Time(720,1119) -> 279 Load(150) Time(810,1209) -> 140 Load(170) Time(900,1299) -> 311 Load(190) Time(990,1389) -> 0 Load(200) Time(1080,1500)
+Distance of the route: 346m
+Load of the route: 200
+Time of the route: 1080min
+
+Route for vehicle 6:
+ 0 Load(0) Time(0,313) -> 190 Load(0) Time(0,313) -> 138 Load(10) Time(90,403) -> 274 Load(20) Time(180,493) -> 223 Load(40) Time(270,583) -> 35 Load(60) Time(360,673) -> 110 Load(80) Time(715,763) -> 236 Load(90) Time(805,853) -> 290 Load(110) Time(895,943) -> 252 Load(130) Time(985,1033) -> 275 Load(150) Time(1075,1123) -> 240 Load(160) Time(1165,1213) -> 364 Load(170) Time(1255,1303) -> 126 Load(180) Time(1345,1393) -> 0 Load(190) Time(1435,1500)
+Distance of the route: 298m
+Load of the route: 190
+Time of the route: 1435min
+
+Route for vehicle 7:
+ 0 Load(0) Time(0,35) -> 393 Load(0) Time(0,35) -> 90 Load(10) Time(90,125) -> 298 Load(30) Time(180,215) -> 116 Load(60) Time(452,498) -> 245 Load(80) Time(542,688) -> 242 Load(90) Time(632,778) -> 259 Load(110) Time(811,868) -> 276 Load(140) Time(901,958) -> 142 Load(160) Time(991,1253) -> 284 Load(180) Time(1081,1343) -> 0 Load(200) Time(1171,1500)
+Distance of the route: 310m
+Load of the route: 200
+Time of the route: 1171min
+
+Route for vehicle 8:
+ 0 Load(0) Time(0,121) -> 301 Load(0) Time(48,121) -> 280 Load(20) Time(207,211) -> 199 Load(30) Time(297,301) -> 82 Load(40) Time(387,391) -> 296 Load(60) Time(477,690) -> 359 Load(80) Time(567,780) -> 293 Load(90) Time(657,870) -> 53 Load(110) Time(747,960) -> 313 Load(130) Time(981,1050) -> 349 Load(160) Time(1071,1362) -> 0 Load(180) Time(1161,1500)
+Distance of the route: 202m
+Load of the route: 180
+Time of the route: 1161min
+
+Route for vehicle 9:
+ 0 Load(0) Time(0,155) -> 115 Load(0) Time(0,155) -> 331 Load(20) Time(90,245) -> 398 Load(50) Time(180,335) -> 66 Load(60) Time(359,425) -> 325 Load(80) Time(449,609) -> 368 Load(100) Time(642,699) -> 37 Load(120) Time(743,789) -> 20 Load(130) Time(833,881) -> 0 Load(140) Time(923,1500)
+Distance of the route: 82m
+Load of the route: 140
+Time of the route: 923min
+
+Route for vehicle 10:
+ 0 Load(0) Time(0,431) -> 79 Load(0) Time(0,431) -> 268 Load(20) Time(497,521) -> 357 Load(30) Time(587,611) -> 77 Load(50) Time(677,701) -> 74 Load(80) Time(767,791) -> 288 Load(90) Time(857,881) -> 394 Load(110) Time(947,971) -> 68 Load(120) Time(1037,1061) -> 113 Load(130) Time(1127,1151) -> 211 Load(160) Time(1217,1241) -> 253 Load(180) Time(1307,1331) -> 0 Load(200) Time(1397,1500)
+Distance of the route: 266m
+Load of the route: 200
+Time of the route: 1397min
+
+Route for vehicle 11:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 12:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 13:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 14:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 15:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 16:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 17:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 18:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 19:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 20:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 21:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 22:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 23:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 24:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 25:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 26:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 27:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 28:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 29:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 30:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 31:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 32:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 33:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 34:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 35:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 36:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 37:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 38:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 39:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 40:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 41:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 42:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 43:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 44:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 45:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 46:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 47:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 48:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 49:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 50:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 51:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 52:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 53:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 54:
+ 0 Load(0) Time(0,528) -> 106 Load(0) Time(0,528) -> 318 Load(20) Time(541,618) -> 297 Load(40) Time(735,753) -> 146 Load(60) Time(825,843) -> 308 Load(90) Time(915,933) -> 165 Load(110) Time(1005,1023) -> 266 Load(130) Time(1095,1113) -> 41 Load(160) Time(1185,1203) -> 163 Load(180) Time(1275,1385) -> 0 Load(200) Time(1365,1500)
+Distance of the route: 184m
+Load of the route: 200
+Time of the route: 1365min
+
+Route for vehicle 55:
+ 0 Load(0) Time(0,225) -> 372 Load(0) Time(0,225) -> 130 Load(10) Time(90,315) -> 91 Load(40) Time(180,405) -> 80 Load(60) Time(270,495) -> 315 Load(80) Time(360,585) -> 120 Load(90) Time(618,675) -> 294 Load(110) Time(708,1118) -> 221 Load(130) Time(798,1208) -> 175 Load(150) Time(888,1298) -> 366 Load(170) Time(978,1388) -> 0 Load(200) Time(1068,1500)
+Distance of the route: 202m
+Load of the route: 200
+Time of the route: 1068min
+
+Route for vehicle 56:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 57:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 58:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 59:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 60:
+ 0 Load(0) Time(0,155) -> 375 Load(0) Time(87,155) -> 29 Load(20) Time(188,266) -> 28 Load(30) Time(278,356) -> 212 Load(50) Time(368,446) -> 169 Load(60) Time(476,536) -> 237 Load(70) Time(566,633) -> 219 Load(80) Time(672,723) -> 299 Load(90) Time(762,847) -> 305 Load(110) Time(852,937) -> 249 Load(140) Time(942,1027) -> 157 Load(150) Time(1032,1117) -> 257 Load(160) Time(1122,1207) -> 15 Load(170) Time(1212,1297) -> 76 Load(180) Time(1302,1387) -> 0 Load(200) Time(1392,1500)
+Distance of the route: 164m
+Load of the route: 200
+Time of the route: 1392min
+
+Route for vehicle 61:
+ 0 Load(0) Time(0,121) -> 88 Load(0) Time(0,121) -> 114 Load(10) Time(90,211) -> 348 Load(20) Time(237,301) -> 38 Load(50) Time(327,588) -> 316 Load(70) Time(417,678) -> 251 Load(80) Time(719,768) -> 134 Load(90) Time(809,936) -> 356 Load(130) Time(899,1026) -> 58 Load(150) Time(989,1116) -> 351 Load(160) Time(1079,1206) -> 354 Load(170) Time(1169,1296) -> 83 Load(180) Time(1259,1386) -> 0 Load(200) Time(1349,1500)
+Distance of the route: 342m
+Load of the route: 200
+Time of the route: 1349min
+
+Route for vehicle 62:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 63:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 64:
+ 0 Load(0) Time(0,401) -> 233 Load(0) Time(336,401) -> 173 Load(20) Time(435,491) -> 324 Load(40) Time(525,599) -> 62 Load(60) Time(615,689) -> 65 Load(80) Time(705,779) -> 39 Load(100) Time(795,869) -> 32 Load(110) Time(885,959) -> 67 Load(140) Time(975,1049) -> 396 Load(170) Time(1065,1139) -> 264 Load(180) Time(1155,1229) -> 194 Load(190) Time(1245,1319) -> 0 Load(200) Time(1335,1500)
+Distance of the route: 330m
+Load of the route: 200
+Time of the route: 1335min
+
+Route for vehicle 65:
+ 0 Load(0) Time(0,21) -> 185 Load(0) Time(0,21) -> 105 Load(30) Time(90,111) -> 155 Load(60) Time(180,201) -> 306 Load(80) Time(270,320) -> 330 Load(100) Time(369,410) -> 143 Load(120) Time(459,512) -> 215 Load(130) Time(549,607) -> 176 Load(150) Time(639,861) -> 137 Load(160) Time(896,951) -> 384 Load(180) Time(986,1308) -> 336 Load(190) Time(1076,1398) -> 0 Load(200) Time(1166,1500)
+Distance of the route: 338m
+Load of the route: 200
+Time of the route: 1166min
+
+Route for vehicle 66:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 67:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 68:
+ 0 Load(0) Time(0,42) -> 118 Load(0) Time(0,42) -> 17 Load(20) Time(100,132) -> 226 Load(30) Time(190,222) -> 352 Load(50) Time(280,411) -> 40 Load(60) Time(370,501) -> 247 Load(70) Time(535,591) -> 283 Load(80) Time(625,775) -> 168 Load(100) Time(813,865) -> 289 Load(120) Time(903,968) -> 158 Load(140) Time(993,1058) -> 104 Load(150) Time(1083,1148) -> 227 Load(170) Time(1173,1238) -> 395 Load(190) Time(1263,1328) -> 0 Load(200) Time(1353,1500)
+Distance of the route: 336m
+Load of the route: 200
+Time of the route: 1353min
+
+Route for vehicle 69:
+ 0 Load(0) Time(0,227) -> 216 Load(0) Time(141,227) -> 195 Load(30) Time(231,497) -> 358 Load(50) Time(321,587) -> 207 Load(70) Time(617,677) -> 187 Load(90) Time(717,774) -> 26 Load(100) Time(807,873) -> 350 Load(110) Time(897,963) -> 282 Load(120) Time(987,1053) -> 172 Load(140) Time(1077,1143) -> 292 Load(170) Time(1167,1233) -> 232 Load(180) Time(1257,1323) -> 0 Load(190) Time(1347,1500)
+Distance of the route: 284m
+Load of the route: 190
+Time of the route: 1347min
+
+Route for vehicle 70:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 71:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 72:
+ 0 Load(0) Time(0,15) -> 329 Load(0) Time(0,15) -> 94 Load(10) Time(90,105) -> 54 Load(40) Time(180,195) -> 180 Load(50) Time(270,285) -> 179 Load(60) Time(360,402) -> 386 Load(80) Time(450,492) -> 379 Load(100) Time(540,582) -> 312 Load(120) Time(630,979) -> 246 Load(130) Time(720,1069) -> 81 Load(150) Time(810,1159) -> 197 Load(170) Time(900,1249) -> 84 Load(180) Time(990,1339) -> 0 Load(200) Time(1080,1500)
+Distance of the route: 240m
+Load of the route: 200
+Time of the route: 1080min
+
+Route for vehicle 73:
+ 0 Load(0) Time(0,43) -> 191 Load(0) Time(0,43) -> 23 Load(20) Time(90,133) -> 156 Load(40) Time(180,223) -> 210 Load(60) Time(270,749) -> 133 Load(80) Time(360,839) -> 333 Load(90) Time(450,929) -> 111 Load(100) Time(540,1019) -> 374 Load(120) Time(630,1109) -> 307 Load(130) Time(720,1199) -> 151 Load(160) Time(810,1289) -> 184 Load(170) Time(900,1379) -> 0 Load(190) Time(990,1500)
+Distance of the route: 310m
+Load of the route: 190
+Time of the route: 990min
+
+Route for vehicle 74:
+ 0 Load(0) Time(0,76) -> 13 Load(0) Time(0,76) -> 322 Load(10) Time(90,166) -> 193 Load(40) Time(180,394) -> 19 Load(50) Time(426,484) -> 205 Load(60) Time(516,781) -> 256 Load(80) Time(606,871) -> 338 Load(120) Time(696,961) -> 382 Load(130) Time(786,1051) -> 161 Load(140) Time(876,1141) -> 261 Load(170) Time(966,1231) -> 131 Load(190) Time(1056,1321) -> 0 Load(200) Time(1146,1500)
+Distance of the route: 266m
+Load of the route: 200
+Time of the route: 1146min
+
+Route for vehicle 75:
+ 0 Load(0) Time(0,42) -> 60 Load(0) Time(0,42) -> 303 Load(10) Time(94,132) -> 144 Load(30) Time(184,222) -> 24 Load(40) Time(274,312) -> 93 Load(50) Time(364,402) -> 229 Load(60) Time(454,492) -> 204 Load(80) Time(544,582) -> 295 Load(110) Time(634,672) -> 103 Load(120) Time(724,766) -> 220 Load(140) Time(814,1226) -> 254 Load(170) Time(904,1316) -> 0 Load(190) Time(994,1500)
+Distance of the route: 246m
+Load of the route: 190
+Time of the route: 994min
+
+Route for vehicle 76:
+ 0 Load(0) Time(0,323) -> 344 Load(0) Time(0,323) -> 63 Load(20) Time(90,413) -> 213 Load(50) Time(180,503) -> 383 Load(70) Time(270,593) -> 50 Load(90) Time(613,683) -> 121 Load(100) Time(703,1020) -> 55 Load(120) Time(793,1110) -> 270 Load(130) Time(883,1200) -> 107 Load(160) Time(973,1290) -> 99 Load(180) Time(1063,1380) -> 0 Load(200) Time(1153,1500)
+Distance of the route: 236m
+Load of the route: 200
+Time of the route: 1153min
+
+Route for vehicle 77:
+ 0 Load(0) Time(0,479) -> 18 Load(0) Time(0,479) -> 285 Load(30) Time(90,569) -> 238 Load(50) Time(619,659) -> 334 Load(70) Time(709,749) -> 397 Load(100) Time(799,839) -> 119 Load(120) Time(904,929) -> 228 Load(140) Time(994,1019) -> 75 Load(160) Time(1084,1109) -> 183 Load(170) Time(1174,1199) -> 123 Load(180) Time(1264,1289) -> 100 Load(190) Time(1354,1379) -> 0 Load(200) Time(1444,1500)
+Distance of the route: 306m
+Load of the route: 200
+Time of the route: 1444min
+
+Route for vehicle 78:
+ 0 Load(0) Time(0,377) -> 209 Load(0) Time(0,377) -> 342 Load(20) Time(410,467) -> 21 Load(50) Time(682,748) -> 42 Load(70) Time(772,943) -> 365 Load(90) Time(862,1033) -> 203 Load(110) Time(952,1123) -> 200 Load(120) Time(1042,1213) -> 341 Load(140) Time(1132,1303) -> 217 Load(160) Time(1222,1393) -> 0 Load(180) Time(1312,1500)
+Distance of the route: 240m
+Load of the route: 180
+Time of the route: 1312min
+
+Route for vehicle 79:
+ 0 Load(0) Time(0,44) -> 10 Load(0) Time(0,44) -> 45 Load(20) Time(90,134) -> 72 Load(40) Time(180,224) -> 326 Load(50) Time(270,321) -> 272 Load(60) Time(360,411) -> 361 Load(80) Time(450,501) -> 355 Load(110) Time(540,591) -> 162 Load(120) Time(630,681) -> 320 Load(140) Time(724,771) -> 117 Load(150) Time(814,1047) -> 214 Load(160) Time(904,1137) -> 109 Load(170) Time(994,1227) -> 273 Load(190) Time(1084,1317) -> 0 Load(200) Time(1174,1500)
+Distance of the route: 340m
+Load of the route: 200
+Time of the route: 1174min
+
+Route for vehicle 80:
+ 0 Load(0) Time(0,139) -> 267 Load(0) Time(0,139) -> 189 Load(20) Time(90,229) -> 390 Load(50) Time(180,319) -> 271 Load(70) Time(351,409) -> 250 Load(90) Time(441,903) -> 98 Load(100) Time(531,993) -> 234 Load(110) Time(1002,1083) -> 340 Load(120) Time(1092,1173) -> 378 Load(140) Time(1182,1263) -> 164 Load(170) Time(1272,1353) -> 0 Load(180) Time(1362,1500)
+Distance of the route: 318m
+Load of the route: 180
+Time of the route: 1362min
+
+Route for vehicle 81:
+ 0 Load(0) Time(0,400) -> 69 Load(0) Time(0,400) -> 222 Load(20) Time(90,490) -> 71 Load(50) Time(517,580) -> 304 Load(60) Time(607,1127) -> 159 Load(80) Time(697,1217) -> 152 Load(90) Time(787,1307) -> 286 Load(110) Time(877,1397) -> 0 Load(140) Time(967,1500)
+Distance of the route: 236m
+Load of the route: 140
+Time of the route: 967min
+
+Route for vehicle 82:
+ 0 Load(0) Time(0,335) -> 150 Load(0) Time(0,335) -> 206 Load(20) Time(356,425) -> 353 Load(50) Time(446,1113) -> 49 Load(90) Time(536,1203) -> 360 Load(110) Time(626,1293) -> 97 Load(140) Time(716,1383) -> 0 Load(170) Time(806,1500)
+Distance of the route: 256m
+Load of the route: 170
+Time of the route: 806min
+
+Route for vehicle 83:
+ 0 Load(0) Time(0,40) -> 141 Load(0) Time(0,40) -> 370 Load(10) Time(90,130) -> 182 Load(40) Time(180,220) -> 61 Load(60) Time(270,310) -> 369 Load(80) Time(360,400) -> 218 Load(100) Time(450,490) -> 11 Load(110) Time(540,580) -> 170 Load(140) Time(630,670) -> 56 Load(160) Time(720,1292) -> 277 Load(170) Time(810,1382) -> 0 Load(200) Time(900,1500)
+Distance of the route: 296m
+Load of the route: 200
+Time of the route: 900min
+
+Route for vehicle 84:
+ 0 Load(0) Time(0,48) -> 224 Load(0) Time(0,48) -> 387 Load(10) Time(90,138) -> 78 Load(40) Time(239,299) -> 125 Load(90) Time(513,566) -> 262 Load(120) Time(603,656) -> 400 Load(140) Time(693,746) -> 8 Load(150) Time(783,836) -> 34 Load(170) Time(873,926) -> 43 Load(190) Time(963,1353) -> 0 Load(200) Time(1053,1500)
+Distance of the route: 248m
+Load of the route: 200
+Time of the route: 1053min
+
+Route for vehicle 85:
+ 0 Load(0) Time(0,2) -> 255 Load(0) Time(0,2) -> 287 Load(10) Time(90,92) -> 112 Load(40) Time(180,182) -> 302 Load(60) Time(436,505) -> 201 Load(70) Time(526,932) -> 70 Load(110) Time(616,1022) -> 87 Load(120) Time(706,1112) -> 25 Load(140) Time(796,1202) -> 321 Load(150) Time(886,1292) -> 149 Load(170) Time(976,1382) -> 0 Load(200) Time(1066,1500)
+Distance of the route: 316m
+Load of the route: 200
+Time of the route: 1066min
+
+Route for vehicle 86:
+ 0 Load(0) Time(0,290) -> 135 Load(0) Time(216,290) -> 132 Load(40) Time(306,664) -> 399 Load(60) Time(723,754) -> 22 Load(80) Time(813,844) -> 314 Load(100) Time(903,934) -> 136 Load(110) Time(993,1024) -> 52 Load(120) Time(1083,1114) -> 291 Load(150) Time(1173,1204) -> 196 Load(180) Time(1263,1294) -> 300 Load(190) Time(1353,1384) -> 0 Load(200) Time(1443,1500)
+Distance of the route: 240m
+Load of the route: 200
+Time of the route: 1443min
+
+Route for vehicle 87:
+ 0 Load(0) Time(0,444) -> 241 Load(0) Time(0,444) -> 7 Load(10) Time(90,534) -> 9 Load(30) Time(180,624) -> 12 Load(40) Time(270,714) -> 31 Load(70) Time(360,804) -> 362 Load(80) Time(450,894) -> 108 Load(90) Time(540,984) -> 248 Load(100) Time(630,1074) -> 128 Load(110) Time(720,1164) -> 27 Load(140) Time(810,1254) -> 198 Load(160) Time(900,1344) -> 0 Load(200) Time(990,1500)
+Distance of the route: 238m
+Load of the route: 200
+Time of the route: 990min
+
+Route for vehicle 88:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 89:
+ 0 Load(0) Time(0,55) -> 391 Load(0) Time(0,55) -> 367 Load(30) Time(90,145) -> 148 Load(50) Time(180,235) -> 373 Load(70) Time(309,325) -> 167 Load(100) Time(399,415) -> 102 Load(110) Time(489,505) -> 14 Load(120) Time(579,595) -> 6 Load(140) Time(669,782) -> 178 Load(150) Time(808,872) -> 327 Load(170) Time(898,1236) -> 59 Load(180) Time(988,1326) -> 0 Load(200) Time(1078,1500)
+Distance of the route: 262m
+Load of the route: 200
+Time of the route: 1078min
+
+Route for vehicle 90:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 91:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 92:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 93:
+ 0 Load(0) Time(0,111) -> 332 Load(0) Time(55,111) -> 230 Load(20) Time(145,453) -> 260 Load(30) Time(235,543) -> 319 Load(40) Time(585,633) -> 225 Load(50) Time(675,723) -> 323 Load(60) Time(765,813) -> 278 Load(70) Time(855,903) -> 231 Load(90) Time(945,993) -> 188 Load(100) Time(1035,1083) -> 339 Load(110) Time(1125,1173) -> 310 Load(130) Time(1215,1263) -> 92 Load(140) Time(1305,1353) -> 0 Load(160) Time(1395,1500)
+Distance of the route: 264m
+Load of the route: 160
+Time of the route: 1395min
+
+Route for vehicle 94:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 95:
+ 0 Load(0) Time(0,70) -> 343 Load(0) Time(0,70) -> 269 Load(30) Time(90,160) -> 64 Load(50) Time(180,250) -> 208 Load(60) Time(270,462) -> 281 Load(70) Time(360,552) -> 129 Load(80) Time(603,642) -> 263 Load(90) Time(693,732) -> 153 Load(110) Time(783,822) -> 147 Load(120) Time(873,912) -> 46 Load(130) Time(963,1002) -> 122 Load(150) Time(1053,1092) -> 335 Load(160) Time(1143,1182) -> 86 Load(170) Time(1233,1272) -> 139 Load(180) Time(1323,1362) -> 0 Load(200) Time(1413,1500)
+Distance of the route: 350m
+Load of the route: 200
+Time of the route: 1413min
+
+Route for vehicle 96:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 97:
+ 0 Load(0) Time(0,11) -> 44 Load(0) Time(0,11) -> 235 Load(20) Time(90,101) -> 388 Load(50) Time(180,191) -> 154 Load(70) Time(270,281) -> 202 Load(90) Time(360,371) -> 186 Load(120) Time(450,566) -> 381 Load(140) Time(540,656) -> 309 Load(150) Time(630,746) -> 346 Load(160) Time(785,836) -> 145 Load(180) Time(875,1378) -> 0 Load(200) Time(965,1500)
+Distance of the route: 298m
+Load of the route: 200
+Time of the route: 965min
+
+Route for vehicle 98:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Route for vehicle 99:
+ 0 Load(0) Time(0,1500) -> 0 Load(0) Time(0,1500)
+Distance of the route: 0m
+Load of the route: 0
+Time of the route: 0min
+
+Total Distance of all routes: 10236m
+
+Total Load of all routes: 7110
+
+Total Time of all routes: 43844min
+

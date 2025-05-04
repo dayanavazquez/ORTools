@@ -1,0 +1,25 @@
+Instance: CVRP_100.txt
+
+Objective: 11213
+
+Execution Time: 0.1129310131072998
+
+Heuristic: SAVINGS
+
+Metaheuristic: GENERIC_TABU_SEARCH
+
+Distance type: chebyshev
+
+Route for vehicle 0:
+ 0 ->  12 ->  10 ->  11 ->  2 ->  8 ->  1 -> 0
+Distance of the route: 96m
+
+Route for vehicle 1:
+ 0 ->  3 ->  4 ->  13 ->  6 -> 0
+Distance of the route: 108m
+
+Route for vehicle 2:
+ 0 ->  5 ->  9 ->  15 ->  14 ->  7 -> 0
+Distance of the route: 109m
+
+Total Distance of all routes: 313m

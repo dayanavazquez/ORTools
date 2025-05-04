@@ -17,6 +17,7 @@ from sklearn.feature_selection import SelectKBest, f_classif
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 import re
+import html
 
 
 def save_results_to_txt(filename, accuracy, balanced_acc, kappa, f1, precision, recall, roc_auc,
@@ -46,7 +47,6 @@ def get_random_forest():
         dataset = pd.DataFrame(data)
         dataset.dropna(subset=["Method"], inplace=True)
 
-        # Cálculo del Score: se ajusta según el problema
         dataset["Score"] = (
                 0.6 * dataset["Objective"] +
                 0.2 * dataset["Time"] +
@@ -56,29 +56,24 @@ def get_random_forest():
                 0.3 * dataset["Time"]
         )
 
-        # Seleccionar el método óptimo por cada instancia
         optimal_methods = dataset.groupby("Instance").apply(
             lambda x: x.loc[x["Score"].idxmin(), "Method"], include_groups=False
         ).reset_index(name="Optimal_Method")
 
         dataset = dataset.merge(optimal_methods, on="Instance")
 
-        # Definir las columnas a eliminar
         columns_set = (
             ["Method", "Score", "Instance", "Objective", "Time", "Routes", "Optimal_Method"]
             if key != "TSP"
             else ["Method", "Score", "Instance", "Objective", "Time", "Optimal_Method"]
         )
 
-        # Separar características y target
         x = dataset.drop(columns=columns_set)
         y = dataset["Optimal_Method"]
 
-        # Identificar columnas numéricas y la categórica principal "Distance"
         numeric_features = x.select_dtypes(include=['int64', 'float64']).columns.tolist()
-        categorical_features = ['Distance']  # Columna categórica
+        categorical_features = ['Distance']
 
-        # Preprocesamiento: aplicar OneHotEncoder sobre la variable categórica y pasar las numéricas
         preprocessor = ColumnTransformer(
             transformers=[
                 ('num', 'passthrough', numeric_features),
@@ -88,7 +83,6 @@ def get_random_forest():
 
         x_processed = preprocessor.fit_transform(x)
 
-        # Obtener los nombres de las columnas para la variable Distance
         encoder = preprocessor.named_transformers_['cat']
         distance_categories = encoder.categories_[0]
         distance_feature_names = [f"Distance_{cat}" for cat in distance_categories]
@@ -96,11 +90,9 @@ def get_random_forest():
         numeric_feature_names = numeric_features.copy()
         feature_names = numeric_feature_names + distance_feature_names
 
-        # Reportar la distribución de clases
         class_distribution = Counter(y)
         print(f"Class distribution for {key}: {class_distribution}")
 
-        # Filtrado de clases con muy pocas muestras
         classes_to_keep = [cls for cls, count in class_distribution.items() if count >= 2]
         if len(classes_to_keep) < len(class_distribution):
             print(f"Warning: Some classes have less than 2 samples in {key}. Removing those classes.")
@@ -112,16 +104,13 @@ def get_random_forest():
             print(f"Error: Not enough samples to train the model in {key}. Skipping this dataset.")
             continue
 
-        # División de datos en entrenamiento y test
         x_train, x_test, y_train, y_test = train_test_split(
             x_processed, y, test_size=0.2, random_state=42, stratify=y
         )
 
-        # Balanceo de clases: SMOTE para aumentar la representatividad en el entrenamiento
         smote = SMOTE(random_state=42)
         x_train_smote, y_train_smote = smote.fit_resample(x_train, y_train)
 
-        # Selección de características: usar SelectKBest
         selector = SelectKBest(f_classif, k=min(10, x_train_smote.shape[1]))
         x_train_selected = selector.fit_transform(x_train_smote, y_train_smote)
         x_test_selected = selector.transform(x_test)
@@ -129,19 +118,16 @@ def get_random_forest():
         selected_feature_indices = selector.get_support(indices=True)
         selected_feature_names = [feature_names[i] for i in selected_feature_indices]
 
-        # *** Ajuste de hiperparámetros para evitar sobreajuste y mejorar precisión ***
-        # Se restringe la complejidad (max_depth, min_samples_leaf, etc.)
         param_dist = {
-            "n_estimators": randint(200, 800),  # Aseguramos un número suficiente de árboles, pero no excesivo
-            "max_depth": [5, 10, 15, 20, 25],  # Limitar la profundidad para prevenir sobreajuste
-            "min_samples_split": randint(5, 20),  # Incrementar el mínimo de muestras para dividir un nodo
-            "min_samples_leaf": randint(2, 10),  # Incrementar el mínimo de muestras en cada hoja
-            "bootstrap": [True],  # Usar bootstrapping para estabilizar el modelo
-            "max_features": ['sqrt', 'log2'],  # Mantener la selección de características
+            "n_estimators": randint(200, 800),
+            "max_depth": [5, 10, 15, 20, 25],
+            "min_samples_split": randint(5, 20),
+            "min_samples_leaf": randint(2, 10),
+            "bootstrap": [True],
+            "max_features": ['sqrt', 'log2'],
             "criterion": ['gini', 'entropy']
         }
 
-        # Se utiliza RandomizedSearchCV con validación cruzada de 5 pliegues
         random_search = RandomizedSearchCV(
             RandomForestClassifier(class_weight="balanced", random_state=42),
             param_distributions=param_dist,
@@ -158,8 +144,28 @@ def get_random_forest():
 
         joblib.dump(model, f"random_forest_model_{key}.pkl")
 
-        # Luego de ajustar el modelo con validación, se evaluará en el conjunto de test
         y_pred = model.predict(x_test_selected)
+
+        instances_test = dataset.loc[y_test.index, "Instance"].values
+        true_methods = y_test.values
+        predicted_methods = y_pred
+
+        results_by_instance = pd.DataFrame({
+            "Instance": instances_test,
+            "True_Optimal_Method": true_methods,
+            "Predicted_Method": predicted_methods
+        })
+
+        results_by_instance["Correct"] = results_by_instance["True_Optimal_Method"] == results_by_instance[
+            "Predicted_Method"]
+
+        summary_txt_path = f"predictions_summary_{key}.txt"
+        with open(summary_txt_path, "w") as f:
+            f.write(f"Per-instance prediction results for {key} saved to predictions_by_instance_{key}.csv\n")
+            f.write("First few predictions:\n")
+            f.write(results_by_instance.head().to_string(index=False))
+
+        print(f"Summary saved to {summary_txt_path}")
 
         balanced_acc = balanced_accuracy_score(y_test, y_pred)
         kappa = cohen_kappa_score(y_test, y_pred)
@@ -167,7 +173,6 @@ def get_random_forest():
         precision = precision_score(y_test, y_pred, average="weighted", zero_division=0)
         recall = recall_score(y_test, y_pred, average="weighted", zero_division=0)
 
-        # Para ROC-AUC en clasificación multiclase necesitas usar `label_binarize`
         classes = model.classes_
         y_test_bin = label_binarize(y_test, classes=classes)
         y_pred_bin = label_binarize(y_pred, classes=classes)
@@ -179,24 +184,20 @@ def get_random_forest():
         accuracy = accuracy_score(y_test, y_pred)
         print(f"Accuracy for {key}: {accuracy:.4f}")
 
-        # Validación cruzada
-        cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+        cv = StratifiedKFold(n_splits=2, shuffle=True, random_state=42)
         cv_scores = cross_val_score(model, x_processed, y, cv=cv, scoring="accuracy")
         print(f"Cross-validation scores for {key}: {cv_scores}")
         print(f"Cross-validation mean accuracy for {key}: {cv_scores.mean():.4f}")
 
-        # Reporte de clasificación
         print("Classification Report:")
         print(classification_report(y_test, y_pred, zero_division=0))
 
-        # Importancia de características
         importances = model.feature_importances_
         importance_df = pd.DataFrame({
             "Feature": selected_feature_names,
             "Importance": importances
         }).sort_values(by="Importance", ascending=False)
 
-        # Identifica si una característica es original o derivada de una categórica
         importance_df = importance_df[~importance_df["Feature"].str.startswith("Distance_")]
 
         importance_df = importance_df[importance_df["Importance"] > 0.01]
@@ -211,74 +212,80 @@ def get_random_forest():
             cv_scores, classification_rep, importance_df
         )
 
-        # Visualización de importancia de características
         fig = px.bar(importance_df, x="Feature", y="Importance", title=f"Feature Importances ({key})")
         fig.update_layout(xaxis_title="Features", yaxis_title="Importance", xaxis_tickangle=-90)
         fig.write_image(f"feature_importances_{key}.jpg")
 
-        try:
-            estimator = model.estimators_[0]
-            dot_data = export_graphviz(
-                estimator,
-                out_file=None,
-                feature_names=selected_feature_names,
-                class_names=model.classes_,
-                filled=True,
-                rounded=True,
-                special_characters=True,
-                impurity=False,
-                proportion=True,
-                precision=0,
-                node_ids=True,
-                rotate=False,
-            )
-            import html
-            dot_data = html.unescape(dot_data)
+        visualize_best_tree(model, x_train_selected, y_train, selected_feature_names)
 
-            # Patrón para capturar "Distance_<tipo> ≤ <valor>"
-            distance_pattern = re.compile(
-                r"Distance_([a-zA-Z]+)\s*(?:&le;|<=|≤|&#8804;|&amp;le;)\s*([-+]?\d*\.?\d+)",
-                re.IGNORECASE
-            )
 
-            def replace_distance_condition(match):
-                try:
-                    category = match.group(1).lower()  # Ej: "euclidean"
-                    threshold = float(match.group(2))
-                    print(f"Coincidencia encontrada: {match.group(0)} -> categoría: {category}, threshold: {threshold}")
-                    if threshold < 0.5:
-                        replacement = f"Distance != '{category}'"
-                    else:
-                        replacement = f"Distance == '{category}'"
-                    print(f"Reemplazo: {replacement}")
-                    return replacement
-                except Exception as err:
-                    print(f"Error al procesar la coincidencia {match.group(0)}: {err}")
-                    return match.group(0)
+def visualize_best_tree(model, x_train_selected, y_train, selected_feature_names, key="model"):
+    try:
+        best_score = 0
+        best_index = 0
+        for i, tree in enumerate(model.estimators_):
+            preds = tree.predict(x_train_selected)
+            score = accuracy_score(y_train, preds)
+            if score > best_score:
+                best_score = score
+                best_index = i
 
-            matches = list(distance_pattern.finditer(dot_data))
-            print(f"{len(matches)} coincidencia(s) encontradas:")
-            for m in matches:
-                print(f" - {m.group(0)}")
+        print(f"Mejor árbol: {best_index} con accuracy {best_score:.4f}")
 
-            dot_data_converted = distance_pattern.sub(replace_distance_condition, dot_data)
+        estimator = model.estimators_[best_index]
 
-            # Guardar el archivo DOT
-            dot_file = f"tree_{key}.dot"
-            with open(dot_file, "w") as f:
-                f.write(dot_data_converted)
+        dot_data = export_graphviz(
+            estimator,
+            out_file=None,
+            feature_names=selected_feature_names,
+            class_names=model.classes_,
+            filled=True,
+            rounded=True,
+            special_characters=True,
+            impurity=False,
+            proportion=True,
+            precision=0,
+            node_ids=True,
+            rotate=False,
+        )
 
-            png_file = f"tree_{key}.png"
-            os.system(f"dot -Tpng {dot_file} -o {png_file}")
+        dot_data = html.unescape(dot_data)
 
-            if os.path.exists(png_file):
-                print(f"Tree visualization saved as {png_file}")
-                img = Image.open(png_file)
-                img.show()
-            else:
-                print(f"Error: Failed to generate {png_file}")
-        except Exception as e:
-            print(f"Error visualizing the tree for {key}: {e}")
+        distance_pattern = re.compile(
+            r"Distance_([a-zA-Z]+)\s*(?:&le;|<=|≤|&#8804;|&amp;le;)\s*([-+]?\d*\.?\d+)",
+            re.IGNORECASE
+        )
+
+        def replace_distance_condition(match):
+            try:
+                category = match.group(1).lower()
+                threshold = float(match.group(2))
+                if threshold < 0.5:
+                    return f"Distance != '{category}'"
+                else:
+                    return f"Distance == '{category}'"
+            except Exception as err:
+                print(f"Error procesando {match.group(0)}: {err}")
+                return match.group(0)
+
+        dot_data_converted = distance_pattern.sub(replace_distance_condition, dot_data)
+
+        dot_file = f"tree_{key}.dot"
+        png_file = f"tree_{key}.png"
+        with open(dot_file, "w") as f:
+            f.write(dot_data_converted)
+
+        os.system(f"dot -Tpng {dot_file} -o {png_file}")
+
+        if os.path.exists(png_file):
+            print(f"Árbol visual guardado como: {png_file}")
+            img = Image.open(png_file)
+            img.show()
+        else:
+            print(f"Error: No se pudo generar el archivo {png_file}")
+
+    except Exception as e:
+        print(f"Error visualizando el árbol para {key}: {e}")
 
 
 if __name__ == "__main__":

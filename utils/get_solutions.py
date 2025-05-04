@@ -79,7 +79,7 @@ def process_solutions_folder(base_folder):
                 if os.path.isdir(f_path):
                     f_name = f_name[len("solutions_"):]
                     if '&' in f_name:
-                        heuristic, metaheuristic = map(str.strip, f_name.split('&'))
+                        heuristic, metaheuristic = map(str.strip, f_name.split('_&_'))
                     elif f_name.replace('_', '').isdigit():
                         heuristic, metaheuristic = map(int, f_name.split('_'))
                     else:
@@ -258,7 +258,7 @@ def generate_csv_files(results, best_solution, output_folder, filtered=None):
                     (df_filtered["Algorithm"] == algorithm) & (df_filtered["Instance"] == instance), "Time"]
                 result_dict[algorithm].append(value.iloc[0] if not value.empty else "")
         df_result = pd.DataFrame(result_dict)
-        file = f"{output_folder}/best_algorithms_time.csv"
+        file = f"{output_folder}/best_algorithms_time_chebyshev.csv"
         df_result.to_csv(file, sep=";", index=False)
         print(f"Archivo generado: {file}")
 
@@ -277,8 +277,8 @@ def write_solutions(output_file, results, best_solution, is_csv, filtered):
 
 
 def main(best_solution=False, csv=False, filtered=None):
-    base_folder = '../problems/solutions/chebyshev/solutions_tsp'
-    output_file = '../problems/solutions/chebyshev/solutions_tsp/all_solutions_tsp_chebyshev.txt'
+    base_folder = '../problems/euclidean'
+    output_file = '../problems/euclidean/best_solutions_initial_routes_euclidean'
 
     results = process_solutions_folder(base_folder)
     write_solutions(output_file, results, best_solution, csv, filtered)
@@ -286,8 +286,15 @@ def main(best_solution=False, csv=False, filtered=None):
 
 if __name__ == "__main__":
     main(
-        best_solution=False,
+        best_solution=True,
         csv=False,
-
+        filtered=None
+        #[
+         #   "FIRST_UNBOUND_MIN_VALUE_and_SIMULATED_ANNEALING",
+          #  "SAVINGS_and_GREEDY_DESCENT",
+           # "ALL_UNPERFORMED_and_GENERIC_TABU_SEARCH",
+            #"PARALLEL_CHEAPEST_INSERTION_and_GREEDY_DESCENT",
+            #"FIRST_UNBOUND_MIN_VALUE_and_GENERIC_TABU_SEARCH"
+        #]
 
     )

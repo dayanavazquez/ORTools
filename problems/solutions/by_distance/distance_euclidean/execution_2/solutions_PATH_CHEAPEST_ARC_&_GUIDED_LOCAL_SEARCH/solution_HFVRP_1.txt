@@ -1,0 +1,37 @@
+Instance: HFVRP_1.txt
+
+Objective: 3258
+
+Execution Time: 0.11235165596008301
+
+Heuristic: PATH_CHEAPEST_ARC
+
+Metaheuristic: GUIDED_LOCAL_SEARCH
+
+Route for vehicle 0:
+ 0 Load(0) ->  0 Load(0)
+Distance of the route: 0m
+Load of the route: 0
+
+Route for vehicle 1:
+ 0 Load(0) ->  40 Load(14) ->  34 Load(37) ->  46 Load(47) ->  16 Load(57) ->  45 Load(73) ->  38 Load(82) ->  18 Load(85) ->  48 Load(110) ->  19 Load(151) ->  5 Load(160) ->  43 Load(173) ->  20 Load(182) ->  41 Load(189) ->  42 Load(216) ->  14 Load(239) ->  26 Load(267) ->  15 Load(288) ->  44 Load(299) ->  9 Load(322) ->  49 Load(339) ->  1 Load(339) ->  47 Load(344) ->  13 Load(373) ->  6 Load(394) ->  11 Load(399) ->  0 Load(399)
+Distance of the route: 962m
+Load of the route: 399
+
+Route for vehicle 2:
+ 0 Load(0) ->  37 Load(6) ->  29 Load(20) ->  32 Load(31) ->  23 Load(39) ->  3 Load(69) ->  21 Load(97) ->  0 Load(97)
+Distance of the route: 746m
+Load of the route: 97
+
+Route for vehicle 3:
+ 0 Load(0) ->  22 Load(8) ->  30 Load(14) ->  17 Load(29) ->  2 Load(36) ->  27 Load(43) ->  8 Load(62) ->  24 Load(78) ->  25 Load(88) ->  7 Load(103) ->  28 Load(118) ->  33 Load(130) ->  12 Load(149) ->  39 Load(164) ->  50 Load(182) ->  10 Load(193) ->  51 Load(203) ->  35 Load(229) ->  31 Load(248) ->  0 Load(248)
+Distance of the route: 850m
+Load of the route: 248
+
+Route for vehicle 4:
+ 0 Load(0) ->  4 Load(16) ->  36 Load(33) ->  0 Load(33)
+Distance of the route: 700m
+Load of the route: 33
+
+Total distance of all routes: 3258m
+Total load of all routes: 777
