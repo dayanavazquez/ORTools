@@ -1,0 +1,29 @@
+Instance: HFVRP_p3.txt
+
+Objective: 77235
+
+Execution Time: 60.00109887123108
+
+Heuristic: CHRISTOFIDES
+
+Metaheuristic: GUIDED_LOCAL_SEARCH
+
+Distance type: haversine
+
+Route for vehicle 0:
+ 0 Load(0) ->  72 Load(3) ->  37 Load(15) ->  70 Load(23) ->  48 Load(42) ->  49 Load(62) ->  22 Load(90) ->  75 Load(100) ->  31 Load(122) ->  3 Load(148) ->  69 Load(158) ->  7 Load(177) ->  34 Load(204) ->  74 Load(210) ->  2 Load(228) ->  64 Load(239) ->  17 Load(258) ->  52 Load(270) ->  18 Load(290) ->  41 Load(323) ->  13 Load(339) ->  1 Load(339) ->  76 Load(359) ->  5 Load(389) ->  46 Load(410) ->  30 Load(423) ->  6 Load(444) ->  38 Load(458) ->  61 Load(471) ->  0 Load(471)
+Distance of the route: 24368m
+Load of the route: 471
+
+Route for vehicle 1:
+ 0 Load(0) ->  60 Load(24) ->  15 Load(55) ->  54 Load(77) ->  12 Load(114) ->  67 Load(151) ->  66 Load(160) ->  39 Load(184) ->  11 Load(210) ->  59 Load(231) ->  27 Load(249) ->  68 Load(279) ->  35 Load(298) ->  47 Load(325) ->  53 Load(344) ->  28 Load(361) ->  14 Load(373) ->  58 Load(387) ->  16 Load(395) ->  21 Load(417) ->  71 Load(428) ->  0 Load(428)
+Distance of the route: 18162m
+Load of the route: 428
+
+Route for vehicle 2:
+ 0 Load(0) ->  62 Load(15) ->  29 Load(44) ->  63 Load(62) ->  23 Load(74) ->  65 Load(102) ->  43 Load(113) ->  44 Load(131) ->  42 Load(146) ->  57 Load(172) ->  24 Load(178) ->  50 Load(183) ->  25 Load(210) ->  19 Load(223) ->  56 Load(230) ->  26 Load(244) ->  51 Load(266) ->  4 Load(277) ->  45 Load(294) ->  33 Load(322) ->  10 Load(351) ->  40 Load(367) ->  32 Load(392) ->  73 Load(393) ->  8 Load(408) ->  36 Load(418) ->  9 Load(434) ->  20 Load(449) ->  55 Load(465) ->  0 Load(465)
+Distance of the route: 34705m
+Load of the route: 465
+
+Total distance of all routes: 77235m
+Total load of all routes: 1364

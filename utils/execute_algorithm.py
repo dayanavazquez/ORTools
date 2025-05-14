@@ -70,7 +70,7 @@ def execute_solution(
             )
             get_solutions(
                 initial_routes, save_solution, i, distance_type, search_parameters, routing, time_limit, data, manager,
-                instance,
+                instance, None,
                 local_search_metaheuristic, one_vehicle
             )
     elif not local_search_metaheuristics and first_solution_strategies:
@@ -82,7 +82,7 @@ def execute_solution(
             get_solutions(
                 initial_routes, save_solution, i, distance_type, search_parameters, routing, time_limit, data, manager,
                 instance,
-                first_solution_strategy, one_vehicle
+                first_solution_strategy, None, one_vehicle
             )
     else:
         for first_solution_strategy in first_solution_strategies:

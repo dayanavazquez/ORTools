@@ -1,0 +1,33 @@
+Instance: CVRP_1.txt
+
+Objective: 1722480
+
+Execution Time: 9.459432601928711
+
+Heuristic: PATH_MOST_CONSTRAINED_ARC
+
+Metaheuristic: GREEDY_DESCENT
+
+Distance type: haversine
+
+Route for vehicle 0:
+ 0 ->  45 ->  33 ->  49 ->  38 ->  30 ->  50 ->  16 ->  2 ->  32 ->  47 ->  4 ->  18 -> 0
+Distance of the route: 15508m
+
+Route for vehicle 1:
+ 0 ->  25 ->  40 ->  19 ->  44 ->  12 ->  22 -> 0
+Distance of the route: 15372m
+
+Route for vehicle 2:
+ 0 ->  17 ->  42 ->  41 ->  13 ->  43 ->  23 ->  48 ->  14 -> 0
+Distance of the route: 16430m
+
+Route for vehicle 3:
+ 0 ->  6 ->  31 ->  20 ->  29 ->  21 ->  34 ->  39 ->  10 ->  9 ->  5 ->  15 ->  37 -> 0
+Distance of the route: 15927m
+
+Route for vehicle 4:
+ 0 ->  46 ->  27 ->  24 ->  7 ->  26 ->  8 ->  28 ->  3 ->  36 ->  35 ->  11 ->  1 -> 0
+Distance of the route: 16243m
+
+Total Distance of all routes: 79480m

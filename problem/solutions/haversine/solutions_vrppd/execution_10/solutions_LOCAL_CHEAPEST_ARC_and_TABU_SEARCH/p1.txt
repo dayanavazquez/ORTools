@@ -1,0 +1,29 @@
+Instance: p1.txt
+
+Objective: 2018415
+
+Execution Time: 12.153063535690308
+
+Heuristic: LOCAL_CHEAPEST_ARC
+
+Metaheuristic: TABU_SEARCH
+
+Distance type: haversine
+
+Route for vehicle 0:
+ 0 ->  10 ->  15 ->  33 ->  19 ->  2 ->  27 ->  21 ->  51 ->  46 ->  16 ->  50 ->  40 ->  12 ->  24 ->  13 ->  5 -> 0
+Distance of the route: 19418m
+
+Route for vehicle 1:
+ 0 ->  41 ->  39 ->  44 ->  32 ->  38 ->  20 ->  53 ->  37 ->  31 ->  26 -> 0
+Distance of the route: 19201m
+
+Route for vehicle 2:
+ 0 ->  34 ->  35 ->  30 ->  7 ->  25 ->  6 ->  42 ->  47 ->  45 ->  11 ->  36 -> 0
+Distance of the route: 18905m
+
+Route for vehicle 3:
+ 0 ->  22 ->  23 ->  17 ->  3 ->  18 ->  43 ->  14 ->  4 ->  8 ->  52 ->  48 ->  9 ->  29 ->  49 ->  28 ->  1 -> 0
+Distance of the route: 19091m
+
+Total Distance of all routes: 76615m

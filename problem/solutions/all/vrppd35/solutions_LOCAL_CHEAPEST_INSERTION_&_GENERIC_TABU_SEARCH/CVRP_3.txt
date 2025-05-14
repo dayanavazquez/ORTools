@@ -1,0 +1,31 @@
+Instance: CVRP_3.txt
+
+Objective: 22926
+
+Execution Time: 8.391002655029297
+
+Heuristic: LOCAL_CHEAPEST_INSERTION
+
+Metaheuristic: GENERIC_TABU_SEARCH
+
+Route for vehicle 0:
+ 0 ->  11 ->  16 ->  29 ->  2 ->  1 ->  24 ->  43 ->  25 ->  13 ->  42 ->  44 ->  12 -> 0
+Distance of the route: 220m
+
+Route for vehicle 1:
+ 0 ->  4 ->  18 -> 0
+Distance of the route: 54m
+
+Route for vehicle 2:
+ 0 ->  46 ->  41 ->  19 ->  40 ->  45 ->  32 ->  8 ->  7 ->  23 ->  48 -> 0
+Distance of the route: 220m
+
+Route for vehicle 3:
+ 0 ->  38 ->  5 ->  49 ->  9 ->  10 ->  30 ->  34 ->  21 ->  35 ->  36 ->  3 ->  31 ->  26 ->  6 -> 0
+Distance of the route: 212m
+
+Route for vehicle 4:
+ 0 ->  14 ->  27 ->  22 ->  28 ->  20 ->  50 ->  39 ->  33 ->  15 ->  37 ->  17 ->  47 -> 0
+Distance of the route: 220m
+
+Total Distance of all routes: 926m

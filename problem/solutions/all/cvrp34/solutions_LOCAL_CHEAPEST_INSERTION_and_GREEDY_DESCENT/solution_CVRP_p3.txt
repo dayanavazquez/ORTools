@@ -1,0 +1,29 @@
+Instance: CVRP_p3.txt
+
+Objective: 86301
+
+Execution Time: 0.9544994831085205
+
+Heuristic: LOCAL_CHEAPEST_INSERTION
+
+Metaheuristic: GREEDY_DESCENT
+
+Distance type: haversine
+
+Route for vehicle 0:
+ 0 Load(0) ->  72 Load(3) ->  18 Load(23) ->  52 Load(35) ->  17 Load(54) ->  34 Load(81) ->  64 Load(92) ->  44 Load(110) ->  43 Load(121) ->  42 Load(136) ->  57 Load(162) ->  24 Load(168) ->  50 Load(173) ->  25 Load(200) ->  19 Load(213) ->  56 Load(220) ->  26 Load(234) ->  51 Load(256) ->  33 Load(284) ->  45 Load(301) ->  4 Load(312) ->  41 Load(345) ->  13 Load(361) ->  73 Load(362) ->  40 Load(378) ->  10 Load(407) ->  32 Load(432) ->  11 Load(458) ->  59 Load(479) ->  0 Load(479)
+Distance of the route: 37944m
+Load of the route: 479
+
+Route for vehicle 1:
+ 0 Load(0) ->  67 Load(37) ->  66 Load(46) ->  39 Load(70) ->  12 Load(107) ->  54 Load(129) ->  36 Load(139) ->  8 Load(154) ->  47 Load(181) ->  35 Load(200) ->  5 Load(230) ->  68 Load(260) ->  27 Load(278) ->  1 Load(278) ->  76 Load(298) ->  69 Load(308) ->  7 Load(327) ->  3 Load(353) ->  63 Load(371) ->  74 Load(377) ->  2 Load(395) ->  65 Load(423) ->  23 Load(435) ->  29 Load(464) ->  62 Load(479) ->  0 Load(479)
+Distance of the route: 27709m
+Load of the route: 479
+
+Route for vehicle 2:
+ 0 Load(0) ->  70 Load(8) ->  22 Load(36) ->  75 Load(46) ->  31 Load(68) ->  49 Load(88) ->  48 Load(107) ->  37 Load(119) ->  6 Load(140) ->  30 Load(153) ->  46 Load(174) ->  28 Load(191) ->  53 Load(210) ->  9 Load(226) ->  20 Load(241) ->  15 Load(272) ->  60 Load(296) ->  55 Load(312) ->  14 Load(324) ->  58 Load(338) ->  16 Load(346) ->  38 Load(360) ->  21 Load(382) ->  71 Load(393) ->  61 Load(406) ->  0 Load(406)
+Distance of the route: 20648m
+Load of the route: 406
+
+Total distance of all routes: 86301m
+Total load of all routes: 1364

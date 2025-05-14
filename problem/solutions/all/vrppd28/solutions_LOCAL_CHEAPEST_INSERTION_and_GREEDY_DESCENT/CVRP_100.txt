@@ -1,0 +1,25 @@
+Instance: CVRP_100.txt
+
+Objective: 10877
+
+Execution Time: 0.16954684257507324
+
+Heuristic: LOCAL_CHEAPEST_INSERTION
+
+Metaheuristic: GREEDY_DESCENT
+
+Distance type: chebyshev
+
+Route for vehicle 0:
+ 0 ->  7 ->  8 ->  9 ->  5 -> 0
+Distance of the route: 88m
+
+Route for vehicle 1:
+ 0 ->  12 ->  15 ->  10 ->  11 ->  2 ->  3 -> 0
+Distance of the route: 106m
+
+Route for vehicle 2:
+ 0 ->  4 ->  13 ->  14 ->  6 ->  1 -> 0
+Distance of the route: 83m
+
+Total Distance of all routes: 277m

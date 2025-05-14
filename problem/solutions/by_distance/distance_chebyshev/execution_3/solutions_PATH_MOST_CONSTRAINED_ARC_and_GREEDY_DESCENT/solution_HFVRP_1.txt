@@ -1,0 +1,39 @@
+Instance: HFVRP_1.txt
+
+Objective: 3135
+
+Execution Time: 0.7916665077209473
+
+Heuristic: PATH_MOST_CONSTRAINED_ARC
+
+Metaheuristic: GREEDY_DESCENT
+
+Distance type: chebyshev
+
+Route for vehicle 0:
+ 0 Load(0) ->  0 Load(0)
+Distance of the route: 0m
+Load of the route: 0
+
+Route for vehicle 1:
+ 0 Load(0) ->  22 Load(8) ->  3 Load(38) ->  23 Load(46) ->  2 Load(53) ->  28 Load(68) ->  24 Load(84) ->  8 Load(103) ->  44 Load(114) ->  25 Load(124) ->  15 Load(145) ->  26 Load(173) ->  14 Load(196) ->  42 Load(223) ->  41 Load(230) ->  20 Load(239) ->  5 Load(248) ->  19 Load(289) ->  48 Load(314) ->  13 Load(343) ->  18 Load(346) ->  38 Load(355) ->  6 Load(376) ->  39 Load(391) ->  30 Load(397) ->  0 Load(397)
+Distance of the route: 886m
+Load of the route: 397
+
+Route for vehicle 2:
+ 0 Load(0) ->  40 Load(14) ->  34 Load(37) ->  16 Load(47) ->  45 Load(63) ->  43 Load(76) ->  46 Load(86) ->  11 Load(91) ->  0 Load(91)
+Distance of the route: 758m
+Load of the route: 91
+
+Route for vehicle 3:
+ 0 Load(0) ->  21 Load(28) ->  29 Load(42) ->  32 Load(53) ->  27 Load(60) ->  9 Load(83) ->  49 Load(100) ->  7 Load(115) ->  1 Load(115) ->  47 Load(120) ->  33 Load(132) ->  12 Load(151) ->  17 Load(166) ->  51 Load(176) ->  10 Load(187) ->  50 Load(205) ->  31 Load(224) ->  35 Load(250) ->  0 Load(250)
+Distance of the route: 795m
+Load of the route: 250
+
+Route for vehicle 4:
+ 0 Load(0) ->  36 Load(17) ->  4 Load(33) ->  37 Load(39) ->  0 Load(39)
+Distance of the route: 696m
+Load of the route: 39
+
+Total distance of all routes: 3135m
+Total load of all routes: 777

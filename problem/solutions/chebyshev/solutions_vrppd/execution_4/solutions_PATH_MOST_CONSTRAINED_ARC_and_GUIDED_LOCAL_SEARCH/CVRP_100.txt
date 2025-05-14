@@ -1,0 +1,25 @@
+Instance: CVRP_100.txt
+
+Objective: 11924
+
+Execution Time: 0.09447479248046875
+
+Heuristic: PATH_MOST_CONSTRAINED_ARC
+
+Metaheuristic: GUIDED_LOCAL_SEARCH
+
+Distance type: chebyshev
+
+Route for vehicle 0:
+ 0 ->  12 ->  4 ->  13 ->  6 ->  8 ->  3 -> 0
+Distance of the route: 116m
+
+Route for vehicle 1:
+ 0 ->  15 ->  9 ->  2 ->  11 ->  14 -> 0
+Distance of the route: 113m
+
+Route for vehicle 2:
+ 0 ->  1 ->  7 ->  10 ->  5 -> 0
+Distance of the route: 95m
+
+Total Distance of all routes: 324m

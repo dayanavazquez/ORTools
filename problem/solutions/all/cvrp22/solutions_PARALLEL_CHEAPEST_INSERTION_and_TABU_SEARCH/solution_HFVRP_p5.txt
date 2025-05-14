@@ -1,0 +1,39 @@
+Instance: HFVRP_p5.txt
+
+Objective: 1342
+
+Execution Time: 60.00477600097656
+
+Heuristic: PARALLEL_CHEAPEST_INSERTION
+
+Metaheuristic: TABU_SEARCH
+
+Distance type: chebyshev
+
+Route for vehicle 0:
+ 0 Load(0) ->  67 Load(25) ->  21 Load(34) ->  31 Load(55) ->  71 Load(60) ->  2 Load(70) ->  70 Load(76) ->  32 Load(103) ->  89 Load(112) ->  11 Load(128) ->  33 Load(151) ->  91 Load(154) ->  64 Load(164) ->  0 Load(164)
+Distance of the route: 322m
+Load of the route: 164
+
+Route for vehicle 1:
+ 0 Load(0) ->  0 Load(0)
+Distance of the route: 0m
+Load of the route: 0
+
+Route for vehicle 2:
+ 0 Load(0) ->  0 Load(0)
+Distance of the route: 0m
+Load of the route: 0
+
+Route for vehicle 3:
+ 0 Load(0) ->  65 Load(9) ->  50 Load(39) ->  37 Load(44) ->  48 Load(71) ->  47 Load(72) ->  46 Load(88) ->  85 Load(95) ->  18 Load(97) ->  62 Load(110) ->  17 Load(129) ->  87 Load(164) ->  39 Load(180) ->  15 Load(200) ->  45 Load(218) ->  92 Load(219) ->  86 Load(260) ->  94 Load(282) ->  60 Load(310) ->  93 Load(312) ->  99 Load(322) ->  38 Load(330) ->  101 Load(347) ->  43 Load(352) ->  16 Load(360) ->  44 Load(367) ->  58 Load(374) ->  3 Load(381) ->  41 Load(390) ->  59 Load(408) ->  54 Load(422) ->  14 Load(445) ->  88 Load(471) ->  98 Load(483) ->  96 Load(503) ->  95 Load(530) ->  7 Load(533) ->  97 Load(544) ->  100 Load(553) ->  6 Load(579) ->  61 Load(582) ->  1 Load(582) ->  84 Load(593) ->  9 Load(602) ->  83 Load(618) ->  63 Load(637) ->  12 Load(649) ->  0 Load(649)
+Distance of the route: 501m
+Load of the route: 649
+
+Route for vehicle 4:
+ 0 Load(0) ->  20 Load(17) ->  49 Load(53) ->  8 Load(58) ->  53 Load(67) ->  19 Load(79) ->  90 Load(94) ->  28 Load(110) ->  29 Load(126) ->  51 Load(139) ->  77 Load(152) ->  4 Load(165) ->  78 Load(179) ->  69 Load(215) ->  81 Load(221) ->  13 Load(240) ->  27 Load(257) ->  5 Load(276) ->  22 Load(287) ->  74 Load(296) ->  73 Load(321) ->  75 Load(329) ->  42 Load(334) ->  23 Load(352) ->  76 Load(370) ->  57 Load(376) ->  24 Load(405) ->  68 Load(430) ->  40 Load(461) ->  26 Load(467) ->  56 Load(469) ->  55 Load(487) ->  25 Load(490) ->  30 Load(499) ->  80 Load(522) ->  35 Load(536) ->  79 Load(539) ->  82 Load(565) ->  34 Load(576) ->  52 Load(586) ->  10 Load(602) ->  36 Load(610) ->  72 Load(625) ->  66 Load(645) ->  0 Load(645)
+Distance of the route: 519m
+Load of the route: 645
+
+Total distance of all routes: 1342m
+Total load of all routes: 1458

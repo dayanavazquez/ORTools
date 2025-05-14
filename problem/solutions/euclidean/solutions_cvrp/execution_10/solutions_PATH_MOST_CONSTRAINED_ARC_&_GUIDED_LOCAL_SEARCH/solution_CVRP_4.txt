@@ -1,0 +1,57 @@
+Instance: CVRP_4.txt
+
+Objective: 3983
+
+Execution Time: 0.25500941276550293
+
+Heuristic: PATH_MOST_CONSTRAINED_ARC
+
+Metaheuristic: GUIDED_LOCAL_SEARCH
+
+Route for vehicle 0:
+ 0 Load(0) ->  0 Load(0)
+Distance of the route: 0m
+Load of the route: 0
+
+Route for vehicle 1:
+ 0 Load(0) ->  0 Load(0)
+Distance of the route: 0m
+Load of the route: 0
+
+Route for vehicle 2:
+ 0 Load(0) ->  0 Load(0)
+Distance of the route: 0m
+Load of the route: 0
+
+Route for vehicle 3:
+ 0 Load(0) ->  60 Load(24) ->  15 Load(55) ->  9 Load(71) ->  53 Load(90) ->  28 Load(107) ->  46 Load(128) ->  30 Load(141) ->  49 Load(161) ->  75 Load(171) ->  35 Load(190) ->  47 Load(217) ->  36 Load(227) ->  54 Load(249) ->  0 Load(249)
+Distance of the route: 633m
+Load of the route: 249
+
+Route for vehicle 4:
+ 0 Load(0) ->  32 Load(25) ->  26 Load(39) ->  51 Load(61) ->  50 Load(66) ->  24 Load(72) ->  44 Load(90) ->  2 Load(108) ->  74 Load(114) ->  34 Load(141) ->  7 Load(160) ->  69 Load(170) ->  76 Load(190) ->  1 Load(190) ->  41 Load(223) ->  13 Load(239) ->  0 Load(239)
+Distance of the route: 694m
+Load of the route: 239
+
+Route for vehicle 5:
+ 0 Load(0) ->  12 Load(37) ->  8 Load(52) ->  68 Load(82) ->  27 Load(100) ->  18 Load(120) ->  52 Load(132) ->  64 Load(143) ->  17 Load(162) ->  4 Load(173) ->  45 Load(190) ->  33 Load(218) ->  10 Load(247) ->  0 Load(247)
+Distance of the route: 651m
+Load of the route: 247
+
+Route for vehicle 6:
+ 0 Load(0) ->  20 Load(15) ->  29 Load(44) ->  22 Load(72) ->  48 Load(91) ->  37 Load(103) ->  70 Load(111) ->  72 Load(114) ->  61 Load(127) ->  71 Load(138) ->  21 Load(160) ->  38 Load(174) ->  6 Load(195) ->  16 Load(203) ->  58 Load(217) ->  14 Load(229) ->  55 Load(245) ->  0 Load(245)
+Distance of the route: 690m
+Load of the route: 245
+
+Route for vehicle 7:
+ 0 Load(0) ->  5 Load(30) ->  31 Load(52) ->  3 Load(78) ->  63 Load(96) ->  23 Load(108) ->  62 Load(123) ->  65 Load(151) ->  43 Load(162) ->  42 Load(177) ->  57 Load(203) ->  25 Load(230) ->  19 Load(243) ->  56 Load(250) ->  0 Load(250)
+Distance of the route: 730m
+Load of the route: 250
+
+Route for vehicle 8:
+ 0 Load(0) ->  67 Load(37) ->  66 Load(46) ->  39 Load(70) ->  59 Load(91) ->  73 Load(92) ->  40 Load(108) ->  11 Load(134) ->  0 Load(134)
+Distance of the route: 585m
+Load of the route: 134
+
+Total distance of all routes: 3983m
+Total load of all routes: 1364

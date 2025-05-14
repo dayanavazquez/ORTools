@@ -1,0 +1,33 @@
+Instance: CVRP_2.txt
+
+Objective: 16683
+
+Execution Time: 10.103176355361938
+
+Heuristic: PARALLEL_CHEAPEST_INSERTION
+
+Metaheuristic: SIMULATED_ANNEALING
+
+Distance type: chebyshev
+
+Route for vehicle 0:
+ 0 ->  16 ->  31 ->  7 ->  25 ->  13 ->  41 ->  42 ->  12 -> 0
+Distance of the route: 157m
+
+Route for vehicle 1:
+ 0 ->  4 ->  44 ->  33 ->  10 ->  30 ->  9 ->  50 ->  21 ->  2 ->  20 ->  36 ->  47 -> 0
+Distance of the route: 154m
+
+Route for vehicle 2:
+ 0 ->  39 ->  15 ->  37 ->  18 ->  14 ->  24 ->  43 ->  23 ->  6 ->  5 -> 0
+Distance of the route: 154m
+
+Route for vehicle 3:
+ 0 ->  11 ->  19 ->  40 ->  35 ->  29 ->  49 -> 0
+Distance of the route: 159m
+
+Route for vehicle 4:
+ 0 ->  17 ->  45 ->  34 ->  38 ->  27 ->  48 ->  8 ->  26 ->  28 ->  3 ->  22 ->  1 ->  32 ->  46 -> 0
+Distance of the route: 159m
+
+Total Distance of all routes: 783m

@@ -2,6 +2,7 @@ import os
 import re
 import csv
 import pandas as pd
+from collections import defaultdict
 
 
 def get_cost(data, routes_count, cost_matches):
@@ -276,25 +277,83 @@ def write_solutions(output_file, results, best_solution, is_csv, filtered):
         generate_csv_files(results, best_solution, output_file, filtered)
 
 
-def main(best_solution=False, csv=False, filtered=None):
-    base_folder = '../problems/euclidean'
-    output_file = '../problems/euclidean/best_solutions_initial_routes_euclidean'
+def compute_average_objectives(instance_name, base_path, output_file):
+    results = defaultdict(list)
 
-    results = process_solutions_folder(base_folder)
-    write_solutions(output_file, results, best_solution, csv, filtered)
+    for exec_folder in os.listdir(base_path):
+        exec_path = os.path.join(base_path, exec_folder)
+        if not os.path.isdir(exec_path):
+            continue
+
+        for algo_folder in os.listdir(exec_path):
+            algo_path = os.path.join(exec_path, algo_folder)
+            if not os.path.isdir(algo_path):
+                continue
+
+            for file_name in os.listdir(algo_path):
+                if file_name.endswith(".txt"):
+                    file_path = os.path.join(algo_path, file_name)
+                    with open(file_path, "r") as f:
+                        content = f.read()
+                        if f"Instance: {instance_name}" not in content:
+                            continue
+
+                        lines = content.splitlines()
+                        data = {}
+                        for line in lines:
+                            if ":" in line:
+                                key, value = line.split(":", 1)
+                                data[key.strip()] = value.strip()
+
+                        try:
+                            heuristic = data["Heuristic"]
+                            metaheuristic = data["Metaheuristic"]
+                            algorithm = f"{heuristic}_and_{metaheuristic}"
+                            objective = float(data["Objective"])
+                            results[algorithm].append(objective)
+                        except KeyError:
+                            continue
+
+    averages = {
+        algorithm: sum(values) / len(values)
+        for algorithm, values in results.items()
+    }
+
+    with open(output_file, "w", newline="") as csvfile:
+        columns = ["Instance"] + list(averages.keys())
+        writer = csv.DictWriter(csvfile, fieldnames=columns)
+        writer.writeheader()
+        row = {"Instance": instance_name}
+        row.update(averages)
+        writer.writerow(row)
+
+    print(f"CSV file saved to: {output_file}")
+
+
+def main(best_solution=False, csv=False, filtered_by_instance=False, filtered=None):
+    base_folder = '../problems/solutions/euclidean/solutions_vrppd'
+    output_file = '../problems/solutions/euclidean/solutions_vrppd/averages_CVRP_3.csv'
+    instance_name = "CVRP_3.txt"
+
+    if filtered_by_instance:
+        compute_average_objectives(instance_name, base_folder, output_file)
+    else:
+        results = process_solutions_folder(base_folder)
+        write_solutions(output_file, results, best_solution, csv, filtered)
 
 
 if __name__ == "__main__":
     main(
         best_solution=True,
         csv=False,
+        filtered_by_instance=True,
         filtered=None
-        #[
-         #   "FIRST_UNBOUND_MIN_VALUE_and_SIMULATED_ANNEALING",
-          #  "SAVINGS_and_GREEDY_DESCENT",
-           # "ALL_UNPERFORMED_and_GENERIC_TABU_SEARCH",
-            #"PARALLEL_CHEAPEST_INSERTION_and_GREEDY_DESCENT",
-            #"FIRST_UNBOUND_MIN_VALUE_and_GENERIC_TABU_SEARCH"
-        #]
+        # [
+        #   "FIRST_UNBOUND_MIN_VALUE_and_SIMULATED_ANNEALING",
+        #  "SAVINGS_and_GREEDY_DESCENT",
+        # "ALL_UNPERFORMED_and_GENERIC_TABU_SEARCH",
+        # "PARALLEL_CHEAPEST_INSERTION_and_GREEDY_DESCENT",
+        # "FIRST_UNBOUND_MIN_VALUE_and_GENERIC_TABU_SEARCH"
+        # ]
 
     )

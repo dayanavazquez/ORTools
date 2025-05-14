@@ -1,6 +1,6 @@
-from distances.distance_type import DistanceType
-from problems.problem_type import ProblemType
-from load_data.instance_type import process_files, InstanceType
+from problem.problem_type import ProblemType
+from distance.distance_type import DistanceType
+from instance.instance_type import process_files, InstanceType
 
 ALL_DISTANCES = [
     DistanceType.EUCLIDEAN,
@@ -13,42 +13,42 @@ base_problems = [
     {
         "instance_type": InstanceType.TSP,
         "problem_type": ProblemType.TSP,
-        "path": ['../../instances/tsp_instances']
+        "path": ['../../instances_data/tsp_instances']
     },
     {
         "instance_type": InstanceType.BHCVRP,
         "problem_type": ProblemType.CVRP,
-        "path": ['../../instances/bhcvrp_instances']
+        "path": ['../../instances_data/bhcvrp_instances']
     },
     {
         "instance_type": InstanceType.HFVRP,
         "problem_type": ProblemType.CVRP,
-        "path": ['../../instances/hfvrp_instances']
+        "path": ['../../instances_data/hfvrp_instances']
     },
     {
         "instance_type": InstanceType.VRPTW,
         "problem_type": ProblemType.CVRP,
-        "path": ['../../instances/vrptw_instances']
+        "path": ['../../instances_data/vrptw_instances/test']
     },
     {
         "instance_type": InstanceType.VRPTW,
         "problem_type": ProblemType.VRPTW,
-        "path": ['../../instances/vrptw_instances']
+        "path": ['../../instances_data/vrptw_instances']
     },
     {
         "instance_type": InstanceType.MDCVRP,
         "problem_type": ProblemType.MDVRP,
-        "path": ['../../instances/mdcvrp_instances/C-mdvrp']
+        "path": ['../../instances_data/mdcvrp_instances/C-mdvrp']
     },
     {
         "instance_type": InstanceType.BHCVRP,
         "problem_type": ProblemType.VRPPD,
-        "path": ['../../instances/bhcvrp_instances']
+        "path": ['../../instances_data/bhcvrp_instances']
     },
     {
         "instance_type": InstanceType.MDCVRP,
         "problem_type": ProblemType.VRPPD,
-        "path": ['../../instances/mdcvrp_instances/C-mdvrp']
+        "path": ['../../instances_data/mdcvrp_instances/test']
     }
 ]
 
@@ -70,19 +70,6 @@ def get_data_for_predictions():
             "Objective": [],
             "Method": [],
             "Time": [],
-        },
-        "CVRP": {
-            "Instance": [],
-            "Distance": [],
-            "Vehicles": [],
-            "Vehicles Capacity": [],
-            "Demands": [],
-            "Nodes": [],
-            "Objective": [],
-            "Method": [],
-            "Time": [],
-            "Routes": [],
-            "Load Factor": [],
         },
         "VRPTW": {
             "Instance": [],
@@ -126,7 +113,7 @@ def get_data_for_predictions():
             "Routes": [],
             "Load Factor": [],
             "Avg Pickup-Delivery Distance": [],
-        },
+        }
     }
 
     for row in problems_data:
@@ -136,7 +123,7 @@ def get_data_for_predictions():
                                           None, None, row["path"])
             try:
                 with open(
-                        f"../../problems/solutions/{row['distance_type'].value}/solutions_{row['problem_type'].value}/all_solutions_{row['problem_type'].value}_{row['distance_type'].value}.txt",
+                        f"../../problem/solutions/{row['distance_type'].value}/solutions_{row['problem_type'].value}/all_solutions_{row['problem_type'].value}_{row['distance_type'].value}.txt",
                         "r") as file:
                     lines = file.readlines()
 
@@ -146,7 +133,6 @@ def get_data_for_predictions():
                 for record in records:
                     for instance, data in instance_data.items():
                         if record["Instance"] == instance:
-                            # Campos comunes
                             results[problem_type]["Distance"].append(row["distance_type"].value)
                             results[problem_type]["Instance"].append(instance)
                             results[problem_type]["Nodes"].append(
@@ -159,7 +145,6 @@ def get_data_for_predictions():
                             results[problem_type]["Time"].append(float(record["Time"]))
 
                             if problem_type != 'TSP':
-                                # Se añaden las características propias de VRP
                                 vehicles = int(data["num_vehicles"])
                                 avg_demand = float(sum(data["demands"]) / len(data["demands"]))
                                 avg_capacity = float(sum(data["vehicle_capacities"]) / len(data["vehicle_capacities"]))
@@ -168,7 +153,6 @@ def get_data_for_predictions():
                                 results[problem_type]["Vehicles Capacity"].append(avg_capacity)
                                 routes_val = int(record["Routes"]) if int(record["Routes"]) > 0 else 1
                                 results[problem_type]["Routes"].append(routes_val)
-                                # Calcular el factor de carga: load_factor = (avg_demand * num_nodes) / (vehicles * avg_capacity)
                                 num_nodes = int(data["num_locations"]) if "num_locations" in data else len(
                                     data["distance_matrix"])
                                 if vehicles * avg_capacity != 0:
@@ -183,8 +167,7 @@ def get_data_for_predictions():
                                     ends = [tw[1] for tw in time_windows]
                                     avg_start = sum(starts) / len(starts)
                                     avg_end = sum(ends) / len(ends)
-                                    tight_tw = [1 for s, e in time_windows if (e - s) <= 50]  # Ejemplo de umbral
-                                    tight_pct = (sum(tight_tw) / len(time_windows)) * 100
+                                    tight_tw = [1 for s, e in time_windows if (e - s) <= 50]
 
                                     results[problem_type]["Avg TW Start"].append(avg_start)
                                     results[problem_type]["Avg TW End"].append(avg_end)
@@ -210,9 +193,6 @@ def get_data_for_predictions():
                                 depots = data.get("depots", [])
                                 clients = data.get("customers", [])
                                 num_depots = len(depots)
-                                clients_per_depot = len(clients) / num_depots if num_depots else 0
-
-                                # Calcular distancia mínima de cada cliente a cualquier depósito
                                 total_depot_client_dist = 0
                                 for client in clients:
                                     min_dist = min(

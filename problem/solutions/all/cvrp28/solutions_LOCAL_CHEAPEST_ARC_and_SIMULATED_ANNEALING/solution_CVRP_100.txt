@@ -1,0 +1,29 @@
+Instance: CVRP_100.txt
+
+Objective: 242
+
+Execution Time: 59.999849796295166
+
+Heuristic: LOCAL_CHEAPEST_ARC
+
+Metaheuristic: SIMULATED_ANNEALING
+
+Distance type: chebyshev
+
+Route for vehicle 0:
+ 0 Load(0.0) ->  12 Load(15.0) ->  4 Load(55.0) ->  13 Load(85.0) ->  0 Load(85.0)
+Distance of the route: 59m
+Load of the route: 85.0
+
+Route for vehicle 1:
+ 0 Load(0.0) ->  3 Load(15.0) ->  2 Load(25.0) ->  11 Load(35.0) ->  9 Load(45.0) ->  10 Load(55.0) ->  15 Load(75.0) ->  5 Load(95.0) ->  0 Load(95.0)
+Distance of the route: 108m
+Load of the route: 95.0
+
+Route for vehicle 2:
+ 0 Load(0.0) ->  1 Load(10.0) ->  8 Load(25.0) ->  7 Load(35.0) ->  14 Load(55.0) ->  6 Load(85.0) ->  0 Load(85.0)
+Distance of the route: 75m
+Load of the route: 85.0
+
+Total distance of all routes: 242m
+Total load of all routes: 265.0
