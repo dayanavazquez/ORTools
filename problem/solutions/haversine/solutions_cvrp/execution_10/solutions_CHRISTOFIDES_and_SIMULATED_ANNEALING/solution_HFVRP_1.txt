@@ -1,0 +1,39 @@
+Instance: HFVRP_1.txt
+
+Objective: 60636
+
+Execution Time: 60.00068211555481
+
+Heuristic: CHRISTOFIDES
+
+Metaheuristic: SIMULATED_ANNEALING
+
+Distance type: haversine
+
+Route for vehicle 0:
+ 0 Load(0) ->  27 Load(7) ->  8 Load(26) ->  24 Load(42) ->  44 Load(53) ->  25 Load(63) ->  26 Load(91) ->  15 Load(112) ->  7 Load(127) ->  49 Load(144) ->  9 Load(167) ->  0 Load(167)
+Distance of the route: 16786m
+Load of the route: 167
+
+Route for vehicle 1:
+ 0 Load(0) ->  37 Load(6) ->  36 Load(23) ->  21 Load(51) ->  30 Load(57) ->  22 Load(65) ->  35 Load(91) ->  31 Load(110) ->  40 Load(124) ->  11 Load(129) ->  34 Load(152) ->  46 Load(162) ->  16 Load(172) ->  38 Load(181) ->  18 Load(184) ->  45 Load(200) ->  43 Load(213) ->  20 Load(222) ->  41 Load(229) ->  42 Load(256) ->  14 Load(279) ->  19 Load(320) ->  5 Load(329) ->  48 Load(354) ->  47 Load(359) ->  1 Load(359) ->  28 Load(374) ->  32 Load(385) ->  0 Load(385)
+Distance of the route: 28212m
+Load of the route: 385
+
+Route for vehicle 2:
+ 0 Load(0) ->  0 Load(0)
+Distance of the route: 0m
+Load of the route: 0
+
+Route for vehicle 3:
+ 0 Load(0) ->  29 Load(14) ->  23 Load(22) ->  2 Load(29) ->  33 Load(41) ->  12 Load(60) ->  13 Load(89) ->  6 Load(110) ->  39 Load(125) ->  50 Load(143) ->  10 Load(154) ->  51 Load(164) ->  17 Load(179) ->  3 Load(209) ->  4 Load(225) ->  0 Load(225)
+Distance of the route: 15638m
+Load of the route: 225
+
+Route for vehicle 4:
+ 0 Load(0) ->  0 Load(0)
+Distance of the route: 0m
+Load of the route: 0
+
+Total distance of all routes: 60636m
+Total load of all routes: 777

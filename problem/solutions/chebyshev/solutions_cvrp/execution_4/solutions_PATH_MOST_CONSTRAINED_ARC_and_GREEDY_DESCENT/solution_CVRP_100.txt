@@ -1,0 +1,29 @@
+Instance: CVRP_100.txt
+
+Objective: 259
+
+Execution Time: 0.028908252716064453
+
+Heuristic: PATH_MOST_CONSTRAINED_ARC
+
+Metaheuristic: GREEDY_DESCENT
+
+Distance type: chebyshev
+
+Route for vehicle 0:
+ 0 Load(0.0) ->  6 Load(30.0) ->  7 Load(40.0) ->  14 Load(60.0) ->  15 Load(80.0) ->  12 Load(95.0) ->  0 Load(95.0)
+Distance of the route: 96m
+Load of the route: 95.0
+
+Route for vehicle 1:
+ 0 Load(0.0) ->  13 Load(30.0) ->  4 Load(70.0) ->  0 Load(70.0)
+Distance of the route: 54m
+Load of the route: 70.0
+
+Route for vehicle 2:
+ 0 Load(0.0) ->  5 Load(20.0) ->  10 Load(30.0) ->  9 Load(40.0) ->  11 Load(50.0) ->  2 Load(60.0) ->  3 Load(75.0) ->  8 Load(90.0) ->  1 Load(100.0) ->  0 Load(100.0)
+Distance of the route: 109m
+Load of the route: 100.0
+
+Total distance of all routes: 259m
+Total load of all routes: 265.0

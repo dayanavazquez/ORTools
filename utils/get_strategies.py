@@ -24,7 +24,6 @@ def get_strategies(heuristic, metaheuristic):
             "FIRST_UNBOUND_MIN_VALUE",
         ]
         local_search_metaheuristics = [
-            "GREEDY_DESCENT",
             "GUIDED_LOCAL_SEARCH",
             "SIMULATED_ANNEALING",
             "TABU_SEARCH",

@@ -1,0 +1,39 @@
+Instance: CVRP_p14.txt
+
+Objective: 317505
+
+Execution Time: 60.001994132995605
+
+Heuristic: GLOBAL_CHEAPEST_ARC
+
+Metaheuristic: GUIDED_LOCAL_SEARCH
+
+Distance type: haversine
+
+Route for vehicle 0:
+ 0 Load(0) ->  31 Load(2) ->  105 Load(6) ->  0 Load(6)
+Distance of the route: 0m
+Load of the route: 6
+
+Route for vehicle 1:
+ 0 Load(0) ->  321 Load(1) ->  96 Load(9) ->  313 Load(11) ->  104 Load(15) ->  95 Load(23) ->  103 Load(27) ->  303 Load(31) ->  73 Load(33) ->  311 Load(35) ->  65 Load(39) ->  319 Load(40) ->  57 Load(48) ->  56 Load(56) ->  64 Load(60) ->  72 Load(62) ->  80 Load(63) ->  158 Load(64) ->  150 Load(66) ->  142 Load(70) ->  134 Load(78) ->  126 Load(90) ->  124 Load(102) ->  123 Load(114) ->  122 Load(126) ->  125 Load(138) ->  133 Load(146) ->  141 Load(150) ->  149 Load(152) ->  157 Load(153) ->  38 Load(154) ->  275 Load(155) ->  130 Load(163) ->  138 Load(167) ->  267 Load(169) ->  146 Load(171) ->  259 Load(175) ->  251 Load(183) ->  154 Load(184) ->  36 Load(185) ->  250 Load(193) ->  28 Load(195) ->  258 Load(199) ->  20 Load(203) ->  266 Load(205) ->  12 Load(213) ->  274 Load(214) ->  4 Load(226) ->  3 Load(238) ->  6 Load(250) ->  14 Load(258) ->  22 Load(262) ->  30 Load(264) ->  359 Load(265) ->  17 Load(273) ->  351 Load(275) ->  25 Load(279) ->  343 Load(283) ->  33 Load(285) ->  335 Load(293) ->  41 Load(294) ->  159 Load(295) ->  344 Load(299) ->  151 Load(301) ->  352 Load(303) ->  360 Load(304) ->  143 Load(308) ->  135 Load(316) ->  127 Load(328) ->  128 Load(340) ->  129 Load(352) ->  136 Load(360) ->  345 Load(364) ->  337 Load(372) ->  336 Load(380) ->  76 Load(381) ->  349 Load(383) ->  357 Load(384) ->  67 Load(386) ->  75 Load(387) ->  40 Load(388) ->  32 Load(390) ->  24 Load(394) ->  16 Load(402) ->  9 Load(414) ->  8 Load(426) ->  7 Load(438) ->  5 Load(450) ->  2 Load(462) ->  13 Load(470) ->  21 Load(474) ->  29 Load(476) ->  37 Load(477) ->  318 Load(478) ->  15 Load(486) ->  121 Load(487) ->  23 Load(491) ->  113 Load(493) ->  0 Load(493)
+Distance of the route: 113790m
+Load of the route: 493
+
+Route for vehicle 2:
+ 0 Load(0) ->  310 Load(2) ->  292 Load(10) ->  300 Load(14) ->  178 Load(18) ->  186 Load(20) ->  299 Load(24) ->  291 Load(32) ->  194 Load(33) ->  236 Load(34) ->  290 Load(42) ->  307 Load(44) ->  315 Load(45) ->  280 Load(46) ->  170 Load(54) ->  162 Load(66) ->  163 Load(78) ->  164 Load(90) ->  281 Load(91) ->  239 Load(92) ->  166 Load(104) ->  174 Load(112) ->  182 Load(116) ->  231 Load(118) ->  190 Load(120) ->  198 Load(121) ->  223 Load(125) ->  224 Load(129) ->  225 Load(133) ->  247 Load(145) ->  248 Load(157) ->  183 Load(161) ->  249 Load(173) ->  184 Load(177) ->  185 Load(181) ->  207 Load(193) ->  208 Load(205) ->  209 Load(217) ->  263 Load(221) ->  264 Load(225) ->  175 Load(233) ->  176 Load(241) ->  177 Load(249) ->  215 Load(257) ->  216 Load(265) ->  217 Load(273) ->  255 Load(281) ->  256 Load(289) ->  257 Load(297) ->  169 Load(309) ->  168 Load(321) ->  167 Load(333) ->  265 Load(337) ->  273 Load(339) ->  165 Load(351) ->  173 Load(359) ->  181 Load(363) ->  189 Load(365) ->  272 Load(367) ->  197 Load(368) ->  238 Load(369) ->  230 Load(371) ->  222 Load(375) ->  271 Load(377) ->  214 Load(385) ->  206 Load(397) ->  205 Load(409) ->  213 Load(417) ->  193 Load(419) ->  221 Load(423) ->  229 Load(425) ->  237 Load(426) ->  278 Load(427) ->  192 Load(429) ->  270 Load(431) ->  262 Load(435) ->  254 Load(443) ->  246 Load(455) ->  191 Load(457) ->  245 Load(469) ->  253 Load(477) ->  233 Load(479) ->  261 Load(483) ->  269 Load(485) ->  277 Load(486) ->  232 Load(488) ->  19 Load(492) ->  11 Load(500) ->  1 Load(500) ->  0 Load(500)
+Distance of the route: 64268m
+Load of the route: 500
+
+Route for vehicle 3:
+ 0 Load(0) ->  74 Load(1) ->  89 Load(13) ->  356 Load(14) ->  86 Load(26) ->  94 Load(34) ->  66 Load(36) ->  102 Load(40) ->  84 Load(52) ->  83 Load(64) ->  355 Load(65) ->  320 Load(66) ->  312 Load(68) ->  304 Load(72) ->  111 Load(74) ->  296 Load(82) ->  119 Load(83) ->  295 Load(91) ->  81 Load(92) ->  293 Load(100) ->  301 Load(104) ->  309 Load(106) ->  317 Load(107) ->  235 Load(108) ->  227 Load(110) ->  219 Load(114) ->  211 Load(122) ->  212 Load(130) ->  314 Load(131) ->  220 Load(135) ->  306 Load(137) ->  228 Load(139) ->  298 Load(143) ->  279 Load(144) ->  204 Load(156) ->  203 Load(168) ->  202 Load(180) ->  201 Load(181) ->  210 Load(189) ->  156 Load(190) ->  218 Load(194) ->  148 Load(196) ->  226 Load(198) ->  140 Load(202) ->  234 Load(203) ->  132 Load(211) ->  276 Load(212) ->  131 Load(220) ->  268 Load(222) ->  139 Load(226) ->  147 Load(228) ->  260 Load(232) ->  155 Load(233) ->  200 Load(234) ->  252 Load(242) ->  244 Load(254) ->  243 Load(266) ->  242 Load(278) ->  199 Load(279) ->  241 Load(280) ->  240 Load(281) ->  35 Load(282) ->  27 Load(284) ->  196 Load(285) ->  10 Load(293) ->  188 Load(295) ->  18 Load(299) ->  180 Load(303) ->  26 Load(305) ->  172 Load(313) ->  34 Load(314) ->  316 Load(315) ->  171 Load(323) ->  308 Load(325) ->  179 Load(329) ->  187 Load(331) ->  195 Load(332) ->  302 Load(336) ->  294 Load(344) ->  286 Load(356) ->  284 Load(368) ->  283 Load(380) ->  282 Load(392) ->  285 Load(404) ->  287 Load(416) ->  288 Load(428) ->  289 Load(440) ->  297 Load(448) ->  305 Load(452) ->  120 Load(453) ->  112 Load(455) ->  0 Load(455)
+Distance of the route: 92951m
+Load of the route: 455
+
+Route for vehicle 4:
+ 0 Load(0) ->  110 Load(2) ->  118 Load(3) ->  58 Load(7) ->  340 Load(11) ->  82 Load(23) ->  339 Load(27) ->  338 Load(31) ->  50 Load(39) ->  51 Load(47) ->  52 Load(55) ->  90 Load(63) ->  91 Load(71) ->  92 Load(79) ->  330 Load(87) ->  331 Load(95) ->  332 Load(103) ->  59 Load(107) ->  60 Load(111) ->  322 Load(123) ->  323 Load(135) ->  98 Load(139) ->  324 Load(151) ->  99 Load(155) ->  100 Load(159) ->  42 Load(171) ->  43 Load(183) ->  44 Load(195) ->  45 Load(207) ->  53 Load(215) ->  61 Load(219) ->  108 Load(221) ->  69 Load(223) ->  77 Load(224) ->  358 Load(225) ->  107 Load(227) ->  350 Load(229) ->  342 Load(233) ->  334 Load(241) ->  326 Load(253) ->  106 Load(255) ->  325 Load(267) ->  333 Load(275) ->  68 Load(277) ->  341 Load(281) ->  114 Load(282) ->  327 Load(294) ->  328 Load(306) ->  329 Load(318) ->  115 Load(319) ->  160 Load(320) ->  152 Load(322) ->  144 Load(326) ->  353 Load(328) ->  361 Load(329) ->  79 Load(330) ->  137 Load(338) ->  71 Load(340) ->  145 Load(344) ->  63 Load(348) ->  153 Load(350) ->  55 Load(358) ->  161 Load(359) ->  116 Load(360) ->  47 Load(372) ->  48 Load(384) ->  49 Load(396) ->  354 Load(397) ->  46 Load(409) ->  54 Load(417) ->  346 Load(419) ->  62 Load(423) ->  70 Load(425) ->  78 Load(426) ->  117 Load(427) ->  347 Load(429) ->  109 Load(431) ->  101 Load(435) ->  93 Load(443) ->  85 Load(455) ->  348 Load(457) ->  87 Load(469) ->  88 Load(481) ->  39 Load(482) ->  97 Load(490) ->  0 Load(490)
+Distance of the route: 46496m
+Load of the route: 490
+
+Total distance of all routes: 317505m
+Total load of all routes: 1944

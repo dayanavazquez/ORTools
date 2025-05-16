@@ -1,0 +1,29 @@
+Instance: CVRP_100.txt
+
+Objective: 26205
+
+Execution Time: 60.000449657440186
+
+Heuristic: FIRST_UNBOUND_MIN_VALUE
+
+Metaheuristic: GENERIC_TABU_SEARCH
+
+Distance type: haversine
+
+Route for vehicle 0:
+ 0 Load(0.0) ->  6 Load(30.0) ->  7 Load(40.0) ->  8 Load(55.0) ->  1 Load(65.0) ->  3 Load(80.0) ->  2 Load(90.0) ->  11 Load(100.0) ->  0 Load(100.0)
+Distance of the route: 11011m
+Load of the route: 100.0
+
+Route for vehicle 1:
+ 0 Load(0.0) ->  12 Load(15.0) ->  15 Load(35.0) ->  10 Load(45.0) ->  9 Load(55.0) ->  5 Load(75.0) ->  0 Load(75.0)
+Distance of the route: 7695m
+Load of the route: 75.0
+
+Route for vehicle 2:
+ 0 Load(0.0) ->  14 Load(20.0) ->  13 Load(50.0) ->  4 Load(90.0) ->  0 Load(90.0)
+Distance of the route: 7499m
+Load of the route: 90.0
+
+Total distance of all routes: 26205m
+Total load of all routes: 265.0

@@ -1,0 +1,33 @@
+Instance: CVRP_1.txt
+
+Objective: 16562
+
+Execution Time: 9.100216150283813
+
+Heuristic: FIRST_UNBOUND_MIN_VALUE
+
+Metaheuristic: TABU_SEARCH
+
+Distance type: chebyshev
+
+Route for vehicle 0:
+ 0 ->  23 ->  8 ->  31 ->  28 ->  3 ->  36 ->  35 ->  20 ->  21 ->  44 ->  18 ->  47 -> 0
+Distance of the route: 158m
+
+Route for vehicle 1:
+ 0 ->  6 ->  27 ->  1 ->  29 ->  12 ->  40 -> 0
+Distance of the route: 133m
+
+Route for vehicle 2:
+ 0 ->  32 ->  26 ->  43 ->  24 ->  25 ->  4 ->  41 ->  42 ->  11 ->  46 -> 0
+Distance of the route: 155m
+
+Route for vehicle 3:
+ 0 ->  13 ->  19 ->  45 ->  10 ->  33 ->  39 ->  9 ->  22 -> 0
+Distance of the route: 158m
+
+Route for vehicle 4:
+ 0 ->  14 ->  48 ->  7 ->  38 ->  5 ->  37 ->  17 ->  15 ->  49 ->  30 ->  34 ->  50 ->  16 ->  2 -> 0
+Distance of the route: 158m
+
+Total Distance of all routes: 762m
