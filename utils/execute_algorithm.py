@@ -63,25 +63,27 @@ def execute_solution(
 ):
     first_solution_strategies, local_search_metaheuristics = get_strategies(heuristic, metaheuristic)
     if not first_solution_strategies and local_search_metaheuristics:
-        search_parameters = pywrapcp.DefaultRoutingSearchParameters()
-        search_parameters.local_search_metaheuristic = getattr(
-            routing_enums_pb2.LocalSearchMetaheuristic, local_search_metaheuristics[0]
-        )
-        get_solutions(
-            initial_routes, save_solution, i, distance_type, search_parameters, routing, time_limit, data, manager,
-            instance,
-            local_search_metaheuristics[0], one_vehicle
-        )
+        for local_search_metaheuristic in local_search_metaheuristics:
+            search_parameters = pywrapcp.DefaultRoutingSearchParameters()
+            search_parameters.local_search_metaheuristic = getattr(
+                routing_enums_pb2.LocalSearchMetaheuristic, local_search_metaheuristic
+            )
+            get_solutions(
+                initial_routes, save_solution, i, distance_type, search_parameters, routing, time_limit, data, manager,
+                instance, None,
+                local_search_metaheuristic, one_vehicle
+            )
     elif not local_search_metaheuristics and first_solution_strategies:
-        search_parameters = pywrapcp.DefaultRoutingSearchParameters()
-        search_parameters.first_solution_strategy = getattr(
-            routing_enums_pb2.FirstSolutionStrategy, first_solution_strategies[0]
-        )
-        get_solutions(
-            initial_routes, save_solution, i, distance_type, search_parameters, routing, time_limit, data, manager,
-            instance,
-            first_solution_strategies[0], one_vehicle
-        )
+        for first_solution_strategy in first_solution_strategies:
+            search_parameters = pywrapcp.DefaultRoutingSearchParameters()
+            search_parameters.first_solution_strategy = getattr(
+                routing_enums_pb2.FirstSolutionStrategy, first_solution_strategy
+            )
+            get_solutions(
+                initial_routes, save_solution, i, distance_type, search_parameters, routing, time_limit, data, manager,
+                instance,
+                first_solution_strategy, None, one_vehicle
+            )
     else:
         for first_solution_strategy in first_solution_strategies:
             for local_search_metaheuristic in local_search_metaheuristics:
